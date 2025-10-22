@@ -16,23 +16,39 @@
 - 🎨 **Cyberpunk UI**: Neon cyan/magenta/yellow theme, scanline effects, glitch animations, glassmorphism
 - ⚡ **Smooth Animations**: Entrance animations, hover effects, cascading card reveals
 - 🔍 **Search & Filter**: Find exactly what you need with powerful search and source filtering
-- 📱 **Fully Responsive**: Perfect on desktop, tablet, and mobile
+- � **Creator Profile**: Stunning floating profile with scroll-aware behavior - appears at top, disappears when scrolling
+- �📱 **Fully Responsive**: Perfect on desktop, tablet, and mobile
 - 🔄 **Real-time Updates**: Fresh content every time you visit
 - 🎯 **No Distractions**: Clean, focused interface - no ads, no tracking, no cookies
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
-\`\`\`bash
+### Prerequisites
+- Node.js 18+ installed
+- A profile image (optional - for the floating profile feature)
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/nbharath1306/neuroloom.git
+cd neuroloom
+```
+
+### 2. Install Dependencies
+```bash
 npm install
-\`\`\`
+```
 
-### 2. Run Development Server
-\`\`\`bash
+### 3. Add Your Profile Image (Optional)
+If you want to customize the floating profile with your own image:
+- Place your profile image as `public/profile.jpg`
+- Or update the image path in `app/components/FloatingProfile.tsx`
+
+### 4. Run Development Server
+```bash
 npm run dev
-\`\`\`
+```
 
-### 3. Open Your Browser
+### 5. Open Your Browser
 Navigate to [http://localhost:3000](http://localhost:3000)
 
 That's it! 🎉
@@ -63,11 +79,14 @@ NeuroLoom/
 │   │       └── route.ts          # RSS feed aggregation API
 │   ├── components/
 │   │   ├── NewsCard.tsx          # Individual news card component
-│   │   └── FilterBar.tsx         # Search and filter component
+│   │   ├── FilterBar.tsx         # Search and filter component
+│   │   ├── FloatingProfile.tsx   # Creator profile with scroll awareness
+│   │   └── ThemeSwitcher.tsx     # Dark/Light mode toggle
 │   ├── layout.tsx                # Root layout
 │   ├── page.tsx                  # Main page
-│   └── globals.css               # Global styles
-├── public/                       # Static assets
+│   └── globals.css               # Global styles with animations
+├── public/
+│   └── profile.jpg               # Profile image (customize with yours!)
 ├── package.json
 ├── tsconfig.json
 ├── tailwind.config.js
@@ -75,6 +94,14 @@ NeuroLoom/
 \`\`\`
 
 ## 🌟 Key Components
+
+### FloatingProfile
+Stunning creator profile that:
+- Appears in top-left corner when at page top
+- Smoothly disappears when scrolling down (past 100px)
+- 300ms hover delay to prevent accidental expansion
+- Features: Particle effects, gradient borders, social links (LinkedIn, Instagram, GitHub, X)
+- Fully customizable - replace `public/profile.jpg` with your image
 
 ### NewsCard
 Displays individual news articles with:
@@ -97,6 +124,24 @@ Provides:
 - Returns JSON response
 
 ## 🎨 Customization
+
+### Customize the Floating Profile
+Edit `app/components/FloatingProfile.tsx`:
+
+```typescript
+// Change your name
+<h3>Your Name</h3>
+
+// Update social links
+const socials = [
+  { name: 'LinkedIn', url: 'https://linkedin.com/in/yourprofile/', ... },
+  { name: 'Instagram', url: 'https://instagram.com/yourhandle/', ... },
+  // ... etc
+];
+
+// Replace profile image
+// Just add your image as public/profile.jpg
+```
 
 ### Add More Sources
 Edit `app/api/news/route.ts`:
