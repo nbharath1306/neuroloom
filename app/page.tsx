@@ -174,12 +174,12 @@ export default function Home() {
                               opacity-0 group-hover:opacity-100 transition-all duration-700 
                               group-hover:scale-150 group-hover:animate-pulse"></div>
                 
-                {/* Icon with 3D effect */}
+                {/* Icon with 3D effect - GLOBE ALWAYS ROLLING */}
                 <div className="text-7xl mb-6 relative z-10 transition-all duration-500 
-                              group-hover:scale-125 group-hover:rotate-12 group-hover:translate-y-[-10px]"
+                              group-hover:scale-125 animate-globe-roll"
                      style={{ 
                        filter: 'drop-shadow(0 10px 20px rgba(59, 130, 246, 0.5))',
-                       transform: 'translateZ(50px)'
+                       transformStyle: 'preserve-3d'
                      }}>
                   🌐
                 </div>
@@ -244,15 +244,21 @@ export default function Home() {
                               opacity-0 group-hover:opacity-100 transition-all duration-700 
                               group-hover:scale-150 group-hover:animate-pulse"></div>
                 
-                {/* Icon with rotation */}
+                {/* Icon with rotation - THUNDER STRIKING */}
                 <div className="text-7xl mb-6 relative z-10 transition-all duration-500 
-                              group-hover:scale-125 group-hover:rotate-[360deg]"
+                              group-hover:scale-150 animate-thunder-strike"
                      style={{ 
-                       filter: 'drop-shadow(0 10px 20px rgba(139, 92, 246, 0.5))',
-                       transform: 'translateZ(50px)'
+                       transformStyle: 'preserve-3d'
                      }}>
                   ⚡
                 </div>
+                
+                {/* Lightning flash effect */}
+                <div className="absolute inset-0 bg-purple-400/30 opacity-0 group-hover:opacity-100 
+                              pointer-events-none rounded-3xl"
+                     style={{
+                       animation: 'pulse 0.3s ease-in-out infinite'
+                     }}></div>
                 
                 <h3 className="text-2xl font-black mb-4 relative z-10 transition-all duration-500 
                              group-hover:scale-105 bg-clip-text text-transparent bg-gradient-to-r 
@@ -275,14 +281,18 @@ export default function Home() {
                 
                 {/* Lightning particles */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="absolute w-0.5 h-8 bg-gradient-to-b from-purple-400 to-transparent animate-float"
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} 
+                         className="absolute bg-gradient-to-b from-purple-400 via-pink-400 to-transparent"
                          style={{
-                           left: `${15 + i * 14}%`,
-                           top: `${30 + i * 8}%`,
-                           animationDelay: `${i * 0.15}s`,
-                           animationDuration: '2.5s',
-                           transform: 'rotate(20deg)'
+                           width: `${1 + Math.random() * 2}px`,
+                           height: `${15 + Math.random() * 25}px`,
+                           left: `${10 + i * 11}%`,
+                           top: `${20 + Math.random() * 40}%`,
+                           animation: `float ${2 + Math.random()}s ease-in-out infinite`,
+                           animationDelay: `${i * 0.1}s`,
+                           transform: `rotate(${-20 + Math.random() * 40}deg)`,
+                           boxShadow: '0 0 10px rgba(139, 92, 246, 0.8)'
                          }}></div>
                   ))}
                 </div>
@@ -314,15 +324,25 @@ export default function Home() {
                               opacity-0 group-hover:opacity-100 transition-all duration-700 
                               group-hover:scale-150 group-hover:animate-pulse"></div>
                 
-                {/* Icon with bounce */}
+                {/* Icon with bounce - DART THROWING AND STICKING */}
                 <div className="text-7xl mb-6 relative z-10 transition-all duration-500 
-                              group-hover:scale-125 group-hover:translate-y-[-15px]
-                              group-hover:animate-bounce-slow"
+                              group-hover:scale-125 animate-dart-wobble"
                      style={{ 
                        filter: 'drop-shadow(0 10px 20px rgba(16, 185, 129, 0.5))',
-                       transform: 'translateZ(50px)'
+                       transformStyle: 'preserve-3d',
+                       transformOrigin: 'center center'
                      }}>
                   🎯
+                </div>
+                
+                {/* Bullseye rings expanding */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="absolute w-20 h-20 border-4 border-green-400 rounded-full 
+                                opacity-0 group-hover:opacity-100 animate-ping"
+                       style={{ animationDuration: '1.5s' }}></div>
+                  <div className="absolute w-20 h-20 border-4 border-emerald-400 rounded-full 
+                                opacity-0 group-hover:opacity-100 animate-ping"
+                       style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
                 </div>
                 
                 <h3 className="text-2xl font-black mb-4 relative z-10 transition-all duration-500 
@@ -344,18 +364,34 @@ export default function Home() {
                   <div className="shimmer-effect absolute inset-0"></div>
                 </div>
                 
-                {/* Target particles */}
+                {/* Target particles with trail effect */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="absolute rounded-full border-2 border-green-400 animate-ping"
+                  {/* Concentric rings */}
+                  {[...Array(5)].map((_, i) => (
+                    <div key={`ring-${i}`} 
+                         className="absolute rounded-full border-2"
                          style={{
-                           width: `${30 + i * 20}px`,
-                           height: `${30 + i * 20}px`,
+                           width: `${40 + i * 25}px`,
+                           height: `${40 + i * 25}px`,
+                           borderColor: `rgba(16, 185, 129, ${0.6 - i * 0.1})`,
                            left: '50%',
-                           top: '30%',
+                           top: '25%',
                            transform: 'translate(-50%, -50%)',
+                           animation: `ping ${2 + i * 0.3}s cubic-bezier(0, 0, 0.2, 1) infinite`,
+                           animationDelay: `${i * 0.2}s`
+                         }}></div>
+                  ))}
+                  {/* Dart trails */}
+                  {[...Array(3)].map((_, i) => (
+                    <div key={`trail-${i}`}
+                         className="absolute w-1 h-8 bg-gradient-to-b from-green-400 to-transparent"
+                         style={{
+                           left: `${35 + i * 15}%`,
+                           top: `${15 + i * 10}%`,
+                           animation: `float ${2.5 + i * 0.5}s ease-in-out infinite`,
                            animationDelay: `${i * 0.3}s`,
-                           animationDuration: '2s'
+                           transform: `rotate(${135 + i * 10}deg)`,
+                           opacity: 0.7
                          }}></div>
                   ))}
                 </div>
