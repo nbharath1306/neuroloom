@@ -41,7 +41,7 @@ export default function FilterBar({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="🔍 Search for AI, tech, startups..."
+            placeholder="Search for AI, tech, startups..."
             className="w-full px-10 py-7 pl-20 rounded-2xl glass border-4 focus:outline-none 
                      transition-all duration-700 text-xl font-bold
                      hover:scale-[1.03] focus:scale-[1.05]
