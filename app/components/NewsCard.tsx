@@ -187,28 +187,7 @@ export default function NewsCard({ item }: NewsCardProps) {
           transform: `translateZ(${isHovering ? '60' : '30'}px)`,
           transition: isHovering ? 'transform 0.1s ease-out' : 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
         }}>
-          {/* Simple Viewed Indicator */}
-          {isViewed && (
-            <div className="absolute top-3 left-3 z-20 animate-fadeIn">
-              <div className="relative group/viewed">
-                {/* Simple checkmark circle */}
-                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center
-                              border-2 border-white shadow-lg
-                              transition-all duration-300 hover:scale-110"
-                     style={{
-                       boxShadow: '0 4px 15px rgba(34, 197, 94, 0.5)'
-                     }}>
-                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                
-                {/* Single pulsing ring */}
-                <div className="absolute inset-0 rounded-full border-2 border-green-400 animate-ping opacity-50"
-                     style={{ animationDuration: '2s' }}></div>
-              </div>
-            </div>
-          )}
+          {/* Remove the checkmark badge completely */}
           
           <div className="flex items-center justify-between mb-5">
             <span className="px-4 py-2 rounded-xl text-xs font-bold border-2
@@ -227,23 +206,32 @@ export default function NewsCard({ item }: NewsCardProps) {
                      background: `linear-gradient(45deg, ${sourceColor.bg}40, transparent)` 
                    }}></div>
             </span>
-            <div className="flex items-center gap-2 text-xs transition-all duration-500 
-                           group-hover:scale-110 group-hover:translate-x-1" 
-                 style={{ color: 'var(--text-muted)' }}>
-              <div className="relative">
-                <svg className="w-4 h-4 transition-all duration-700 group-hover:rotate-[360deg]
-                              group-hover:scale-125" 
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                     style={{ filter: `drop-shadow(0 0 8px ${sourceColor.glow})` }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {/* Pulse ring */}
-                <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 
-                                animate-ping"
-                     style={{ background: sourceColor.glow }}></div>
+            <div className="flex flex-col items-end gap-1">
+              <div className="flex items-center gap-2 text-xs transition-all duration-500 
+                             group-hover:scale-110 group-hover:translate-x-1" 
+                   style={{ color: 'var(--text-muted)' }}>
+                <div className="relative">
+                  <svg className="w-4 h-4 transition-all duration-700 group-hover:rotate-[360deg]
+                                group-hover:scale-125" 
+                       fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                       style={{ filter: `drop-shadow(0 0 8px ${sourceColor.glow})` }}>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {/* Pulse ring */}
+                  <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 
+                                  animate-ping"
+                       style={{ background: sourceColor.glow }}></div>
+                </div>
+                <span className="font-semibold">{formattedDate || 'Loading...'}</span>
               </div>
-              <span className="font-semibold">{formattedDate || 'Loading...'}</span>
+              {/* Simple "Read" text under time */}
+              {isViewed && (
+                <span className="text-xs font-bold" 
+                      style={{ color: 'var(--accent-success)' }}>
+                  Read ✓
+                </span>
+              )}
             </div>
           </div>
 
