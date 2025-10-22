@@ -20,12 +20,20 @@ export default function ThemeSwitcher() {
   }, [])
 
   const applyTheme = (newTheme: Theme) => {
+    // Instant theme application with CSS class
+    const root = document.documentElement
+    
     if (newTheme === 'system') {
       const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      document.documentElement.setAttribute('data-theme', systemPreference)
+      root.setAttribute('data-theme', systemPreference)
     } else {
-      document.documentElement.setAttribute('data-theme', newTheme)
+      root.setAttribute('data-theme', newTheme)
     }
+    
+    // Force immediate style recalculation
+    root.style.transition = 'none'
+    void root.offsetHeight // Trigger reflow
+    root.style.transition = ''
   }
 
   const handleThemeChange = (newTheme: Theme) => {
@@ -38,24 +46,29 @@ export default function ThemeSwitcher() {
 
   return (
     <div className="fixed top-6 right-6 z-50 animate-fadeIn">
-      <div className="glass rounded-xl p-2 flex gap-2 shadow-lg">
+      <div className="glass rounded-xl p-2 flex gap-2 shadow-xl">
         <button
           onClick={() => handleThemeChange('light')}
-          className={`p-2.5 rounded-lg transition-all duration-300 ${
+          className={`p-2.5 rounded-lg transition-all duration-300 relative overflow-hidden group ${
             theme === 'light'
-              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-md'
-              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg scale-110'
+              : 'hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-105'
           }`}
           title="Light Theme"
           aria-label="Switch to light theme"
         >
+          {theme === 'light' && (
+            <span className="absolute inset-0 bg-white opacity-30 animate-pulse-slow rounded-lg"></span>
+          )}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={2}
             stroke="currentColor"
-            className="w-5 h-5"
+            className={`w-5 h-5 relative z-10 transition-transform duration-300 ${
+              theme === 'light' ? 'rotate-180' : 'group-hover:rotate-45'
+            }`}
           >
             <path
               strokeLinecap="round"
@@ -67,21 +80,26 @@ export default function ThemeSwitcher() {
 
         <button
           onClick={() => handleThemeChange('dark')}
-          className={`p-2.5 rounded-lg transition-all duration-300 ${
+          className={`p-2.5 rounded-lg transition-all duration-300 relative overflow-hidden group ${
             theme === 'dark'
-              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-md'
-              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg scale-110'
+              : 'hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-105'
           }`}
           title="Dark Theme"
           aria-label="Switch to dark theme"
         >
+          {theme === 'dark' && (
+            <span className="absolute inset-0 bg-white opacity-30 animate-pulse-slow rounded-lg"></span>
+          )}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={2}
             stroke="currentColor"
-            className="w-5 h-5"
+            className={`w-5 h-5 relative z-10 transition-transform duration-300 ${
+              theme === 'dark' ? 'rotate-12' : 'group-hover:-rotate-12'
+            }`}
           >
             <path
               strokeLinecap="round"
@@ -93,21 +111,26 @@ export default function ThemeSwitcher() {
 
         <button
           onClick={() => handleThemeChange('system')}
-          className={`p-2.5 rounded-lg transition-all duration-300 ${
+          className={`p-2.5 rounded-lg transition-all duration-300 relative overflow-hidden group ${
             theme === 'system'
-              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-md'
-              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg scale-110'
+              : 'hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-105'
           }`}
           title="System Theme"
           aria-label="Use system theme preference"
         >
+          {theme === 'system' && (
+            <span className="absolute inset-0 bg-white opacity-30 animate-pulse-slow rounded-lg"></span>
+          )}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={2}
             stroke="currentColor"
-            className="w-5 h-5"
+            className={`w-5 h-5 relative z-10 transition-transform duration-300 ${
+              theme === 'system' ? '' : 'group-hover:scale-110'
+            }`}
           >
             <path
               strokeLinecap="round"

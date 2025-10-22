@@ -59,16 +59,25 @@ export default function NewsCard({ item }: NewsCardProps) {
       rel="noopener noreferrer"
       className="block group"
     >
-      <div className="glass rounded-2xl p-6 transition-all duration-300 h-full flex flex-col relative overflow-hidden border-2"
+      <div className="glass rounded-2xl p-6 h-full flex flex-col relative overflow-hidden border-2 hover-magnetic
+                      transition-all duration-500 ease-out hover:scale-[1.02] hover:shadow-2xl"
            style={{ borderColor: 'var(--border-color)' }}>
         
-        {/* Top accent line */}
-        <div className="absolute top-0 left-0 w-full h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
+        {/* Animated gradient overlay on hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+             style={{ 
+               background: `radial-gradient(circle at center, ${sourceColor.bg}08, transparent 70%)` 
+             }}></div>
+        
+        {/* Top accent line with smooth reveal */}
+        <div className="absolute top-0 left-0 w-full h-1 transform scale-x-0 group-hover:scale-x-100 
+                        transition-transform duration-700 ease-out origin-left"
              style={{ background: `linear-gradient(90deg, ${sourceColor.bg}, ${sourceColor.text})` }}></div>
 
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-4">
-            <span className="px-3 py-1.5 rounded-lg text-xs font-semibold border"
+            <span className="px-3 py-1.5 rounded-lg text-xs font-semibold border 
+                           transition-all duration-300 group-hover:scale-105 group-hover:shadow-md"
                   style={{ 
                     backgroundColor: `${sourceColor.bg}15`,
                     color: sourceColor.text,
@@ -76,21 +85,26 @@ export default function NewsCard({ item }: NewsCardProps) {
                   }}>
               {item.source}
             </span>
-            <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--text-muted)' }}>
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="flex items-center gap-1 text-xs transition-all duration-300 
+                           group-hover:scale-105" 
+                 style={{ color: 'var(--text-muted)' }}>
+              <svg className="w-3 h-3 transition-transform duration-300 group-hover:rotate-45" 
+                   fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               {formattedDate || 'Loading...'}
             </div>
           </div>
 
-          <h3 className="text-lg font-bold mb-3 line-clamp-2 group-hover:gradient-text transition-all"
+          <h3 className="text-lg font-bold mb-3 line-clamp-2 transition-all duration-300 
+                       group-hover:gradient-text group-hover:scale-[1.01]"
               style={{ color: 'var(--text-primary)' }}>
             {item.title}
           </h3>
 
           {item.contentSnippet && (
-            <p className="text-sm line-clamp-3 mb-4 flex-grow leading-relaxed"
+            <p className="text-sm line-clamp-3 mb-4 flex-grow leading-relaxed 
+                          transition-all duration-300 group-hover:text-opacity-90"
                style={{ color: 'var(--text-muted)' }}>
               {item.contentSnippet}
             </p>
@@ -101,7 +115,8 @@ export default function NewsCard({ item }: NewsCardProps) {
               {item.categories.slice(0, 3).map((category, idx) => (
                 <span
                   key={`${category}-${idx}`}
-                  className="px-2 py-1 rounded-lg text-xs"
+                  className="px-2 py-1 rounded-lg text-xs transition-all duration-300 
+                           hover:scale-110 hover:shadow-md cursor-pointer"
                   style={{ 
                     backgroundColor: 'var(--bg-accent)',
                     color: 'var(--text-muted)',
@@ -114,14 +129,20 @@ export default function NewsCard({ item }: NewsCardProps) {
             </div>
           )}
 
-          <div className="mt-auto pt-4 flex items-center justify-between"
+          <div className="mt-auto pt-4 flex items-center justify-between 
+                          transition-all duration-300 group-hover:translate-x-1"
                style={{ borderTop: '1px solid var(--border-color)' }}>
             <span className="text-sm font-semibold gradient-text">
               Read More →
             </span>
-            <div className="w-8 h-8 rounded-full glass flex items-center justify-center transition-all"
-                 style={{ borderColor: 'var(--border-color)' }}>
-              <svg className="w-4 h-4 group-hover:translate-x-1 transition-all" 
+            <div className="w-8 h-8 rounded-full glass flex items-center justify-center 
+                            transition-all duration-500 group-hover:scale-125 group-hover:rotate-45
+                            group-hover:shadow-lg"
+                 style={{ 
+                   borderColor: 'var(--border-color)',
+                   background: `linear-gradient(135deg, ${sourceColor.bg}20, ${sourceColor.text}20)`
+                 }}>
+              <svg className="w-4 h-4 transition-all duration-300" 
                    style={{ color: 'var(--accent-primary)' }}
                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
