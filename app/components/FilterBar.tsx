@@ -273,123 +273,82 @@ export default function FilterBar({
           </span>
         </h3>
         
-        <div className="flex flex-wrap gap-4 relative z-10">
-          {/* All Sources Button - NUCLEAR */}
+        <div className="flex flex-wrap gap-3 relative z-10">
+          {/* All Sources Button - REFINED & POPPING */}
           <button
             onClick={() => setSelectedSource('all')}
-            className={`px-8 py-5 rounded-3xl text-base font-black transition-all duration-700 
-                     hover:scale-125 hover:shadow-2xl hover:-rotate-3 relative overflow-hidden group/pill
-                     ${selectedSource === 'all' ? 'border-4' : 'border-2 border-transparent'}`}
+            className={`px-6 py-3 rounded-xl text-sm font-black transition-all duration-500 
+                     hover:scale-110 hover:shadow-2xl relative overflow-hidden group/pill
+                     ${selectedSource === 'all' ? 'border-3' : 'border-2 border-transparent'}`}
             style={selectedSource === 'all' 
               ? { 
-                  background: 'linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899, #06b6d4)',
-                  borderColor: '#fff', 
+                  background: 'linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899)',
+                  borderColor: 'rgba(255, 255, 255, 0.5)', 
                   color: '#fff',
                   boxShadow: `
-                    0 20px 60px rgba(59, 130, 246, 0.8),
-                    0 0 80px rgba(139, 92, 246, 0.6),
-                    0 0 120px rgba(236, 72, 153, 0.4),
-                    inset 0 0 30px rgba(255, 255, 255, 0.2)
+                    0 10px 40px rgba(59, 130, 246, 0.6),
+                    0 0 60px rgba(139, 92, 246, 0.4),
+                    inset 0 0 20px rgba(255, 255, 255, 0.1)
                   `,
-                  backgroundSize: '300% 300%',
-                  animation: 'gradient-shift 2s ease infinite',
-                  transform: 'scale(1.15)'
+                  backgroundSize: '200% 200%',
+                  animation: 'gradient-shift 3s ease infinite'
                 }
               : { 
                   color: 'var(--text-muted)', 
                   backgroundColor: 'var(--bg-secondary)',
-                  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)'
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
                 }
             }>
-            <span className="relative z-10 flex items-center gap-3 text-lg">
+            <span className="relative z-10 flex items-center gap-2">
+              All Sources
               {selectedSource === 'all' && (
-                <span className="text-3xl animate-bounce" style={{ animationDuration: '0.5s' }}>🌟</span>
-              )}
-              ALL SOURCES
-              {selectedSource === 'all' && (
-                <span className="text-3xl animate-pulse" style={{ animationDuration: '0.8s' }}>🔥</span>
+                <span className="text-base">✨</span>
               )}
             </span>
             
             {selectedSource === 'all' && (
               <>
-                {/* EXPLOSIVE gradient layers */}
-                <div className="absolute inset-0 opacity-70"
+                {/* Subtle gradient layer */}
+                <div className="absolute inset-0 opacity-50"
                      style={{
-                       background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.6), rgba(139, 92, 246, 0.6), rgba(236, 72, 153, 0.6), rgba(6, 182, 212, 0.6))',
-                       backgroundSize: '600% 600%',
-                       animation: 'gradient-shift 1.5s ease infinite'
+                       background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.5), rgba(139, 92, 246, 0.5), rgba(236, 72, 153, 0.5))',
+                       backgroundSize: '300% 300%',
+                       animation: 'gradient-shift 4s ease infinite'
                      }}></div>
                 
-                {/* TRIPLE pulsing rings */}
-                <div className="absolute -inset-4 rounded-3xl border-4 border-blue-400 animate-ping opacity-60"
-                     style={{ animationDuration: '1s' }}></div>
-                <div className="absolute -inset-6 rounded-3xl border-4 border-purple-400 animate-ping opacity-40"
-                     style={{ animationDuration: '1.2s', animationDelay: '0.2s' }}></div>
-                <div className="absolute -inset-8 rounded-3xl border-4 border-pink-400 animate-ping opacity-20"
-                     style={{ animationDuration: '1.4s', animationDelay: '0.4s' }}></div>
+                {/* Single pulsing ring */}
+                <div className="absolute -inset-1 rounded-xl border-2 border-white/40 animate-ping opacity-50"
+                     style={{ animationDuration: '2s' }}></div>
                 
-                {/* MEGA sparkles explosion */}
-                <div className="absolute inset-0 pointer-events-none">
-                  {[...Array(16)].map((_, i) => (
-                    <div key={i}
-                         className="absolute text-2xl"
-                         style={{
-                           left: `${(i * 6.25)}%`,
-                           top: i % 2 === 0 ? '-25px' : 'calc(100% + 15px)',
-                           animation: `float ${1 + Math.random()}s ease-in-out infinite`,
-                           animationDelay: `${i * 0.1}s`,
-                           filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 1))'
-                         }}>
-                      {['✨', '⚡', '💫', '🌟', '💥', '⭐'][i % 6]}
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Rotating MEGA shine */}
-                <div className="absolute inset-0 opacity-80 animate-spin"
+                {/* Rotating shine */}
+                <div className="absolute inset-0 opacity-60"
                      style={{ 
-                       background: 'conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.8), transparent, rgba(255, 255, 255, 0.5), transparent)',
-                       animationDuration: '2s'
-                     }}></div>
-                
-                {/* Inner glow pulse */}
-                <div className="absolute inset-0 rounded-3xl"
-                     style={{
-                       background: 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%)',
-                       animation: 'pulse 1s ease-in-out infinite'
+                       background: 'conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                       animation: 'spin 3s linear infinite'
                      }}></div>
               </>
             )}
             
-            {/* EXPLOSIVE sweep effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent
+            {/* Sweep effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent
                           transform -translate-x-full group-hover/pill:translate-x-full
                           transition-transform duration-700"></div>
-            
-            {/* Outer MEGA glow */}
-            <div className="absolute -inset-8 rounded-3xl opacity-0 group-hover/pill:opacity-100 
-                          transition-opacity duration-500 -z-10 blur-3xl"
-                 style={{
-                   background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(139, 92, 246, 0.6) 50%, transparent 100%)',
-                   animation: 'pulse 1.5s ease-in-out infinite'
-                 }}></div>
           </button>
           
-          {/* Source Pills - NUCLEAR UPGRADE */}
+          {/* Source Pills - REFINED & POPPING */}
           {sources.map((source, index) => {
             const isActive = selectedSource === source.id;
             const colors = [
-              { main: '#3b82f6', glow: 'rgba(59, 130, 246, 0.8)' },  // Blue
-              { main: '#8b5cf6', glow: 'rgba(139, 92, 246, 0.8)' },  // Purple
-              { main: '#ec4899', glow: 'rgba(236, 72, 153, 0.8)' },  // Pink
-              { main: '#10b981', glow: 'rgba(16, 185, 129, 0.8)' },  // Green
-              { main: '#f59e0b', glow: 'rgba(245, 158, 11, 0.8)' },  // Orange
-              { main: '#06b6d4', glow: 'rgba(6, 182, 212, 0.8)' },   // Cyan
-              { main: '#ef4444', glow: 'rgba(239, 68, 68, 0.8)' },   // Red
-              { main: '#14b8a6', glow: 'rgba(20, 184, 166, 0.8)' },  // Teal
-              { main: '#6366f1', glow: 'rgba(99, 102, 241, 0.8)' },  // Indigo
-              { main: '#f43f5e', glow: 'rgba(244, 63, 94, 0.8)' },   // Rose
+              { main: '#3b82f6', glow: 'rgba(59, 130, 246, 0.6)' },  // Blue
+              { main: '#8b5cf6', glow: 'rgba(139, 92, 246, 0.6)' },  // Purple
+              { main: '#ec4899', glow: 'rgba(236, 72, 153, 0.6)' },  // Pink
+              { main: '#10b981', glow: 'rgba(16, 185, 129, 0.6)' },  // Green
+              { main: '#f59e0b', glow: 'rgba(245, 158, 11, 0.6)' },  // Orange
+              { main: '#06b6d4', glow: 'rgba(6, 182, 212, 0.6)' },   // Cyan
+              { main: '#ef4444', glow: 'rgba(239, 68, 68, 0.6)' },   // Red
+              { main: '#14b8a6', glow: 'rgba(20, 184, 166, 0.6)' },  // Teal
+              { main: '#6366f1', glow: 'rgba(99, 102, 241, 0.6)' },  // Indigo
+              { main: '#f43f5e', glow: 'rgba(244, 63, 94, 0.6)' },   // Rose
             ];
             const color = colors[index % colors.length];
             
@@ -397,114 +356,80 @@ export default function FilterBar({
               <button
                 key={source.id}
                 onClick={() => setSelectedSource(source.id)}
-                className={`px-8 py-5 rounded-3xl text-base font-black transition-all duration-700 
-                         hover:scale-125 hover:shadow-2xl hover:rotate-3 relative overflow-hidden group/pill
-                         ${isActive ? 'border-4' : 'border-2 border-transparent'}`}
+                className={`px-6 py-3 rounded-xl text-sm font-black transition-all duration-500 
+                         hover:scale-110 hover:shadow-2xl relative overflow-hidden group/pill
+                         ${isActive ? 'border-3' : 'border-2 border-transparent'}`}
                 style={isActive 
                   ? { 
                       background: `linear-gradient(135deg, ${color.main}, ${colors[(index + 1) % colors.length].main})`,
-                      borderColor: '#fff',
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
                       color: '#fff',
                       boxShadow: `
-                        0 20px 60px ${color.glow},
-                        0 0 80px ${color.glow},
-                        0 0 120px ${colors[(index + 1) % colors.length].glow},
-                        inset 0 0 30px rgba(255, 255, 255, 0.2)
+                        0 10px 40px ${color.glow},
+                        0 0 60px ${color.glow},
+                        inset 0 0 20px rgba(255, 255, 255, 0.1)
                       `,
                       animationDelay: `${index * 0.05}s`,
-                      backgroundSize: '300% 300%',
-                      animation: 'gradient-shift 2s ease infinite',
-                      transform: 'scale(1.1)'
+                      backgroundSize: '200% 200%',
+                      animation: 'gradient-shift 3s ease infinite'
                     }
                   : { 
                       color: 'var(--text-muted)', 
                       backgroundColor: 'var(--bg-secondary)',
                       animationDelay: `${index * 0.05}s`,
-                      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)'
+                      boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
                     }
                 }>
-                <span className="relative z-10 flex items-center gap-3">
+                <span className="relative z-10 flex items-center gap-2">
                   {isActive && (
-                    <span className="w-3 h-3 rounded-full animate-pulse"
+                    <span className="w-2 h-2 rounded-full bg-white animate-pulse"
                           style={{
-                            backgroundColor: '#fff',
-                            boxShadow: `0 0 20px ${color.glow}, 0 0 40px ${color.glow}`,
-                            animationDuration: '0.8s'
+                            boxShadow: `0 0 10px ${color.glow}`,
+                            animationDuration: '1.5s'
                           }}></span>
                   )}
                   {source.name}
                   {isActive && (
-                    <span className="text-2xl animate-bounce" style={{ animationDuration: '0.6s' }}>⚡</span>
+                    <span className="text-sm">✓</span>
                   )}
                 </span>
                 
                 {isActive && (
                   <>
-                    {/* EXPLOSIVE gradient layers */}
-                    <div className="absolute inset-0 opacity-70"
+                    {/* Subtle gradient layer */}
+                    <div className="absolute inset-0 opacity-50"
                          style={{
-                           background: `linear-gradient(45deg, ${color.glow}, ${colors[(index + 1) % colors.length].glow}, ${colors[(index + 2) % colors.length].glow})`,
-                           backgroundSize: '600% 600%',
-                           animation: 'gradient-shift 1.5s ease infinite'
+                           background: `linear-gradient(45deg, ${color.glow}, ${colors[(index + 1) % colors.length].glow})`,
+                           backgroundSize: '300% 300%',
+                           animation: 'gradient-shift 4s ease infinite'
                          }}></div>
                     
-                    {/* TRIPLE pulsing rings */}
-                    <div className="absolute -inset-3 rounded-3xl border-4 animate-ping opacity-60"
+                    {/* Single pulsing ring */}
+                    <div className="absolute -inset-1 rounded-xl border-2 animate-ping opacity-40"
                          style={{ 
                            borderColor: color.main,
-                           animationDuration: '1s' 
-                         }}></div>
-                    <div className="absolute -inset-5 rounded-3xl border-4 animate-ping opacity-40"
-                         style={{ 
-                           borderColor: colors[(index + 1) % colors.length].main,
-                           animationDuration: '1.2s',
-                           animationDelay: '0.2s' 
+                           animationDuration: '2s' 
                          }}></div>
                     
-                    {/* MEGA rotating shine */}
-                    <div className="absolute inset-0 opacity-80"
+                    {/* Rotating shine */}
+                    <div className="absolute inset-0 opacity-50"
                          style={{
-                           background: 'conic-gradient(from 0deg, transparent 0deg, rgba(255, 255, 255, 0.8) 90deg, transparent 180deg, rgba(255, 255, 255, 0.5) 270deg, transparent 360deg)',
-                           animation: 'spin 2s linear infinite'
+                           background: 'conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                           animation: 'spin 3s linear infinite'
                          }}></div>
-                    
-                    {/* Inner glow pulse */}
-                    <div className="absolute inset-0 rounded-3xl"
-                         style={{
-                           background: 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%)',
-                           animation: 'pulse 1s ease-in-out infinite'
-                         }}></div>
-                    
-                    {/* Floating particles */}
-                    <div className="absolute inset-0 pointer-events-none">
-                      {[...Array(8)].map((_, i) => (
-                        <div key={i}
-                             className="absolute text-lg"
-                             style={{
-                               left: `${(i * 12.5)}%`,
-                               top: i % 2 === 0 ? '-15px' : 'calc(100% + 10px)',
-                               animation: `float ${1.2 + Math.random() * 0.8}s ease-in-out infinite`,
-                               animationDelay: `${i * 0.15}s`,
-                               filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))'
-                             }}>
-                          {['✨', '⚡', '💫', '🌟'][i % 4]}
-                        </div>
-                      ))}
-                    </div>
                   </>
                 )}
                 
-                {/* EXPLOSIVE sweep effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent
+                {/* Sweep effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent
                               transform -translate-x-full group-hover/pill:translate-x-full
                               transition-transform duration-700"></div>
                 
-                {/* Outer MEGA glow */}
-                <div className="absolute -inset-6 rounded-3xl opacity-0 group-hover/pill:opacity-100 
-                              transition-opacity duration-500 -z-10 blur-3xl"
+                {/* Hover glow */}
+                <div className="absolute -inset-2 rounded-xl opacity-0 group-hover/pill:opacity-100 
+                              transition-opacity duration-500 -z-10 blur-2xl"
                      style={{
-                       background: `radial-gradient(circle, ${color.glow} 0%, ${colors[(index + 1) % colors.length].glow} 50%, transparent 100%)`,
-                       animation: 'pulse 1.5s ease-in-out infinite'
+                       background: `radial-gradient(circle, ${color.glow} 0%, transparent 70%)`
                      }}></div>
               </button>
             );
