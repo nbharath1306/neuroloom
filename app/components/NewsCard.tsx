@@ -19,6 +19,7 @@ import { useState, useEffect, useRef } from 'react';
 export default function NewsCard({ item }: NewsCardProps) {
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isViewed, setIsViewed] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,7 +35,11 @@ export default function NewsCard({ item }: NewsCardProps) {
     };
     
     setFormattedDate(formatDate(item.pubDate));
-  }, [item.pubDate]);
+    
+    // Check if article has been viewed
+    const viewedArticles = JSON.parse(localStorage.getItem('neuroloom-viewed-articles') || '[]');
+    setIsViewed(viewedArticles.includes(item.link));
+  }, [item.pubDate, item.link]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -73,6 +78,14 @@ export default function NewsCard({ item }: NewsCardProps) {
   // Save scroll position when clicking the link
   const handleClick = () => {
     sessionStorage.setItem('neuroloom-scroll-position', window.scrollY.toString());
+    
+    // Mark article as viewed
+    const viewedArticles = JSON.parse(localStorage.getItem('neuroloom-viewed-articles') || '[]');
+    if (!viewedArticles.includes(item.link)) {
+      viewedArticles.push(item.link);
+      localStorage.setItem('neuroloom-viewed-articles', JSON.stringify(viewedArticles));
+    }
+    setIsViewed(true);
   };
 
   // Calculate 3D tilt based on mouse position with enhanced sensitivity
@@ -87,10 +100,7 @@ export default function NewsCard({ item }: NewsCardProps) {
   return (
     <a
       href={item.link}
-      onClick={() => {
-        // Save scroll position before navigating
-        sessionStorage.setItem('neuroloom-scroll-position', window.scrollY.toString());
-      }}
+      onClick={handleClick}
       className="block group perspective-1000"
     >
       <div 
@@ -100,6 +110,7 @@ export default function NewsCard({ item }: NewsCardProps) {
         className="glass rounded-3xl p-7 h-full flex flex-col relative overflow-hidden border-2"
         style={{ 
           borderColor: 'var(--border-color)',
+          opacity: isViewed ? 0.7 : 1,
           transform: `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${scale})`,
           transformStyle: 'preserve-3d',
           transition: isHovering 
@@ -176,6 +187,25 @@ export default function NewsCard({ item }: NewsCardProps) {
           transform: `translateZ(${isHovering ? '60' : '30'}px)`,
           transition: isHovering ? 'transform 0.1s ease-out' : 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
         }}>
+          {/* Viewed Badge - Subtle checkmark */}
+          {isViewed && (
+            <div className="absolute -top-3 -right-3 z-20 animate-fadeIn">
+              <div className="relative">
+                <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center
+                              border-2 border-white shadow-lg"
+                     style={{
+                       boxShadow: '0 4px 15px rgba(34, 197, 94, 0.4)'
+                     }}>
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                {/* Pulsing ring */}
+                <div className="absolute inset-0 rounded-full border-2 border-green-400 animate-ping opacity-75"></div>
+              </div>
+            </div>
+          )}
+          
           <div className="flex items-center justify-between mb-5">
             <span className="px-4 py-2 rounded-xl text-xs font-bold border-2
                            transition-all duration-500 group-hover:scale-110 group-hover:shadow-xl
