@@ -3,7 +3,7 @@
 **Stop doom scrolling on Instagram!** NeuroLoom is a beautiful cyberpunk-themed web app that aggregates the latest AI and tech news from 10 top sources. Just bookmark it and visit once daily for your curated news fix.
 
 ## 🌐 **Live Demo**
-### **[➡️ Visit NeuroLoom](https://neuroloom.vercel.app)**
+### **[➡️ Visit NeuroLoom](https://neuroloom-orpin.vercel.app)**
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
@@ -193,7 +193,7 @@ Built with ❤️ to beat Instagram doom scrolling addiction!
 
 ## 🔗 Links
 
-- **Live Site**: [neuroloom.vercel.app](https://neuroloom.vercel.app)
+- **Live Site**: [neuroloom-orpin.vercel.app](https://neuroloom-orpin.vercel.app)
 - **GitHub**: [github.com/nbharath1306/neuroloom](https://github.com/nbharath1306/neuroloom)
 
 ---

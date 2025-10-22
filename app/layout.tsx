@@ -13,13 +13,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://neuroloom.vercel.app',
+    url: 'https://neuroloom-orpin.vercel.app',
     title: 'NeuroLoom - Your Daily Tech & AI Updates',
     description: 'Stop doom scrolling! Get curated AI and tech news from 10 top sources in a futuristic cyberpunk interface.',
     siteName: 'NeuroLoom',
     images: [
       {
-        url: 'https://neuroloom.vercel.app/og-image.png',
+        url: 'https://neuroloom-orpin.vercel.app/og-image.png',
         width: 1200,
         height: 630,
         alt: 'NeuroLoom - Cyberpunk Tech & AI News Aggregator',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'NeuroLoom - Your Daily Tech & AI Updates',
     description: 'Stop doom scrolling! Get curated AI and tech news from 10 top sources.',
-    images: ['https://neuroloom.vercel.app/og-image.png'],
+    images: ['https://neuroloom-orpin.vercel.app/og-image.png'],
     creator: '@nbharath1306',
   },
   robots: {
