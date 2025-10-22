@@ -244,7 +244,7 @@ export default function Home() {
                               opacity-0 group-hover:opacity-100 transition-all duration-700 
                               group-hover:scale-150 group-hover:animate-pulse"></div>
                 
-                {/* Icon with rotation - THUNDER STRIKING */}
+                {/* Icon with rotation - REAL THUNDER STRIKING */}
                 <div className="text-7xl mb-6 relative z-10 transition-all duration-500 
                               group-hover:scale-150 animate-thunder-strike"
                      style={{ 
@@ -253,11 +253,19 @@ export default function Home() {
                   ⚡
                 </div>
                 
-                {/* Lightning flash effect */}
-                <div className="absolute inset-0 bg-purple-400/30 opacity-0 group-hover:opacity-100 
-                              pointer-events-none rounded-3xl"
+                {/* MASSIVE Lightning flash effect - like real lightning */}
+                <div className="absolute inset-0 bg-white animate-lightning-flash
+                              pointer-events-none rounded-3xl z-20"
                      style={{
-                       animation: 'pulse 0.3s ease-in-out infinite'
+                       mixBlendMode: 'screen',
+                       boxShadow: '0 0 100px 50px rgba(255, 255, 255, 0.8)'
+                     }}></div>
+                
+                {/* Purple glow flash */}
+                <div className="absolute inset-0 bg-purple-400 animate-lightning-flash
+                              pointer-events-none rounded-3xl opacity-50"
+                     style={{
+                       animationDelay: '0.05s'
                      }}></div>
                 
                 <h3 className="text-2xl font-black mb-4 relative z-10 transition-all duration-500 
@@ -324,9 +332,9 @@ export default function Home() {
                               opacity-0 group-hover:opacity-100 transition-all duration-700 
                               group-hover:scale-150 group-hover:animate-pulse"></div>
                 
-                {/* Icon with bounce - DART THROWING AND STICKING */}
+                {/* Icon - DART FLYING IN AND HITTING */}
                 <div className="text-7xl mb-6 relative z-10 transition-all duration-500 
-                              group-hover:scale-125 animate-dart-wobble"
+                              group-hover:scale-125 animate-dart-fly-in"
                      style={{ 
                        filter: 'drop-shadow(0 10px 20px rgba(16, 185, 129, 0.5))',
                        transformStyle: 'preserve-3d',
@@ -335,14 +343,23 @@ export default function Home() {
                   🎯
                 </div>
                 
-                {/* Bullseye rings expanding */}
+                {/* Impact rings when dart hits */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="absolute w-20 h-20 border-4 border-green-400 rounded-full 
-                                opacity-0 group-hover:opacity-100 animate-ping"
-                       style={{ animationDuration: '1.5s' }}></div>
-                  <div className="absolute w-20 h-20 border-4 border-emerald-400 rounded-full 
-                                opacity-0 group-hover:opacity-100 animate-ping"
-                       style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
+                  <div className="absolute w-20 h-20 border-4 border-green-400 rounded-full opacity-0"
+                       style={{ 
+                         animation: 'ping 0.8s cubic-bezier(0, 0, 0.2, 1) infinite',
+                         animationDelay: '2.55s' // Right when dart hits
+                       }}></div>
+                  <div className="absolute w-32 h-32 border-4 border-emerald-400 rounded-full opacity-0"
+                       style={{ 
+                         animation: 'ping 0.8s cubic-bezier(0, 0, 0.2, 1) infinite',
+                         animationDelay: '2.6s'
+                       }}></div>
+                  <div className="absolute w-44 h-44 border-4 border-teal-400 rounded-full opacity-0"
+                       style={{ 
+                         animation: 'ping 0.8s cubic-bezier(0, 0, 0.2, 1) infinite',
+                         animationDelay: '2.65s'
+                       }}></div>
                 </div>
                 
                 <h3 className="text-2xl font-black mb-4 relative z-10 transition-all duration-500 

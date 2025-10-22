@@ -619,45 +619,67 @@ body::before {
 }
 
 @keyframes thunder-strike {
-  0%, 100% {
+  0%, 85%, 100% {
+    opacity: 1;
     transform: translateZ(50px) scale(1);
     filter: drop-shadow(0 10px 20px rgba(139, 92, 246, 0.5)) brightness(1);
   }
-  10% {
+  86% {
+    opacity: 0;
+    transform: translateZ(50px) scale(1.5);
+    filter: drop-shadow(0 20px 40px rgba(139, 92, 246, 1)) brightness(3);
+  }
+  88% {
+    opacity: 1;
     transform: translateZ(50px) scale(1.3);
-    filter: drop-shadow(0 15px 30px rgba(139, 92, 246, 0.9)) brightness(2);
+    filter: drop-shadow(0 15px 30px rgba(139, 92, 246, 0.9)) brightness(2.5);
   }
-  15% {
-    transform: translateZ(50px) scale(0.9);
-    filter: drop-shadow(0 10px 20px rgba(139, 92, 246, 0.5)) brightness(0.8);
+  89% {
+    opacity: 0.3;
   }
-  20% {
-    transform: translateZ(50px) scale(1.25);
-    filter: drop-shadow(0 15px 30px rgba(139, 92, 246, 0.9)) brightness(1.8);
+  90% {
+    opacity: 1;
+    transform: translateZ(50px) scale(1.4);
+    filter: drop-shadow(0 20px 40px rgba(139, 92, 246, 1)) brightness(3);
   }
-  25% {
-    transform: translateZ(50px) scale(1);
-    filter: drop-shadow(0 10px 20px rgba(139, 92, 246, 0.5)) brightness(1);
+  91% {
+    opacity: 0.5;
+  }
+  92% {
+    opacity: 1;
+    transform: translateZ(50px) scale(1.2);
   }
 }
 
-@keyframes dart-throw {
-  0% {
-    transform: translateZ(50px) translateX(-100px) translateY(-100px) rotate(-45deg) scale(0.5);
+@keyframes lightning-flash {
+  0%, 85%, 100% {
     opacity: 0;
   }
-  40% {
-    transform: translateZ(50px) translateX(-20px) translateY(-20px) rotate(-10deg) scale(0.8);
+  86%, 88%, 90% {
+    opacity: 0.8;
+  }
+  87%, 89%, 91% {
+    opacity: 0;
+  }
+}
+
+@keyframes dart-fly-in {
+  0% {
+    transform: translateZ(50px) translateX(-300px) translateY(-300px) rotate(-135deg) scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: translateZ(50px) translateX(-30px) translateY(-30px) rotate(-25deg) scale(0.9);
     opacity: 1;
   }
-  60% {
-    transform: translateZ(50px) translateX(0) translateY(0) rotate(0deg) scale(1.1);
-  }
-  75% {
-    transform: translateZ(50px) translateX(0) translateY(0) rotate(0deg) scale(0.95);
-  }
   85% {
-    transform: translateZ(50px) translateX(0) translateY(0) rotate(5deg) scale(1.05);
+    transform: translateZ(50px) translateX(5px) translateY(5px) rotate(5deg) scale(1.15);
+  }
+  92% {
+    transform: translateZ(50px) translateX(0) translateY(0) rotate(-3deg) scale(0.95);
+  }
+  96% {
+    transform: translateZ(50px) translateX(0) translateY(0) rotate(2deg) scale(1.03);
   }
   100% {
     transform: translateZ(50px) translateX(0) translateY(0) rotate(0deg) scale(1);
@@ -665,15 +687,24 @@ body::before {
   }
 }
 
-@keyframes dart-wobble {
+@keyframes dart-stuck-wobble {
   0%, 100% {
     transform: translateZ(50px) rotate(0deg) scale(1);
   }
-  25% {
-    transform: translateZ(50px) rotate(2deg) scale(1.02);
+  15% {
+    transform: translateZ(50px) rotate(-3deg) scale(1.02);
+  }
+  30% {
+    transform: translateZ(50px) rotate(3deg) scale(0.98);
+  }
+  45% {
+    transform: translateZ(50px) rotate(-2deg) scale(1.01);
+  }
+  60% {
+    transform: translateZ(50px) rotate(2deg) scale(0.99);
   }
   75% {
-    transform: translateZ(50px) rotate(-2deg) scale(0.98);
+    transform: translateZ(50px) rotate(-1deg) scale(1);
   }
 }
 
@@ -700,15 +731,19 @@ body::before {
 }
 
 .animate-thunder-strike {
-  animation: thunder-strike 3s ease-in-out infinite;
+  animation: thunder-strike 4s ease-in-out infinite;
 }
 
-.animate-dart-throw {
-  animation: dart-throw 2s ease-out forwards;
+.animate-lightning-flash {
+  animation: lightning-flash 4s ease-in-out infinite;
 }
 
-.animate-dart-wobble {
-  animation: dart-wobble 1.5s ease-in-out infinite;
+.animate-dart-fly-in {
+  animation: dart-fly-in 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+.animate-dart-stuck-wobble {
+  animation: dart-stuck-wobble 2s ease-in-out infinite 3s;
 }
 
 .perspective-1000 {
