@@ -609,6 +609,15 @@ body::before {
   }
 }
 
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 @keyframes globe-roll {
   0% {
     transform: translateZ(50px) rotate(0deg);

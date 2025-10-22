@@ -110,20 +110,145 @@ export default function Home() {
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
           <div className="text-center">
-            {/* Main title */}
-            <div className="mb-8 relative animate-fadeIn">
-              <h1 className="text-6xl md:text-8xl font-black gradient-text mb-4 tracking-tight">
+            {/* Main title - MASSIVE UPGRADE */}
+            <div className="mb-12 relative animate-fadeIn group">
+              <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tight relative z-10 
+                           transition-all duration-700 cursor-default"
+                  style={{
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 25%, #ec4899 50%, #f59e0b 75%, #10b981 100%)',
+                    backgroundSize: '300% 300%',
+                    animation: 'gradient-shift 8s ease infinite',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    filter: 'drop-shadow(0 10px 40px rgba(59, 130, 246, 0.3))',
+                    textShadow: '0 0 80px rgba(139, 92, 246, 0.5)'
+                  }}
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    e.currentTarget.style.backgroundPosition = `${x}% ${y}%`;
+                  }}>
                 NeuroLoom
               </h1>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl -z-10 animate-pulse-slow"></div>
+              
+              {/* Animated rings around title */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-10">
+                <div className="absolute w-96 h-96 rounded-full border-2 border-blue-500/20 animate-ping"
+                     style={{ animationDuration: '3s' }}></div>
+                <div className="absolute w-[500px] h-[500px] rounded-full border-2 border-purple-500/20 animate-ping"
+                     style={{ animationDuration: '4s', animationDelay: '0.5s' }}></div>
+                <div className="absolute w-[600px] h-[600px] rounded-full border-2 border-pink-500/20 animate-ping"
+                     style={{ animationDuration: '5s', animationDelay: '1s' }}></div>
+              </div>
+              
+              {/* Pulsing glow orb */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                            w-96 h-96 rounded-full blur-3xl -z-10 opacity-60"
+                   style={{
+                     background: 'radial-gradient(circle, rgba(59,130,246,0.4) 0%, rgba(139,92,246,0.3) 50%, transparent 100%)',
+                     animation: 'pulse 4s ease-in-out infinite'
+                   }}></div>
             </div>
 
-            <p style={{ color: 'var(--text-secondary)' }} className="text-2xl md:text-4xl font-bold mb-6 tracking-tight animate-fadeInUp animation-delay-100">
-              Stop Doom Scrolling. <span className="gradient-text">Start Learning.</span> ⚡
+            {/* Tagline with character animation */}
+            <p style={{ color: 'var(--text-secondary)' }} 
+               className="text-3xl md:text-5xl font-black mb-8 tracking-tight animate-fadeInUp animation-delay-100
+                        relative inline-block">
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">S</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">t</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">o</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">p</span>
+              <span className="inline-block mx-2"></span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">D</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">o</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">o</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">m</span>
+              <span className="inline-block mx-2"></span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">S</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">c</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">r</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">o</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">l</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">l</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">i</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">n</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">g</span>
+              <span className="inline-block hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-default">.</span>
+              <span className="inline-block mx-3"></span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                S
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                t
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                a
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                r
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                t
+              </span>
+              <span className="inline-block mx-2"></span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                L
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                e
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                a
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                r
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                n
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                i
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                n
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                g
+              </span>
+              <span className="inline-block hover:scale-125 hover:rotate-12 transition-all duration-300 cursor-default gradient-text">
+                .
+              </span>
+              <span className="inline-block mx-2"></span>
+              <span className="inline-block text-6xl animate-pulse cursor-default">⚡</span>
             </p>
-            <p style={{ color: 'var(--text-muted)' }} className="text-lg md:text-xl mb-12 max-w-3xl mx-auto leading-relaxed animate-fadeInUp animation-delay-200">
-              Your <span className="gradient-text font-semibold">daily AI & tech news hub</span>. Aggregating the latest from <span style={{ color: 'var(--accent-primary)' }} className="font-semibold">10 premium sources</span> in real-time. 
-              Bookmark and visit once daily—<span style={{ color: 'var(--accent-warning)' }}>no more endless scrolling!</span>
+            
+            {/* Description with highlighted words */}
+            <p style={{ color: 'var(--text-muted)' }} 
+               className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed animate-fadeInUp animation-delay-200
+                        font-medium">
+              Your <span className="gradient-text font-black text-2xl md:text-3xl px-2 inline-block 
+                               hover:scale-110 hover:rotate-2 transition-all duration-300 cursor-default
+                               relative">
+                daily AI & tech news hub
+                <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full"></span>
+              </span>. Aggregating the latest from{' '}
+              <span style={{ color: 'var(--accent-primary)' }} 
+                    className="font-black text-2xl md:text-3xl inline-block hover:scale-110 transition-all duration-300 cursor-default
+                             px-2 py-1 rounded-xl border-2 border-blue-500/30 bg-blue-500/10">
+                10 premium sources
+              </span>{' '}
+              in real-time. Bookmark and visit once daily—
+              <span style={{ color: 'var(--accent-warning)' }} 
+                    className="font-black text-2xl md:text-3xl inline-block hover:scale-110 hover:-rotate-3 
+                             transition-all duration-300 cursor-default relative">
+                no more endless scrolling!
+                <svg className="absolute -right-8 -top-6 w-16 h-16 text-orange-500 animate-bounce" 
+                     fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </span>
             </p>
 
             {/* CTA Buttons */}
