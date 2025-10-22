@@ -640,14 +640,78 @@ export default function Home() {
         </div>
       </div>
 
-      {/* News Feed Section */}
+      {/* News Feed Section - UPGRADED */}
       <div id="news-feed" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
-        {/* Section header */}
-        <div className="text-center mb-12 animate-fadeInUp">
-          <h2 className="text-4xl md:text-6xl font-bold gradient-text mb-4 tracking-tight">
-            Latest Feed
+        {/* Section header - STUNNING */}
+        <div className="text-center mb-16 animate-fadeInUp relative">
+          {/* Background glow */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                        w-[600px] h-[200px] rounded-full blur-3xl opacity-30 -z-10"
+               style={{
+                 background: 'radial-gradient(circle, rgba(59,130,246,0.4) 0%, rgba(139,92,246,0.3) 50%, transparent 100%)',
+                 animation: 'pulse 3s ease-in-out infinite'
+               }}></div>
+          
+          <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tight relative inline-block"
+              style={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 25%, #ec4899 50%, #06b6d4 100%)',
+                backgroundSize: '300% 300%',
+                animation: 'gradient-shift 6s ease infinite',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                filter: 'drop-shadow(0 5px 20px rgba(59, 130, 246, 0.3))'
+              }}>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">L</span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">a</span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">t</span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">e</span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">s</span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">t</span>
+            <span className="inline-block mx-2"></span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">F</span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">e</span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">e</span>
+            <span className="inline-block hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-default">d</span>
+            
+            {/* Underline with shimmer */}
+            <span className="absolute -bottom-2 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full overflow-hidden">
+              <span className="shimmer-effect absolute inset-0"></span>
+            </span>
+            
+            {/* Floating sparkles */}
+            <span className="absolute -top-8 -right-8 text-4xl animate-bounce">✨</span>
+            <span className="absolute -top-6 -left-6 text-3xl animate-pulse" style={{ animationDelay: '0.5s' }}>⚡</span>
           </h2>
-          <p style={{ color: 'var(--accent-info)' }} className="text-lg">Aggregated from the world's top tech publications</p>
+          
+          <p className="text-xl md:text-2xl font-bold mt-8 relative inline-block group cursor-default"
+             style={{ color: 'var(--accent-info)' }}>
+            <span className="relative z-10 px-6 py-3 inline-block">
+              Aggregated from the world's{' '}
+              <span className="font-black text-2xl md:text-3xl gradient-text 
+                           hover:scale-110 transition-all duration-300 inline-block
+                           relative">
+                top tech publications
+                <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full
+                               transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
+              </span>
+            </span>
+            
+            {/* Glass background on hover */}
+            <span className="absolute inset-0 glass rounded-2xl opacity-0 group-hover:opacity-100 
+                           transition-all duration-500 -z-10 border-2"
+                  style={{ borderColor: 'var(--accent-info)' }}></span>
+            
+            {/* Orbiting dots */}
+            <span className="absolute top-0 left-0 w-2 h-2 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100
+                           animate-ping" style={{ animationDuration: '2s' }}></span>
+            <span className="absolute top-0 right-0 w-2 h-2 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100
+                           animate-ping" style={{ animationDuration: '2s', animationDelay: '0.5s' }}></span>
+            <span className="absolute bottom-0 left-0 w-2 h-2 bg-purple-400 rounded-full opacity-0 group-hover:opacity-100
+                           animate-ping" style={{ animationDuration: '2s', animationDelay: '1s' }}></span>
+            <span className="absolute bottom-0 right-0 w-2 h-2 bg-pink-400 rounded-full opacity-0 group-hover:opacity-100
+                           animate-ping" style={{ animationDuration: '2s', animationDelay: '1.5s' }}></span>
+          </p>
         </div>
 
         <FilterBar
