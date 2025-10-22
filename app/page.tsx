@@ -64,7 +64,6 @@ export default function Home() {
   };
 
   const sources = [
-    { id: 'all', name: 'All Sources' },
     { id: 'TechCrunch', name: 'TechCrunch' },
     { id: 'AI News', name: 'AI News' },
     { id: 'MIT', name: 'MIT' },

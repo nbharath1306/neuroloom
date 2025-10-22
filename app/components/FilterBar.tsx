@@ -240,7 +240,7 @@ export default function FilterBar({
                   backgroundColor: 'var(--accent-primary)',
                   color: 'white'
                 }}>
-            {sources.length + 1}
+            {sources.length}
           </span>
         </h3>
         
