@@ -146,30 +146,219 @@ export default function Home() {
               </a>
             </div>
 
-            {/* Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-              <div className="glass rounded-2xl p-8 relative overflow-hidden group animate-scaleUp animation-delay-100 transform transition-all duration-300 hover:-translate-y-2">
-                <div className="absolute top-0 right-0 w-40 h-40 opacity-20 rounded-full blur-3xl group-hover:opacity-30 transition-all" style={{ background: 'var(--accent-primary)' }}></div>
-                <div className="text-6xl mb-4 relative z-10 animate-bounce-slow">🌐</div>
-                <h3 className="text-xl font-bold mb-3 relative z-10 gradient-text">10 Premium Sources</h3>
-                <p style={{ color: 'var(--text-muted)' }} className="text-sm relative z-10">TechCrunch, MIT AI Lab, Wired, Economic Times, Indian Express & 5 more</p>
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+            {/* Feature Cards - ULTRA INTERACTIVE */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+              {/* Card 1: Premium Sources */}
+              <div className="glass rounded-3xl p-8 relative overflow-hidden group animate-scaleUp animation-delay-100 
+                            transition-all duration-500 hover:scale-110 cursor-pointer
+                            hover:shadow-2xl border-2"
+                   style={{ 
+                     borderColor: 'var(--border-color)',
+                     transformStyle: 'preserve-3d'
+                   }}
+                   onMouseMove={(e) => {
+                     const rect = e.currentTarget.getBoundingClientRect();
+                     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+                     const y = ((e.clientY - rect.top) / rect.height - 0.5) * -20;
+                     e.currentTarget.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg) scale(1.1)`;
+                   }}
+                   onMouseLeave={(e) => {
+                     e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
+                   }}>
+                {/* Animated gradient background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-cyan-500/10 
+                              opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Glow orb */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/30 rounded-full blur-3xl 
+                              opacity-0 group-hover:opacity-100 transition-all duration-700 
+                              group-hover:scale-150 group-hover:animate-pulse"></div>
+                
+                {/* Icon with 3D effect */}
+                <div className="text-7xl mb-6 relative z-10 transition-all duration-500 
+                              group-hover:scale-125 group-hover:rotate-12 group-hover:translate-y-[-10px]"
+                     style={{ 
+                       filter: 'drop-shadow(0 10px 20px rgba(59, 130, 246, 0.5))',
+                       transform: 'translateZ(50px)'
+                     }}>
+                  🌐
+                </div>
+                
+                <h3 className="text-2xl font-black mb-4 relative z-10 transition-all duration-500 
+                             group-hover:scale-105 bg-clip-text text-transparent bg-gradient-to-r 
+                             from-blue-400 via-purple-400 to-cyan-400"
+                    style={{ transform: 'translateZ(30px)' }}>
+                  10 Premium Sources
+                </h3>
+                
+                <p style={{ color: 'var(--text-muted)' }} 
+                   className="text-base relative z-10 leading-relaxed transition-all duration-500
+                            group-hover:text-opacity-100 font-medium"
+                   >
+                  TechCrunch, MIT AI Lab, Wired, Economic Times, Indian Express & 5 more
+                </p>
+                
+                {/* Bottom accent with shimmer */}
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500
+                              transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left">
+                  <div className="shimmer-effect absolute inset-0"></div>
+                </div>
+                
+                {/* Particles */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="absolute w-1 h-1 bg-blue-400 rounded-full animate-float"
+                         style={{
+                           left: `${20 + i * 15}%`,
+                           top: `${50 + i * 10}%`,
+                           animationDelay: `${i * 0.2}s`,
+                           animationDuration: '3s'
+                         }}></div>
+                  ))}
+                </div>
               </div>
               
-              <div className="glass rounded-2xl p-8 relative overflow-hidden group animate-scaleUp animation-delay-200 transform transition-all duration-300 hover:-translate-y-2">
-                <div className="absolute top-0 right-0 w-40 h-40 opacity-20 rounded-full blur-3xl group-hover:opacity-30 transition-all" style={{ background: 'var(--accent-secondary)' }}></div>
-                <div className="text-6xl mb-4 relative z-10 animate-bounce-slow animation-delay-100">⚡</div>
-                <h3 className="text-xl font-bold mb-3 relative z-10 gradient-text">Real-Time Updates</h3>
-                <p style={{ color: 'var(--text-muted)' }} className="text-sm relative z-10">Lightning-fast RSS aggregation. Fresh content on demand</p>
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-blue-500"></div>
+              {/* Card 2: Real-Time Updates */}
+              <div className="glass rounded-3xl p-8 relative overflow-hidden group animate-scaleUp animation-delay-200 
+                            transition-all duration-500 hover:scale-110 cursor-pointer
+                            hover:shadow-2xl border-2"
+                   style={{ 
+                     borderColor: 'var(--border-color)',
+                     transformStyle: 'preserve-3d'
+                   }}
+                   onMouseMove={(e) => {
+                     const rect = e.currentTarget.getBoundingClientRect();
+                     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+                     const y = ((e.clientY - rect.top) / rect.height - 0.5) * -20;
+                     e.currentTarget.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg) scale(1.1)`;
+                   }}
+                   onMouseLeave={(e) => {
+                     e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
+                   }}>
+                {/* Animated gradient background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-orange-500/10 
+                              opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Glow orb */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500/30 rounded-full blur-3xl 
+                              opacity-0 group-hover:opacity-100 transition-all duration-700 
+                              group-hover:scale-150 group-hover:animate-pulse"></div>
+                
+                {/* Icon with rotation */}
+                <div className="text-7xl mb-6 relative z-10 transition-all duration-500 
+                              group-hover:scale-125 group-hover:rotate-[360deg]"
+                     style={{ 
+                       filter: 'drop-shadow(0 10px 20px rgba(139, 92, 246, 0.5))',
+                       transform: 'translateZ(50px)'
+                     }}>
+                  ⚡
+                </div>
+                
+                <h3 className="text-2xl font-black mb-4 relative z-10 transition-all duration-500 
+                             group-hover:scale-105 bg-clip-text text-transparent bg-gradient-to-r 
+                             from-purple-400 via-pink-400 to-orange-400"
+                    style={{ transform: 'translateZ(30px)' }}>
+                  Real-Time Updates
+                </h3>
+                
+                <p style={{ color: 'var(--text-muted)' }} 
+                   className="text-base relative z-10 leading-relaxed transition-all duration-500
+                            group-hover:text-opacity-100 font-medium">
+                  Lightning-fast RSS aggregation. Fresh content on demand
+                </p>
+                
+                {/* Bottom accent with shimmer */}
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500
+                              transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left">
+                  <div className="shimmer-effect absolute inset-0"></div>
+                </div>
+                
+                {/* Lightning particles */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="absolute w-0.5 h-8 bg-gradient-to-b from-purple-400 to-transparent animate-float"
+                         style={{
+                           left: `${15 + i * 14}%`,
+                           top: `${30 + i * 8}%`,
+                           animationDelay: `${i * 0.15}s`,
+                           animationDuration: '2.5s',
+                           transform: 'rotate(20deg)'
+                         }}></div>
+                  ))}
+                </div>
               </div>
               
-              <div className="glass rounded-2xl p-8 relative overflow-hidden group animate-scaleUp animation-delay-300 transform transition-all duration-300 hover:-translate-y-2">
-                <div className="absolute top-0 right-0 w-40 h-40 opacity-20 rounded-full blur-3xl group-hover:opacity-30 transition-all" style={{ background: 'var(--accent-success)' }}></div>
-                <div className="text-6xl mb-4 relative z-10 animate-bounce-slow animation-delay-200">🎯</div>
-                <h3 className="text-xl font-bold mb-3 relative z-10 gradient-text">Zero Noise</h3>
-                <p style={{ color: 'var(--text-muted)' }} className="text-sm relative z-10">Ad-free, curated content. Smart filters. Pure tech news</p>
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-blue-500"></div>
+              {/* Card 3: Zero Noise */}
+              <div className="glass rounded-3xl p-8 relative overflow-hidden group animate-scaleUp animation-delay-300 
+                            transition-all duration-500 hover:scale-110 cursor-pointer
+                            hover:shadow-2xl border-2"
+                   style={{ 
+                     borderColor: 'var(--border-color)',
+                     transformStyle: 'preserve-3d'
+                   }}
+                   onMouseMove={(e) => {
+                     const rect = e.currentTarget.getBoundingClientRect();
+                     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
+                     const y = ((e.clientY - rect.top) / rect.height - 0.5) * -20;
+                     e.currentTarget.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg) scale(1.1)`;
+                   }}
+                   onMouseLeave={(e) => {
+                     e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
+                   }}>
+                {/* Animated gradient background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-emerald-500/10 to-teal-500/10 
+                              opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Glow orb */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/30 rounded-full blur-3xl 
+                              opacity-0 group-hover:opacity-100 transition-all duration-700 
+                              group-hover:scale-150 group-hover:animate-pulse"></div>
+                
+                {/* Icon with bounce */}
+                <div className="text-7xl mb-6 relative z-10 transition-all duration-500 
+                              group-hover:scale-125 group-hover:translate-y-[-15px]
+                              group-hover:animate-bounce-slow"
+                     style={{ 
+                       filter: 'drop-shadow(0 10px 20px rgba(16, 185, 129, 0.5))',
+                       transform: 'translateZ(50px)'
+                     }}>
+                  🎯
+                </div>
+                
+                <h3 className="text-2xl font-black mb-4 relative z-10 transition-all duration-500 
+                             group-hover:scale-105 bg-clip-text text-transparent bg-gradient-to-r 
+                             from-green-400 via-emerald-400 to-teal-400"
+                    style={{ transform: 'translateZ(30px)' }}>
+                  Zero Noise
+                </h3>
+                
+                <p style={{ color: 'var(--text-muted)' }} 
+                   className="text-base relative z-10 leading-relaxed transition-all duration-500
+                            group-hover:text-opacity-100 font-medium">
+                  Ad-free, curated content. Smart filters. Pure tech news
+                </p>
+                
+                {/* Bottom accent with shimmer */}
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500
+                              transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left">
+                  <div className="shimmer-effect absolute inset-0"></div>
+                </div>
+                
+                {/* Target particles */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="absolute rounded-full border-2 border-green-400 animate-ping"
+                         style={{
+                           width: `${30 + i * 20}px`,
+                           height: `${30 + i * 20}px`,
+                           left: '50%',
+                           top: '30%',
+                           transform: 'translate(-50%, -50%)',
+                           animationDelay: `${i * 0.3}s`,
+                           animationDuration: '2s'
+                         }}></div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
