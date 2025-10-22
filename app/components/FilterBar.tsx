@@ -222,107 +222,201 @@ export default function FilterBar({
         </button>
       </div>
 
-      {/* Source Filter Pills - UPGRADED */}
+      {/* Source Filter Pills - MEGA UPGRADE */}
       <div className="glass rounded-2xl p-6 border-2 relative overflow-hidden group"
            style={{ 
              borderColor: 'var(--border-color)',
              boxShadow: '0 10px 30px rgba(139, 92, 246, 0.1)'
            }}>
-        {/* Animated background on hover */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5
-                      opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        {/* Animated mesh background */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+          <div className="absolute top-0 left-0 w-full h-full"
+               style={{
+                 background: `
+                   radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                   radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                   radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 50%)
+                 `,
+                 animation: 'pulse 4s ease-in-out infinite'
+               }}></div>
+        </div>
         
-        <h3 className="text-base font-black mb-6 flex items-center gap-3 relative z-10" 
+        <h3 className="text-xl font-black mb-6 flex items-center gap-3 relative z-10 group/header" 
             style={{ color: 'var(--text-secondary)' }}>
-          <span className="inline-block">Filter by Source</span>
-          <span className="px-3 py-1 rounded-full text-xs font-bold"
+          <span className="inline-block relative">
+            Filter by Source
+            {/* Animated underline */}
+            <div className="absolute -bottom-1 left-0 w-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
+                          rounded-full transition-all duration-500 group-hover/header:w-full"
+                 style={{
+                   boxShadow: '0 0 10px rgba(139, 92, 246, 0.6)'
+                 }}></div>
+          </span>
+          <span className="px-4 py-2 rounded-full text-sm font-bold
+                         bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
+                         text-white relative overflow-hidden group/badge
+                         transition-all duration-500 hover:scale-125 hover:rotate-12"
                 style={{ 
-                  backgroundColor: 'var(--accent-primary)',
-                  color: 'white'
+                  boxShadow: '0 5px 20px rgba(59, 130, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.3)',
+                  backgroundSize: '200% 200%',
+                  animation: 'gradient-shift 3s ease infinite'
                 }}>
-            {sources.length}
+            <span className="relative z-10">{sources.length}</span>
+            {/* Rotating glow */}
+            <div className="absolute inset-0 opacity-50 animate-spin-slow"
+                 style={{ 
+                   background: 'conic-gradient(from 0deg, transparent, rgba(255,255,255,0.5), transparent)',
+                   animationDuration: '3s'
+                 }}></div>
+            {/* Sparkle effect */}
+            <span className="absolute -top-1 -right-1 text-xs animate-pulse">✨</span>
           </span>
         </h3>
         
         <div className="flex flex-wrap gap-3 relative z-10">
-          {/* All Sources Button */}
+          {/* All Sources Button - EXPLOSIVE */}
           <button
             onClick={() => setSelectedSource('all')}
-            className={`px-5 py-3 rounded-xl text-sm font-black transition-all duration-500 
-                     hover:scale-110 hover:shadow-xl relative overflow-hidden group/pill
-                     ${selectedSource === 'all' ? 'border-2' : 'border border-transparent'}`}
+            className={`px-6 py-4 rounded-2xl text-sm font-black transition-all duration-500 
+                     hover:scale-110 hover:shadow-2xl relative overflow-hidden group/pill
+                     ${selectedSource === 'all' ? 'border-3' : 'border-2 border-transparent'}`}
             style={selectedSource === 'all' 
               ? { 
+                  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3))',
                   borderColor: 'var(--accent-primary)', 
-                  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))',
                   color: 'var(--accent-primary)',
-                  boxShadow: '0 5px 20px rgba(59, 130, 246, 0.3)'
+                  boxShadow: '0 10px 30px rgba(59, 130, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3)',
+                  backgroundSize: '200% 200%',
+                  animation: 'gradient-shift 4s ease infinite'
                 }
               : { 
                   color: 'var(--text-muted)', 
-                  backgroundColor: 'var(--bg-secondary)' 
+                  backgroundColor: 'var(--bg-secondary)',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
                 }
             }>
-            <span className="relative z-10">All Sources</span>
+            <span className="relative z-10 flex items-center gap-2">
+              {selectedSource === 'all' && (
+                <span className="text-lg animate-bounce">🌟</span>
+              )}
+              All Sources
+              {selectedSource === 'all' && (
+                <span className="text-lg animate-pulse">✨</span>
+              )}
+            </span>
+            
             {selectedSource === 'all' && (
               <>
-                {/* Animated gradient background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-blue-500/30
-                              opacity-50"
+                {/* Mega animated gradient background */}
+                <div className="absolute inset-0 opacity-60"
                      style={{
-                       backgroundSize: '200% 200%',
+                       background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.4), rgba(139, 92, 246, 0.4), rgba(236, 72, 153, 0.4))',
+                       backgroundSize: '400% 400%',
                        animation: 'gradient-shift 3s ease infinite'
                      }}></div>
-                {/* Sparkles */}
-                <span className="absolute -top-1 -right-1 text-xs animate-pulse">✨</span>
+                
+                {/* Pulsing rings */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-blue-400 animate-ping opacity-30"></div>
+                <div className="absolute inset-0 rounded-2xl border-2 border-purple-400 animate-ping opacity-20"
+                     style={{ animationDelay: '0.5s' }}></div>
+                
+                {/* Sparkles floating around */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i}
+                         className="absolute text-sm"
+                         style={{
+                           left: `${(i * 16.66)}%`,
+                           top: i % 2 === 0 ? '-10px' : 'calc(100% + 5px)',
+                           animation: `float ${2 + Math.random()}s ease-in-out infinite`,
+                           animationDelay: `${i * 0.2}s`
+                         }}>
+                      {['✨', '⚡', '💫'][i % 3]}
+                    </div>
+                  ))}
+                </div>
               </>
             )}
-            {/* Hover effect */}
+            
+            {/* Hover sweep effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
                           transform -translate-x-full group-hover/pill:translate-x-full
-                          transition-transform duration-700"></div>
+                          transition-transform duration-1000"></div>
           </button>
           
-          {/* Source Pills */}
+          {/* Source Pills - STUNNING UPGRADE */}
           {sources.map((source, index) => (
             <button
               key={source.id}
               onClick={() => setSelectedSource(source.id)}
-              className={`px-5 py-3 rounded-xl text-sm font-black transition-all duration-500 
-                       hover:scale-110 hover:shadow-xl relative overflow-hidden group/pill
-                       ${selectedSource === source.id ? 'border-2' : 'border border-transparent'}`}
+              className={`px-6 py-4 rounded-2xl text-sm font-black transition-all duration-500 
+                       hover:scale-110 hover:shadow-2xl hover:rotate-2 relative overflow-hidden group/pill
+                       ${selectedSource === source.id ? 'border-3' : 'border-2 border-transparent'}`}
               style={selectedSource === source.id 
                 ? { 
+                    background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3))',
                     borderColor: 'var(--accent-secondary)', 
-                    background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2))',
                     color: 'var(--accent-secondary)',
-                    boxShadow: '0 5px 20px rgba(139, 92, 246, 0.3)',
-                    animationDelay: `${index * 0.05}s`
+                    boxShadow: '0 10px 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(236, 72, 153, 0.3)',
+                    animationDelay: `${index * 0.05}s`,
+                    backgroundSize: '200% 200%',
+                    animation: 'gradient-shift 4s ease infinite'
                   }
                 : { 
                     color: 'var(--text-muted)', 
                     backgroundColor: 'var(--bg-secondary)',
-                    animationDelay: `${index * 0.05}s`
+                    animationDelay: `${index * 0.05}s`,
+                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
                   }
               }>
-              <span className="relative z-10">{source.name}</span>
+              <span className="relative z-10 flex items-center gap-2">
+                {selectedSource === source.id && (
+                  <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"
+                        style={{
+                          boxShadow: '0 0 10px rgba(139, 92, 246, 0.8)'
+                        }}></span>
+                )}
+                {source.name}
+                {selectedSource === source.id && (
+                  <span className="text-base animate-bounce">✓</span>
+                )}
+              </span>
+              
               {selectedSource === source.id && (
                 <>
-                  {/* Animated gradient background */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-pink-500/30 to-purple-500/30
-                                opacity-50"
+                  {/* Mega animated gradient background */}
+                  <div className="absolute inset-0 opacity-60"
                        style={{
-                         backgroundSize: '200% 200%',
+                         background: 'linear-gradient(45deg, rgba(139, 92, 246, 0.4), rgba(236, 72, 153, 0.4), rgba(6, 182, 212, 0.4))',
+                         backgroundSize: '400% 400%',
                          animation: 'gradient-shift 3s ease infinite'
                        }}></div>
-                  {/* Check mark */}
-                  <span className="absolute -top-1 -right-1 text-xs">✓</span>
+                  
+                  {/* Pulsing outer ring */}
+                  <div className="absolute inset-0 rounded-2xl border-2 border-purple-400 animate-ping opacity-40"></div>
+                  
+                  {/* Rotating shine effect */}
+                  <div className="absolute inset-0 opacity-50"
+                       style={{
+                         background: 'conic-gradient(from 0deg, transparent 0deg, rgba(255, 255, 255, 0.3) 90deg, transparent 180deg)',
+                         animation: 'spin 3s linear infinite'
+                       }}></div>
                 </>
               )}
-              {/* Hover effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
+              
+              {/* Hover sweep effect - enhanced */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent
                             transform -translate-x-full group-hover/pill:translate-x-full
-                            transition-transform duration-700"></div>
+                            transition-transform duration-1000"></div>
+              
+              {/* Hover glow */}
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover/pill:opacity-100 
+                            transition-opacity duration-500 -z-10"
+                   style={{
+                     background: 'radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, transparent 70%)',
+                     filter: 'blur(20px)',
+                     transform: 'scale(1.2)'
+                   }}></div>
             </button>
           ))}
         </div>
