@@ -29,7 +29,7 @@ export default function FilterBar({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="// Search neural database..."
+            placeholder="// Search the database..."
             className="w-full px-6 py-4 pl-14 rounded-xl glass-strong border-2 border-cyan-500/30 text-cyan-100 placeholder-cyan-400/50 focus:outline-none focus:border-magenta-500/50 transition-all duration-300 font-mono"
           />
           <svg
@@ -63,7 +63,7 @@ export default function FilterBar({
           <svg className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          <span className="hidden sm:inline font-mono">SYNC</span>
+          <span className="hidden sm:inline font-mono">REFRESH</span>
         </button>
       </div>
 
@@ -73,7 +73,7 @@ export default function FilterBar({
           <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           </svg>
-          <span className="text-sm font-bold text-cyan-300 font-mono tracking-wider">// FILTER NODES</span>
+          <span className="text-sm font-bold text-cyan-300 font-mono tracking-wider">// FILTER SOURCES</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {sources.map((source) => (

@@ -114,7 +114,7 @@ export default function Home() {
             </div>
 
             <p className="text-2xl md:text-4xl font-bold text-cyan-300 mb-4 tracking-tight">
-              Stop Doom Scrolling. <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-magenta-400">Start Neural Linking.</span> ⚡
+              Stop Doom Scrolling. <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-magenta-400">Start Learning.</span> ⚡
             </p>
             <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
               Your <span className="text-cyan-400 font-bold">cyberpunk AI & tech news hub</span>. Aggregating the latest from <span className="text-magenta-400 font-semibold">10 premium sources</span> in real-time. 
@@ -131,14 +131,14 @@ export default function Home() {
                   <svg className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
-                  SYNC NEURAL FEED
+                  REFRESH FEED
                 </span>
               </button>
               <a
                 href="#news-feed"
                 className="glass px-8 py-4 rounded-xl font-semibold text-magenta-300 hover-glow border-2 border-magenta-500/50"
               >
-                JACK IN ↓
+                DIVE IN ↓
               </a>
             </div>
 
@@ -147,16 +147,16 @@ export default function Home() {
               <div className="glass-strong rounded-2xl p-8 hover-glow neon-border relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-cyan-500/30 rounded-full blur-3xl group-hover:bg-cyan-500/50 transition-all"></div>
                 <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(0,255,255,0.8)]">🌐</div>
-                <h3 className="text-xl font-bold text-cyan-300 mb-3 relative z-10 tracking-wide">10 NEURAL NODES</h3>
-                <p className="text-gray-300 text-sm relative z-10">TechCrunch, MIT AI Lab, Wired, Economic Times, Indian Express, and 5 more elite data streams</p>
+                <h3 className="text-xl font-bold text-cyan-300 mb-3 relative z-10 tracking-wide">10 PREMIUM SOURCES</h3>
+                <p className="text-gray-300 text-sm relative z-10">TechCrunch, MIT AI Lab, Wired, Economic Times, Indian Express, and 5 more elite tech feeds</p>
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-yellow-400 to-magenta-500"></div>
               </div>
               
               <div className="glass-strong rounded-2xl p-8 hover-glow neon-border relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-magenta-500/30 rounded-full blur-3xl group-hover:bg-magenta-500/50 transition-all"></div>
                 <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(255,0,255,0.8)]">⚡</div>
-                <h3 className="text-xl font-bold text-magenta-300 mb-3 relative z-10 tracking-wide">REAL-TIME SYNC</h3>
-                <p className="text-gray-300 text-sm relative z-10">Quantum-fast RSS aggregation. Instant neural updates. Fresh cybernetic content on demand</p>
+                <h3 className="text-xl font-bold text-magenta-300 mb-3 relative z-10 tracking-wide">REAL-TIME UPDATES</h3>
+                <p className="text-gray-300 text-sm relative z-10">Lightning-fast RSS aggregation. Instant updates. Fresh cutting-edge content on demand</p>
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-magenta-500 via-yellow-400 to-cyan-500"></div>
               </div>
               
@@ -164,7 +164,7 @@ export default function Home() {
                 <div className="absolute top-0 right-0 w-40 h-40 bg-yellow-500/30 rounded-full blur-3xl group-hover:bg-yellow-500/50 transition-all"></div>
                 <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(255,255,0,0.8)]">🎯</div>
                 <h3 className="text-xl font-bold text-yellow-300 mb-3 relative z-10 tracking-wide">ZERO NOISE</h3>
-                <p className="text-gray-300 text-sm relative z-10">Curated, ad-free matrix. Smart filters. No corporate algorithms. Pure unfiltered data</p>
+                <p className="text-gray-300 text-sm relative z-10">Curated, ad-free content. Smart filters. No corporate algorithms. Pure unfiltered tech news</p>
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-500 via-cyan-400 to-magenta-500"></div>
               </div>
             </div>
@@ -177,7 +177,7 @@ export default function Home() {
         {/* Section header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-yellow-300 to-magenta-500 mb-4 tracking-wider">
-            NEURAL <span className="glitch">DATASTREAM</span>
+            LATEST <span className="glitch">FEED</span>
           </h2>
           <p className="text-cyan-400 text-lg">// Aggregated from the world's top tech publications</p>
         </div>
@@ -198,7 +198,7 @@ export default function Home() {
               <div className="absolute top-0 left-0 animate-spin-reverse rounded-full h-24 w-24 border-t-4 border-b-4 border-magenta-400"></div>
               <div className="absolute top-0 left-0 rounded-full h-24 w-24 border-4 border-transparent border-t-yellow-400 animate-pulse"></div>
             </div>
-            <p className="text-cyan-400 mt-6 text-lg font-bold tracking-wider">// SYNCING NEURAL NETWORK...</p>
+            <p className="text-cyan-400 mt-6 text-lg font-bold tracking-wider">// LOADING DATA...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -223,7 +223,7 @@ export default function Home() {
           <div className="mt-16 glass-strong rounded-2xl p-8 text-center neon-border">
             <p className="text-gray-300">
               <span className="text-cyan-400 font-mono text-sm">&gt;&gt; </span>
-              Displaying <span className="text-cyan-400 font-bold text-2xl font-mono">{filteredNews.length}</span> neural packets
+              Displaying <span className="text-cyan-400 font-bold text-2xl font-mono">{filteredNews.length}</span> articles
               {selectedSource !== 'all' && <span> from <span className="text-magenta-400 font-semibold">{sources.find(s => s.id === selectedSource)?.name}</span></span>}
               <span className="text-cyan-400 font-mono text-sm"> _</span>
             </p>
@@ -238,16 +238,16 @@ export default function Home() {
           <div className="text-center">
             <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-magenta-400 mb-2 tracking-widest">NEUROLOOM</h3>
             <p className="text-cyan-400 mb-6 font-mono text-sm">
-              // Your daily dose of AI & tech cybernetics
+              // Your daily dose of AI & tech innovation
             </p>
             <div className="flex justify-center gap-8 mb-6 text-sm text-gray-400">
-              <span className="text-cyan-400">⚡ 10 Neural Nodes</span>
-              <span className="text-magenta-400">🌐 Real-Time Sync</span>
-              <span className="text-yellow-400">🎯 Zero Corporate Noise</span>
+              <span className="text-cyan-400">⚡ 10 Premium Sources</span>
+              <span className="text-magenta-400">🌐 Real-Time Updates</span>
+              <span className="text-yellow-400">🎯 Zero Noise</span>
             </div>
             <div className="border-t border-cyan-500/20 pt-6">
               <p className="text-gray-500 text-sm font-mono">
-                <span className="text-cyan-400">&gt;</span> Made with <span className="text-magenta-400 animate-pulse">💜</span> to defeat the doomscroll matrix
+                <span className="text-cyan-400">&gt;</span> Made with <span className="text-magenta-400 animate-pulse">💜</span> to defeat the doomscroll
               </p>
               <p className="text-gray-600 text-xs mt-2 font-mono">NeuroLoom © 2025 • Powered by Next.js • Deployed on Vercel</p>
             </div>
