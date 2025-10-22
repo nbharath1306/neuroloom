@@ -12,17 +12,27 @@ interface NewsCardProps {
   item: NewsItem;
 }
 
+'use client';
+
+import { useState, useEffect } from 'react';
+
 export default function NewsCard({ item }: NewsCardProps) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+  const [formattedDate, setFormattedDate] = useState<string>('');
+
+  useEffect(() => {
+    const formatDate = (dateString: string) => {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+      
+      if (diffInHours < 1) return 'Just now';
+      if (diffInHours < 24) return `${diffInHours}h ago`;
+      if (diffInHours < 48) return 'Yesterday';
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
     
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    if (diffInHours < 48) return 'Yesterday';
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  };
+    setFormattedDate(formatDate(item.pubDate));
+  }, [item.pubDate]);
 
   const getSourceColor = (source: string) => {
     const colors: { [key: string]: string } = {
@@ -63,7 +73,7 @@ export default function NewsCard({ item }: NewsCardProps) {
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {formatDate(item.pubDate)}
+              {formattedDate || 'Loading...'}
             </div>
           </div>
 
