@@ -105,7 +105,7 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
           <div className="text-center">
             {/* Main title with cyberpunk neon effect */}
-            <div className="mb-6 relative">
+            <div className="mb-6 relative animate-fadeIn">
               <h1 className="text-7xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-yellow-300 to-magenta-500 mb-4 neon-text glitch tracking-wider">
                 NEUROLOOM
               </h1>
@@ -113,19 +113,19 @@ export default function Home() {
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-magenta-500/20 rounded-full blur-3xl -z-10 animate-pulse"></div>
             </div>
 
-            <p className="text-2xl md:text-4xl font-bold text-cyan-300 mb-4 tracking-tight">
+            <p className="text-2xl md:text-4xl font-bold text-cyan-300 mb-4 tracking-tight animate-fadeInUp animation-delay-100">
               Stop Doom Scrolling. <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-magenta-400">Start Learning.</span> ⚡
             </p>
-            <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed animate-fadeInUp animation-delay-200">
               Your <span className="text-cyan-400 font-bold">cyberpunk AI & tech news hub</span>. Aggregating the latest from <span className="text-magenta-400 font-semibold">10 premium sources</span> in real-time. 
               Bookmark this page and visit once daily—<span className="text-yellow-300">no more endless Instagram scrolling!</span>
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fadeInUp animation-delay-300">
               <button
                 onClick={fetchNews}
-                className="glass-strong px-8 py-4 rounded-xl font-semibold text-cyan-300 hover-glow neon-border group relative overflow-hidden"
+                className="glass-strong px-8 py-4 rounded-xl font-semibold text-cyan-300 hover-glow neon-border group relative overflow-hidden transform transition-all duration-300 hover:scale-105"
               >
                 <span className="flex items-center justify-center gap-2 relative z-10">
                   <svg className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,7 +136,7 @@ export default function Home() {
               </button>
               <a
                 href="#news-feed"
-                className="glass px-8 py-4 rounded-xl font-semibold text-magenta-300 hover-glow border-2 border-magenta-500/50"
+                className="glass px-8 py-4 rounded-xl font-semibold text-magenta-300 hover-glow border-2 border-magenta-500/50 transform transition-all duration-300 hover:scale-105"
               >
                 DIVE IN ↓
               </a>
@@ -144,25 +144,25 @@ export default function Home() {
 
             {/* Feature Cards - Cyberpunk Design */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-              <div className="glass-strong rounded-2xl p-8 hover-glow neon-border relative overflow-hidden group">
+              <div className="glass-strong rounded-2xl p-8 hover-glow neon-border relative overflow-hidden group animate-scaleUp animation-delay-100 transform transition-all duration-300 hover:-translate-y-2">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-cyan-500/30 rounded-full blur-3xl group-hover:bg-cyan-500/50 transition-all"></div>
-                <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(0,255,255,0.8)]">🌐</div>
+                <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(0,255,255,0.8)] animate-bounce-slow">🌐</div>
                 <h3 className="text-xl font-bold text-cyan-300 mb-3 relative z-10 tracking-wide">10 PREMIUM SOURCES</h3>
                 <p className="text-gray-300 text-sm relative z-10">TechCrunch, MIT AI Lab, Wired, Economic Times, Indian Express, and 5 more elite tech feeds</p>
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-yellow-400 to-magenta-500"></div>
               </div>
               
-              <div className="glass-strong rounded-2xl p-8 hover-glow neon-border relative overflow-hidden group">
+              <div className="glass-strong rounded-2xl p-8 hover-glow neon-border relative overflow-hidden group animate-scaleUp animation-delay-200 transform transition-all duration-300 hover:-translate-y-2">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-magenta-500/30 rounded-full blur-3xl group-hover:bg-magenta-500/50 transition-all"></div>
-                <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(255,0,255,0.8)]">⚡</div>
+                <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(255,0,255,0.8)] animate-bounce-slow animation-delay-100">⚡</div>
                 <h3 className="text-xl font-bold text-magenta-300 mb-3 relative z-10 tracking-wide">REAL-TIME UPDATES</h3>
                 <p className="text-gray-300 text-sm relative z-10">Lightning-fast RSS aggregation. Instant updates. Fresh cutting-edge content on demand</p>
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-magenta-500 via-yellow-400 to-cyan-500"></div>
               </div>
               
-              <div className="glass-strong rounded-2xl p-8 hover-glow neon-border relative overflow-hidden group">
+              <div className="glass-strong rounded-2xl p-8 hover-glow neon-border relative overflow-hidden group animate-scaleUp animation-delay-300 transform transition-all duration-300 hover:-translate-y-2">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-yellow-500/30 rounded-full blur-3xl group-hover:bg-yellow-500/50 transition-all"></div>
-                <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(255,255,0,0.8)]">🎯</div>
+                <div className="text-6xl mb-4 relative z-10 filter drop-shadow-[0_0_10px_rgba(255,255,0,0.8)] animate-bounce-slow animation-delay-200">🎯</div>
                 <h3 className="text-xl font-bold text-yellow-300 mb-3 relative z-10 tracking-wide">ZERO NOISE</h3>
                 <p className="text-gray-300 text-sm relative z-10">Curated, ad-free content. Smart filters. No corporate algorithms. Pure unfiltered tech news</p>
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-500 via-cyan-400 to-magenta-500"></div>
@@ -175,7 +175,7 @@ export default function Home() {
       {/* News Feed Section */}
       <div id="news-feed" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
         {/* Section header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 animate-fadeInUp">
           <h2 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-yellow-300 to-magenta-500 mb-4 tracking-wider">
             LATEST <span className="glitch">FEED</span>
           </h2>
@@ -204,12 +204,18 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredNews.length > 0 ? (
               filteredNews.map((item, index) => (
-                <NewsCard key={`${item.link}-${index}`} item={item} />
+                <div 
+                  key={`${item.link}-${index}`}
+                  className="animate-fadeInUp"
+                  style={{ animationDelay: `${(index % 9) * 0.1}s` }}
+                >
+                  <NewsCard item={item} />
+                </div>
               ))
             ) : (
-              <div className="col-span-full text-center py-20">
+              <div className="col-span-full text-center py-20 animate-fadeIn">
                 <div className="glass-strong rounded-2xl p-12 max-w-md mx-auto">
-                  <div className="text-6xl mb-4">🔍</div>
+                  <div className="text-6xl mb-4 animate-bounce-slow">🔍</div>
                   <p className="text-gray-300 text-xl font-semibold mb-2">No results found</p>
                   <p className="text-gray-400">Try adjusting your filters or search query</p>
                 </div>
@@ -220,12 +226,12 @@ export default function Home() {
 
         {/* Stats section */}
         {!loading && filteredNews.length > 0 && (
-          <div className="mt-16 glass-strong rounded-2xl p-8 text-center neon-border">
+          <div className="mt-16 glass-strong rounded-2xl p-8 text-center neon-border animate-fadeInUp">
             <p className="text-gray-300">
               <span className="text-cyan-400 font-mono text-sm">&gt;&gt; </span>
-              Displaying <span className="text-cyan-400 font-bold text-2xl font-mono">{filteredNews.length}</span> articles
+              Displaying <span className="text-cyan-400 font-bold text-2xl font-mono animate-pulse">{filteredNews.length}</span> articles
               {selectedSource !== 'all' && <span> from <span className="text-magenta-400 font-semibold">{sources.find(s => s.id === selectedSource)?.name}</span></span>}
-              <span className="text-cyan-400 font-mono text-sm"> _</span>
+              <span className="text-cyan-400 font-mono text-sm animate-blink"> _</span>
             </p>
           </div>
         )}
