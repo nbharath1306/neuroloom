@@ -41,15 +41,27 @@ export async function GET() {
     const feedPromises = RSS_FEEDS.map(async (feed) => {
       try {
         const feedData = await parser.parseURL(feed.url);
-        return feedData.items.slice(0, 10).map((item: any): Article => ({
-          title: item.title || 'No title',
-          link: item.link || '#',
-          pubDate: item.pubDate || item.isoDate || new Date().toISOString(),
-          creator: item.creator || feed.source,
-          contentSnippet: item.contentSnippet || item.content?.substring(0, 200) || '',
-          source: feed.source,
-          categories: item.categories || [],
-        }));
+        return feedData.items.slice(0, 10).map((item: any): Article => {
+          // Helper to safely convert to string
+          const safeString = (val: any, fallback: string = ''): string => {
+            if (val === null || val === undefined) return fallback;
+            if (typeof val === 'string') return val;
+            if (typeof val === 'object') return fallback;
+            return String(val);
+          };
+
+          return {
+            title: safeString(item.title, 'No title'),
+            link: safeString(item.link, '#'),
+            pubDate: safeString(item.pubDate || item.isoDate, new Date().toISOString()),
+            creator: safeString(item.creator, feed.source),
+            contentSnippet: safeString(item.contentSnippet || item.content, '').substring(0, 200),
+            source: feed.source,
+            categories: Array.isArray(item.categories) 
+              ? item.categories.map((cat: any) => safeString(cat, '')).filter(Boolean)
+              : [],
+          };
+        });
       } catch (error) {
         console.error(`Error fetching ${feed.source}:`, error);
         return [];
