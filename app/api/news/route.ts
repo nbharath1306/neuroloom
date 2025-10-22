@@ -23,15 +23,25 @@ const RSS_FEEDS = [
   { url: 'https://www.theverge.com/rss/index.xml', source: 'The Verge' },
 ];
 
+interface Article {
+  title: string;
+  link: string;
+  pubDate: string;
+  creator: string;
+  contentSnippet: string;
+  source: string;
+  categories: string[];
+}
+
 export async function GET() {
   try {
-    const allArticles = [];
+    const allArticles: Article[] = [];
 
     // Fetch from all feeds in parallel
     const feedPromises = RSS_FEEDS.map(async (feed) => {
       try {
         const feedData = await parser.parseURL(feed.url);
-        return feedData.items.slice(0, 10).map((item) => ({
+        return feedData.items.slice(0, 10).map((item: any): Article => ({
           title: item.title || 'No title',
           link: item.link || '#',
           pubDate: item.pubDate || item.isoDate || new Date().toISOString(),
@@ -47,7 +57,7 @@ export async function GET() {
     });
 
     const results = await Promise.all(feedPromises);
-    results.forEach((articles) => allArticles.push(...articles));
+    results.forEach((articles: Article[]) => allArticles.push(...articles));
 
     // Sort by date (newest first)
     allArticles.sort((a, b) => {
