@@ -10,6 +10,11 @@ const parser = new Parser({
   },
 });
 
+// Cache configuration
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+let cachedData: any = null;
+let lastFetchTime: number = 0;
+
 const RSS_FEEDS = [
   { url: 'https://techcrunch.com/feed/', source: 'TechCrunch' },
   { url: 'https://www.artificialintelligence-news.com/feed/', source: 'AI News' },
@@ -35,6 +40,18 @@ interface Article {
 
 export async function GET() {
   try {
+    // Check if cache is still valid
+    const now = Date.now();
+    if (cachedData && (now - lastFetchTime) < CACHE_DURATION) {
+      console.log('Returning cached data');
+      return NextResponse.json({
+        ...cachedData,
+        cached: true,
+        cacheAge: Math.floor((now - lastFetchTime) / 1000), // seconds
+      });
+    }
+
+    console.log('Fetching fresh data from RSS feeds...');
     const allArticles: Article[] = [];
 
     // Helper function to add timeout to fetch
@@ -51,7 +68,7 @@ export async function GET() {
     const feedPromises = RSS_FEEDS.map(async (feed) => {
       try {
         const feedData = await fetchWithTimeout(feed) as any;
-        return feedData.items.slice(0, 10).map((item: any): Article => {
+        return feedData.items.slice(0, 20).map((item: any): Article => {
           // Helper to safely convert to string
           const safeString = (val: any, fallback: string = ''): string => {
             if (val === null || val === undefined) return fallback;
@@ -86,11 +103,18 @@ export async function GET() {
       return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
     });
 
-    return NextResponse.json({
+    // Update cache
+    cachedData = {
       success: true,
       articles: allArticles,
       count: allArticles.length,
       lastUpdated: new Date().toISOString(),
+    };
+    lastFetchTime = Date.now();
+
+    return NextResponse.json({
+      ...cachedData,
+      cached: false,
     });
   } catch (error) {
     console.error('Error fetching news:', error);
