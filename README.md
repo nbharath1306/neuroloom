@@ -1,19 +1,24 @@
 # 🚀 NeuroLoom - Your Daily Tech & AI News Hub
 
-**Stop doom scrolling on Instagram!** NeuroLoom is a beautiful web app that aggregates the latest AI and tech news from 10 top sources. Just bookmark it and visit once daily for your curated news fix.
+**Stop doom scrolling on Instagram!** NeuroLoom is a beautiful cyberpunk-themed web app that aggregates the latest AI and tech news from 10 top sources. Just bookmark it and visit once daily for your curated news fix.
 
-![AI Pulse Screenshot](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+## 🌐 **Live Demo**
+### **[➡️ Visit NeuroLoom](https://neuroloom.vercel.app)**
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 ## ✨ Features
 
-- 📰 **10 Premium Sources**: TechCrunch, AI News, MIT, Reuters, Economic Times, Indian Express, Mint, Express Computer, Analytics India, The Verge
-- 🎨 **Beautiful UI**: Gradient animations, glass-morphism effects, and smooth transitions
+- 📰 **10 Premium Sources**: TechCrunch, AI News, MIT Tech Review, Wired, Economic Times, Indian Express, Mint, Express Computer, Analytics India Magazine, The Verge
+- 🎨 **Cyberpunk UI**: Neon cyan/magenta/yellow theme, scanline effects, glitch animations, glassmorphism
+- ⚡ **Smooth Animations**: Entrance animations, hover effects, cascading card reveals
 - 🔍 **Search & Filter**: Find exactly what you need with powerful search and source filtering
 - 📱 **Fully Responsive**: Perfect on desktop, tablet, and mobile
-- ⚡ **Real-time Updates**: Fresh content every time you visit
-- 🎯 **No Distractions**: Clean, focused interface - no ads, no tracking
+- 🔄 **Real-time Updates**: Fresh content every time you visit
+- 🎯 **No Distractions**: Clean, focused interface - no ads, no tracking, no cookies
 
 ## 🚀 Quick Start
 
@@ -51,7 +56,7 @@ That's it! 🎉
 ## 📂 Project Structure
 
 \`\`\`
-ai-pulse/
+NeuroLoom/
 ├── app/
 │   ├── api/
 │   │   └── news/
@@ -155,19 +160,22 @@ Some feeds may have CORS restrictions. The Next.js API route handles this by fet
 ## 🎯 Recommended Usage
 
 **Set a Daily Routine:**
-- Morning: Open AI Pulse with your coffee ☕
-- Spend 10-15 minutes catching up
+- Morning: Open NeuroLoom with your coffee ☕
+- Spend 10-15 minutes catching up on tech & AI news
 - Close the tab and get on with your day
 - **No more doom scrolling!**
 
+**Pro Tip**: Set NeuroLoom as your browser's new tab page or bookmark it for easy daily access! 🎯
+
 ## 📝 Future Enhancements
 
-- [ ] Add caching to improve load times
-- [ ] Implement infinite scroll
-- [ ] Add dark/light theme toggle
+- [ ] Add Redis caching to improve load times
+- [ ] Implement infinite scroll / pagination
 - [ ] Save favorite articles (local storage)
 - [ ] Share articles on social media
 - [ ] PWA support for offline access
+- [ ] Email digest option (daily/weekly summaries)
+- [ ] More RSS sources and categories
 
 ## 🤝 Contributing
 
@@ -183,6 +191,11 @@ Built with ❤️ to beat Instagram doom scrolling addiction!
 
 ---
 
-**Pro Tip**: Add this to your browser's home page or new tab page for daily motivation to read real news instead of scrolling Instagram! 🎯
+## 🔗 Links
 
-**NeuroLoom © 2025**
+- **Live Site**: [neuroloom.vercel.app](https://neuroloom.vercel.app)
+- **GitHub**: [github.com/nbharath1306/neuroloom](https://github.com/nbharath1306/neuroloom)
+
+---
+
+**NeuroLoom © 2025** | Built by [Bharath](https://github.com/nbharath1306)
