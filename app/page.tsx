@@ -187,7 +187,7 @@ export default function Home() {
           <div className="flex flex-col justify-center items-center h-64">
             <div className="relative">
               <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-purple-500"></div>
-              <div className="absolute top-0 left-0 rounded-full h-20 w-20 border-t-2 border-b-2 border-pink-500" style={{ animation: 'spin 1s linear infinite reverse' }}></div>
+              <div className="absolute top-0 left-0 animate-spin-reverse rounded-full h-20 w-20 border-t-2 border-b-2 border-pink-500"></div>
             </div>
             <p className="text-gray-400 mt-6 text-lg">Loading latest updates...</p>
           </div>

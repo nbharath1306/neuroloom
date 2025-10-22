@@ -108,6 +108,10 @@ body {
   }
 }
 
+.animate-spin-reverse {
+  animation: spin 1s linear infinite reverse;
+}
+
 /* Hover glow */
 .hover-glow {
   transition: all 0.3s ease;
