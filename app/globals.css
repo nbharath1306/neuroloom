@@ -726,6 +726,15 @@ body::before {
   }
 }
 
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
 .shimmer-effect {
   background: linear-gradient(
     90deg,
