@@ -22,6 +22,9 @@ export default function Home() {
   const [selectedSource, setSelectedSource] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [newArticlesCount, setNewArticlesCount] = useState(0);
+  const [lastFetchTime, setLastFetchTime] = useState<Date | null>(null);
+  const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -56,18 +59,63 @@ export default function Home() {
     filterNews();
   }, [news, selectedSource, searchQuery]);
 
-  const fetchNews = async () => {
+  // Auto-refresh every 5 minutes
+  useEffect(() => {
+    if (!autoRefreshEnabled) return;
+
+    const interval = setInterval(() => {
+      checkForNewArticles();
+    }, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(interval);
+  }, [news, autoRefreshEnabled]);
+
+  const fetchNews = async (silent: boolean = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const response = await fetch('/api/news');
       const data = await response.json();
       setNews(data.articles || []);
       setFilteredNews(data.articles || []);
+      setLastFetchTime(new Date());
     } catch (error) {
       console.error('Error fetching news:', error);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
+  };
+
+  const checkForNewArticles = async () => {
+    try {
+      const response = await fetch('/api/news');
+      const data = await response.json();
+      const newArticles = data.articles || [];
+      
+      // Compare with current news to find new articles
+      const currentLinks = new Set(news.map(item => item.link));
+      const freshArticles = newArticles.filter((article: NewsItem) => !currentLinks.has(article.link));
+      
+      if (freshArticles.length > 0) {
+        setNewArticlesCount(freshArticles.length);
+        // Play a subtle notification sound effect (optional)
+        if (typeof Audio !== 'undefined') {
+          try {
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGS57OihUhELTKXh8bdlHAU7k9ryynksBSh+zPLaizsIHGO56eSbTxELTqvn8rVnGgU+l9z1xnMpBSx3yPDajDwIHmS76+OaThELUq3n8rJiGAQ/nt31y3gnBSyCzvHajz0IH2a97Oefkg');
+            audio.volume = 0.3;
+            audio.play().catch(() => {}); // Ignore if autoplay blocked
+          } catch (e) {
+            // Ignore audio errors
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error checking for new articles:', error);
+    }
+  };
+
+  const handleRefresh = () => {
+    setNewArticlesCount(0);
+    fetchNews();
   };
 
   const filterNews = () => {
@@ -278,7 +326,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fadeInUp animation-delay-300">
               {/* REFRESH FEED - Primary Action */}
               <button
-                onClick={fetchNews}
+                onClick={handleRefresh}
                 className="relative px-10 py-5 rounded-2xl font-black text-lg
                          bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
                          text-white overflow-hidden group
@@ -319,6 +367,12 @@ export default function Home() {
                           d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                   <span className="tracking-wide">Refresh Feed</span>
+                  {newArticlesCount > 0 && (
+                    <span className="px-3 py-1 rounded-full bg-red-500 text-white text-xs font-bold
+                                   animate-pulse border-2 border-white shadow-lg">
+                      +{newArticlesCount}
+                    </span>
+                  )}
                   <span className="inline-block group-hover:translate-x-2 transition-transform duration-300">✨</span>
                 </span>
                 
@@ -737,13 +791,66 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Live Update Banner - NEW */}
+        {newArticlesCount > 0 && (
+          <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
+            <button
+              onClick={handleRefresh}
+              className="px-8 py-4 rounded-full glass backdrop-blur-xl
+                       bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
+                       text-white font-black text-lg shadow-2xl
+                       border-2 border-white/30 hover:scale-110 transition-all duration-300
+                       flex items-center gap-3 group"
+              style={{
+                backgroundSize: '200% 200%',
+                animation: 'gradient-shift 3s ease infinite',
+                boxShadow: '0 10px 40px rgba(139, 92, 246, 0.6), 0 0 60px rgba(59, 130, 246, 0.4)'
+              }}>
+              <svg className="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" 
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              <span>{newArticlesCount} New Article{newArticlesCount > 1 ? 's' : ''} Available!</span>
+              <span className="text-2xl group-hover:scale-125 transition-transform">🔥</span>
+            </button>
+          </div>
+        )}
+
+        {/* Auto-refresh toggle and last update info */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setAutoRefreshEnabled(!autoRefreshEnabled)}
+              className={`px-4 py-2 rounded-xl font-bold text-sm transition-all duration-300
+                        flex items-center gap-2 ${autoRefreshEnabled ? 'glass border-2' : 'opacity-50 glass'}`}
+              style={{
+                borderColor: autoRefreshEnabled ? 'var(--accent-primary)' : 'var(--border-color)',
+                color: autoRefreshEnabled ? 'var(--accent-primary)' : 'var(--text-muted)'
+              }}>
+              <div className={`w-3 h-3 rounded-full ${autoRefreshEnabled ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}`}></div>
+              <span>Auto-Refresh {autoRefreshEnabled ? 'ON' : 'OFF'}</span>
+            </button>
+            
+            {lastFetchTime && (
+              <span className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
+                Last updated: {lastFetchTime.toLocaleTimeString()}
+              </span>
+            )}
+          </div>
+          
+          <span className="text-sm font-bold px-4 py-2 rounded-xl glass" 
+                style={{ color: 'var(--accent-info)' }}>
+            {filteredNews.length} Articles
+          </span>
+        </div>
+
         <FilterBar
           sources={sources}
           selectedSource={selectedSource}
           setSelectedSource={setSelectedSource}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
-          onRefresh={fetchNews}
+          onRefresh={handleRefresh}
         />
 
         {loading ? (
