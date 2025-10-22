@@ -1,0 +1,188 @@
+# 🚀 NeuroLoom - Your Daily Tech & AI News Hub
+
+**Stop doom scrolling on Instagram!** NeuroLoom is a beautiful web app that aggregates the latest AI and tech news from 10 top sources. Just bookmark it and visit once daily for your curated news fix.
+
+![AI Pulse Screenshot](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+## ✨ Features
+
+- 📰 **10 Premium Sources**: TechCrunch, AI News, MIT, Reuters, Economic Times, Indian Express, Mint, Express Computer, Analytics India, The Verge
+- 🎨 **Beautiful UI**: Gradient animations, glass-morphism effects, and smooth transitions
+- 🔍 **Search & Filter**: Find exactly what you need with powerful search and source filtering
+- 📱 **Fully Responsive**: Perfect on desktop, tablet, and mobile
+- ⚡ **Real-time Updates**: Fresh content every time you visit
+- 🎯 **No Distractions**: Clean, focused interface - no ads, no tracking
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+\`\`\`bash
+npm install
+\`\`\`
+
+### 2. Run Development Server
+\`\`\`bash
+npm run dev
+\`\`\`
+
+### 3. Open Your Browser
+Navigate to [http://localhost:3000](http://localhost:3000)
+
+That's it! 🎉
+
+## 📦 Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **RSS Parsing**: rss-parser
+- **Deployment**: Vercel (recommended)
+
+## 🎯 Usage
+
+1. **Browse News**: Scroll through the latest articles from all sources
+2. **Filter by Source**: Click on source pills to filter by specific outlets
+3. **Search**: Use the search bar to find articles on specific topics
+4. **Refresh**: Click the refresh button to fetch the latest updates
+5. **Read**: Click any article card to read the full story
+
+## 📂 Project Structure
+
+\`\`\`
+ai-pulse/
+├── app/
+│   ├── api/
+│   │   └── news/
+│   │       └── route.ts          # RSS feed aggregation API
+│   ├── components/
+│   │   ├── NewsCard.tsx          # Individual news card component
+│   │   └── FilterBar.tsx         # Search and filter component
+│   ├── layout.tsx                # Root layout
+│   ├── page.tsx                  # Main page
+│   └── globals.css               # Global styles
+├── public/                       # Static assets
+├── package.json
+├── tsconfig.json
+├── tailwind.config.js
+└── next.config.js
+\`\`\`
+
+## 🌟 Key Components
+
+### NewsCard
+Displays individual news articles with:
+- Source badge with color coding
+- Relative timestamps (e.g., "2h ago")
+- Article title and snippet
+- Categories/tags
+- Hover effects and transitions
+
+### FilterBar
+Provides:
+- Real-time search across titles and content
+- Source filtering with pill buttons
+- Refresh button to fetch latest news
+
+### News API
+- Fetches from 10 RSS feeds in parallel
+- Parses and normalizes data
+- Sorts by publication date
+- Returns JSON response
+
+## 🎨 Customization
+
+### Add More Sources
+Edit `app/api/news/route.ts`:
+
+\`\`\`typescript
+const RSS_FEEDS = [
+  { url: 'https://your-feed-url.com/rss', source: 'Your Source Name' },
+  // Add more feeds here
+];
+\`\`\`
+
+### Change Color Scheme
+Edit `tailwind.config.js` and `app/components/NewsCard.tsx` for source colors.
+
+### Modify Layout
+Update `app/page.tsx` to change the hero section, features, or layout.
+
+## 🚀 Deployment
+
+### Deploy to Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Visit [vercel.com](https://vercel.com)
+3. Click "Import Project"
+4. Select your GitHub repository
+5. Click "Deploy"
+
+Done! Your site will be live at `your-project.vercel.app`
+
+### Alternative: Deploy to Netlify
+
+\`\`\`bash
+npm run build
+\`\`\`
+
+Upload the `.next` folder to Netlify.
+
+## 📱 Bookmark Instructions
+
+### Desktop (Chrome/Safari/Firefox)
+1. Visit your deployed site
+2. Press `Ctrl+D` (Windows/Linux) or `Cmd+D` (Mac)
+3. Save to bookmarks bar
+
+### Mobile (iOS/Android)
+1. Open the site in Safari/Chrome
+2. Tap the share button
+3. Select "Add to Home Screen"
+4. Access it like a native app!
+
+## 🔧 Troubleshooting
+
+### RSS Feed Errors
+Some feeds may have CORS restrictions. The Next.js API route handles this by fetching server-side.
+
+### Slow Loading
+- RSS feeds can be slow to respond
+- Consider implementing caching in the future
+- Some sources may be temporarily unavailable
+
+## 🎯 Recommended Usage
+
+**Set a Daily Routine:**
+- Morning: Open AI Pulse with your coffee ☕
+- Spend 10-15 minutes catching up
+- Close the tab and get on with your day
+- **No more doom scrolling!**
+
+## 📝 Future Enhancements
+
+- [ ] Add caching to improve load times
+- [ ] Implement infinite scroll
+- [ ] Add dark/light theme toggle
+- [ ] Save favorite articles (local storage)
+- [ ] Share articles on social media
+- [ ] PWA support for offline access
+
+## 🤝 Contributing
+
+Want to add more sources or features? Feel free to fork and submit a PR!
+
+## 📄 License
+
+MIT License - feel free to use this project however you want!
+
+## 💜 Made With
+
+Built with ❤️ to beat Instagram doom scrolling addiction!
+
+---
+
+**Pro Tip**: Add this to your browser's home page or new tab page for daily motivation to read real news instead of scrolling Instagram! 🎯
+
+**NeuroLoom © 2025**
