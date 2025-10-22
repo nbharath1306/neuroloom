@@ -315,7 +315,7 @@ export default function Home() {
                     className="font-black text-2xl md:text-3xl inline-block hover:scale-110 hover:-rotate-3 
                              transition-all duration-300 cursor-default relative">
                 no more endless scrolling!
-                <svg className="absolute -right-8 -top-6 w-16 h-16 text-orange-500 animate-bounce" 
+                <svg className="absolute -right-2 top-6 w-12 h-12 text-orange-500 animate-bounce" 
                      fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
