@@ -187,66 +187,25 @@ export default function NewsCard({ item }: NewsCardProps) {
           transform: `translateZ(${isHovering ? '60' : '30'}px)`,
           transition: isHovering ? 'transform 0.1s ease-out' : 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
         }}>
-          {/* REVOLUTIONARY Viewed Badge */}
+          {/* Simple Viewed Indicator */}
           {isViewed && (
-            <div className="absolute top-2 right-2 z-20 animate-fadeIn">
+            <div className="absolute top-3 left-3 z-20 animate-fadeIn">
               <div className="relative group/viewed">
-                {/* Main badge with gradient */}
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full 
-                              bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500
-                              border-2 border-white shadow-xl backdrop-blur-sm
-                              transition-all duration-500 hover:scale-110 hover:rotate-3"
+                {/* Simple checkmark circle */}
+                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center
+                              border-2 border-white shadow-lg
+                              transition-all duration-300 hover:scale-110"
                      style={{
-                       boxShadow: '0 8px 25px rgba(34, 197, 94, 0.5), 0 0 40px rgba(34, 197, 94, 0.3)',
-                       backgroundSize: '200% 200%',
-                       animation: 'gradient-shift 3s ease infinite'
+                       boxShadow: '0 4px 15px rgba(34, 197, 94, 0.5)'
                      }}>
-                  {/* Checkmark icon */}
-                  <svg className="w-5 h-5 text-white drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
-                  {/* "Read" text */}
-                  <span className="text-xs font-black text-white tracking-wide drop-shadow-lg">
-                    READ
-                  </span>
                 </div>
                 
-                {/* Pulsing rings */}
-                <div className="absolute inset-0 rounded-full border-2 border-green-400 animate-ping opacity-60"
+                {/* Single pulsing ring */}
+                <div className="absolute inset-0 rounded-full border-2 border-green-400 animate-ping opacity-50"
                      style={{ animationDuration: '2s' }}></div>
-                <div className="absolute inset-0 rounded-full border-2 border-emerald-400 animate-ping opacity-40"
-                     style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}></div>
-                
-                {/* Rotating shine effect */}
-                <div className="absolute inset-0 rounded-full opacity-60 pointer-events-none overflow-hidden"
-                     style={{
-                       background: 'conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.5), transparent)',
-                       animation: 'spin 3s linear infinite'
-                     }}></div>
-                
-                {/* Floating sparkles */}
-                <div className="absolute inset-0 pointer-events-none opacity-0 group-hover/viewed:opacity-100 transition-opacity">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i}
-                         className="absolute text-xs"
-                         style={{
-                           left: i % 2 === 0 ? '-10px' : 'calc(100% + 5px)',
-                           top: `${25 + i * 15}%`,
-                           animation: `float ${1.5 + Math.random()}s ease-in-out infinite`,
-                           animationDelay: `${i * 0.2}s`
-                         }}>
-                      ✨
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Glow effect */}
-                <div className="absolute inset-0 rounded-full opacity-0 group-hover/viewed:opacity-100 
-                              transition-opacity duration-500 -z-10 blur-xl"
-                     style={{
-                       background: 'radial-gradient(circle, rgba(34, 197, 94, 0.8) 0%, transparent 70%)',
-                       transform: 'scale(1.5)'
-                     }}></div>
               </div>
             </div>
           )}
