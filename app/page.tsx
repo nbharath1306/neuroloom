@@ -251,23 +251,121 @@ export default function Home() {
               </span>
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-fadeInUp animation-delay-300">
+            {/* CTA Buttons - EXPLOSIVE UPGRADE */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fadeInUp animation-delay-300">
+              {/* REFRESH FEED - Primary Action */}
               <button
                 onClick={fetchNews}
-                className="btn-primary flex items-center justify-center gap-2 group"
-              >
-                <svg className="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Refresh Feed
+                className="relative px-10 py-5 rounded-2xl font-black text-lg
+                         bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500
+                         text-white overflow-hidden group
+                         transition-all duration-500 hover:scale-110 hover:shadow-2xl
+                         border-2 border-white/20"
+                style={{
+                  backgroundSize: '200% 200%',
+                  animation: 'gradient-shift 3s ease infinite',
+                  boxShadow: '0 10px 40px rgba(139, 92, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.3)',
+                  filter: 'drop-shadow(0 5px 15px rgba(139, 92, 246, 0.5))'
+                }}>
+                {/* Animated background waves */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent 
+                                transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </div>
+                
+                {/* Rotating particles */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} 
+                         className="absolute w-1 h-1 bg-white rounded-full"
+                         style={{
+                           left: `${15 + i * 15}%`,
+                           top: '50%',
+                           animation: `float ${2 + Math.random()}s ease-in-out infinite`,
+                           animationDelay: `${i * 0.2}s`
+                         }}></div>
+                  ))}
+                </div>
+                
+                {/* Content */}
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <svg className="w-6 h-6 group-hover:rotate-[360deg] transition-transform duration-700
+                                group-hover:scale-125" 
+                       fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" 
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <span className="tracking-wide">Refresh Feed</span>
+                  <span className="inline-block group-hover:translate-x-2 transition-transform duration-300">✨</span>
+                </span>
+                
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
+                     style={{
+                       background: 'radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, transparent 70%)',
+                       filter: 'blur(20px)',
+                       transform: 'scale(1.2)'
+                     }}></div>
               </button>
+              
+              {/* BROWSE NEWS - Secondary Action */}
               <a
                 href="#news-feed"
-                className="glass px-8 py-4 rounded-xl font-semibold hover:border-2 transition-all duration-300 hover:scale-105"
-                style={{ color: 'var(--accent-secondary)', borderColor: 'var(--accent-secondary)' }}
-              >
-                Browse News ↓
+                className="relative px-10 py-5 rounded-2xl font-black text-lg
+                         glass border-2 overflow-hidden group
+                         transition-all duration-500 hover:scale-110 hover:shadow-2xl
+                         flex items-center justify-center gap-3"
+                style={{ 
+                  color: 'var(--accent-secondary)',
+                  borderColor: 'var(--accent-secondary)',
+                  boxShadow: '0 10px 30px rgba(139, 92, 246, 0.2)'
+                }}>
+                {/* Animated border glow */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                     style={{
+                       background: 'linear-gradient(45deg, transparent 30%, rgba(139, 92, 246, 0.3) 50%, transparent 70%)',
+                       backgroundSize: '200% 200%',
+                       animation: 'gradient-shift 2s ease infinite'
+                     }}></div>
+                
+                {/* Sliding background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20
+                              transform translate-y-full group-hover:translate-y-0 
+                              transition-transform duration-500 rounded-2xl"></div>
+                
+                {/* Floating arrow particles */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i}
+                         className="absolute text-purple-400 font-bold text-xl"
+                         style={{
+                           left: `${20 + i * 20}%`,
+                           top: '50%',
+                           animation: `float ${2.5 + i * 0.3}s ease-in-out infinite`,
+                           animationDelay: `${i * 0.15}s`,
+                           transform: 'translateY(-50%)'
+                         }}>
+                      ↓
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Content */}
+                <span className="relative z-10 flex items-center gap-3">
+                  <span className="tracking-wide">Browse News</span>
+                  <svg className="w-6 h-6 group-hover:translate-y-3 transition-transform duration-500
+                                group-hover:scale-125 group-hover:rotate-12" 
+                       fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
+                  <span className="inline-block group-hover:translate-y-2 transition-transform duration-300">🎯</span>
+                </span>
+                
+                {/* Pulsing rings */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100">
+                  <div className="absolute inset-0 rounded-2xl border-2 border-purple-400 animate-ping"
+                       style={{ animationDuration: '2s' }}></div>
+                </div>
               </a>
             </div>
 
