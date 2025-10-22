@@ -195,7 +195,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredNews.length > 0 ? (
               filteredNews.map((item, index) => (
-                <NewsCard key={index} item={item} />
+                <NewsCard key={`${item.link}-${index}`} item={item} />
               ))
             ) : (
               <div className="col-span-full text-center py-20">

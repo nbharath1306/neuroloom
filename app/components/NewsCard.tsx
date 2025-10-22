@@ -81,7 +81,7 @@ export default function NewsCard({ item }: NewsCardProps) {
             <div className="flex flex-wrap gap-2 mb-4">
               {item.categories.slice(0, 3).map((category, idx) => (
                 <span
-                  key={idx}
+                  key={`${category}-${idx}`}
                   className="px-2 py-1 glass rounded-lg text-xs text-gray-300 border border-white/10"
                 >
                   #{category}
