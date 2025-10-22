@@ -6,6 +6,7 @@ import Image from 'next/image';
 export default function FloatingProfile() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   const handleMouseEnter = () => {
@@ -25,8 +26,29 @@ export default function FloatingProfile() {
   };
 
   useEffect(() => {
+    // Hide profile when user scrolls down
+    let lastScrollY = window.scrollY;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 100) {
+        // Scrolled down more than 100px - hide profile
+        setIsVisible(false);
+        setIsExpanded(false);
+      } else {
+        // At top of page - show profile
+        setIsVisible(true);
+      }
+      
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -78,7 +100,8 @@ export default function FloatingProfile() {
   ];
 
   return (
-    <div className="fixed top-8 left-8 z-50">
+    <div className={`fixed top-8 left-8 z-50 transition-all duration-700 ease-out
+                    ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8 pointer-events-none'}`}>
       <div
         className="relative"
         onMouseEnter={handleMouseEnter}
