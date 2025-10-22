@@ -717,6 +717,15 @@ body::before {
   }
 }
 
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(var(--orbit-radius, 200px)) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(var(--orbit-radius, 200px)) rotate(-360deg);
+  }
+}
+
 .shimmer-effect {
   background: linear-gradient(
     90deg,

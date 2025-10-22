@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import NewsCard from './components/NewsCard';
 import FilterBar from './components/FilterBar';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import ProfileShowcase from './components/ProfileShowcase';
 
 interface NewsItem {
   title: string;
@@ -716,6 +717,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Profile Showcase Section */}
+      <ProfileShowcase />
 
       {/* News Feed Section - UPGRADED */}
       <div id="news-feed" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
