@@ -12,7 +12,7 @@ const parser = new Parser({
 
 const RSS_FEEDS = [
   { url: 'https://techcrunch.com/feed/', source: 'TechCrunch' },
-  { url: 'https://artificialintelligence-news.com/feed/', source: 'AI News' },
+  { url: 'https://www.artificialintelligence-news.com/feed/', source: 'AI News' },
   { url: 'https://news.mit.edu/rss/topic/artificial-intelligence2', source: 'MIT' },
   { url: 'https://www.wired.com/feed/tag/ai/latest/rss', source: 'Wired AI' },
   { url: 'https://economictimes.indiatimes.com/tech/rssfeeds/13357270.cms', source: 'Economic Times' },
@@ -37,10 +37,20 @@ export async function GET() {
   try {
     const allArticles: Article[] = [];
 
+    // Helper function to add timeout to fetch
+    const fetchWithTimeout = async (feed: { url: string; source: string }, timeout = 10000) => {
+      return Promise.race([
+        parser.parseURL(feed.url),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout')), timeout)
+        )
+      ]);
+    };
+
     // Fetch from all feeds in parallel
     const feedPromises = RSS_FEEDS.map(async (feed) => {
       try {
-        const feedData = await parser.parseURL(feed.url);
+        const feedData = await fetchWithTimeout(feed) as any;
         return feedData.items.slice(0, 10).map((item: any): Article => {
           // Helper to safely convert to string
           const safeString = (val: any, fallback: string = ''): string => {
