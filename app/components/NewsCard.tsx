@@ -40,6 +40,7 @@ export default function NewsCard({ item }: NewsCardProps) {
     if (!cardRef.current) return;
     
     const rect = cardRef.current.getBoundingClientRect();
+    // Calculate position as percentage (0-100)
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     
@@ -47,6 +48,7 @@ export default function NewsCard({ item }: NewsCardProps) {
   };
 
   const handleMouseLeave = () => {
+    // Reset to center position for smooth return animation
     setMousePosition({ x: 50, y: 50 });
   };
 
@@ -68,9 +70,14 @@ export default function NewsCard({ item }: NewsCardProps) {
 
   const sourceColor = getSourceColor(item.source);
 
-  // Calculate 3D tilt based on mouse position
-  const tiltX = (mousePosition.y - 50) / 10;
-  const tiltY = (50 - mousePosition.x) / 10;
+  // Calculate 3D tilt based on mouse position with enhanced sensitivity
+  // Map from center (50, 50) to rotation angles
+  const tiltX = (mousePosition.y - 50) / 2.5; // Vertical tilt (up/down)
+  const tiltY = (50 - mousePosition.x) / 2.5; // Horizontal tilt (left/right)
+  
+  // Calculate scale based on hover state
+  const isHovering = mousePosition.x !== 50 || mousePosition.y !== 50;
+  const scale = isHovering ? 1.08 : 1;
 
   return (
     <a
@@ -83,17 +90,20 @@ export default function NewsCard({ item }: NewsCardProps) {
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="glass rounded-3xl p-7 h-full flex flex-col relative overflow-hidden border-2
-                   transition-all duration-700 ease-out"
+        className="glass rounded-3xl p-7 h-full flex flex-col relative overflow-hidden border-2"
         style={{ 
           borderColor: 'var(--border-color)',
-          transform: `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`,
+          transform: `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${scale})`,
           transformStyle: 'preserve-3d',
+          transition: isHovering 
+            ? 'box-shadow 0.3s ease, border-color 0.3s ease, transform 0.1s ease-out' 
+            : 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
           boxShadow: `
-            0 20px 60px -15px ${sourceColor.glow},
-            0 0 40px rgba(59, 130, 246, 0.2),
+            0 ${20 + Math.abs(tiltX) * 2}px ${60 + Math.abs(tiltX) * 3}px -15px ${sourceColor.glow},
+            0 0 ${isHovering ? '60' : '40'}px rgba(59, 130, 246, ${isHovering ? '0.4' : '0.2'}),
             inset 0 1px 0 rgba(255, 255, 255, 0.1)
-          `
+          `,
+          willChange: 'transform'
         }}>
         
         {/* Floating particles */}
@@ -124,6 +134,16 @@ export default function NewsCard({ item }: NewsCardProps) {
             left: `${mousePosition.x}%`,
             top: `${mousePosition.y}%`,
             transform: 'translate(-50%, -50%)',
+            transition: isHovering ? 'left 0.1s ease-out, top 0.1s ease-out' : 'opacity 0.7s ease'
+          }}
+        />
+        
+        {/* Dynamic shine effect following mouse */}
+        <div 
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+          style={{
+            background: `radial-gradient(circle 200px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 255, 255, 0.15), transparent 70%)`,
+            transition: isHovering ? 'left 0.05s ease-out, top 0.05s ease-out, opacity 0.3s ease' : 'opacity 0.5s ease'
           }}
         />
         
@@ -145,7 +165,10 @@ export default function NewsCard({ item }: NewsCardProps) {
           <div className="absolute inset-0 shimmer-effect"></div>
         </div>
 
-        <div className="relative z-10" style={{ transform: 'translateZ(50px)' }}>
+        <div className="relative z-10" style={{ 
+          transform: `translateZ(${isHovering ? '60' : '30'}px)`,
+          transition: isHovering ? 'transform 0.1s ease-out' : 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+        }}>
           <div className="flex items-center justify-between mb-5">
             <span className="px-4 py-2 rounded-xl text-xs font-bold border-2
                            transition-all duration-500 group-hover:scale-110 group-hover:shadow-xl
