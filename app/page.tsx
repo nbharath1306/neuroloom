@@ -358,7 +358,6 @@ export default function Home() {
                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                   </svg>
-                  <span className="inline-block group-hover:translate-y-2 transition-transform duration-300">🎯</span>
                 </span>
                 
                 {/* Pulsing rings */}
