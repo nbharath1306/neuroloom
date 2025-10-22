@@ -70,6 +70,11 @@ export default function NewsCard({ item }: NewsCardProps) {
 
   const sourceColor = getSourceColor(item.source);
 
+  // Save scroll position when clicking the link
+  const handleClick = () => {
+    sessionStorage.setItem('neuroloom-scroll-position', window.scrollY.toString());
+  };
+
   // Calculate 3D tilt based on mouse position with enhanced sensitivity
   // Map from center (50, 50) to rotation angles
   const tiltX = (mousePosition.y - 50) / 2.5; // Vertical tilt (up/down)
@@ -82,8 +87,10 @@ export default function NewsCard({ item }: NewsCardProps) {
   return (
     <a
       href={item.link}
-      target="_blank"
-      rel="noopener noreferrer"
+      onClick={() => {
+        // Save scroll position before navigating
+        sessionStorage.setItem('neuroloom-scroll-position', window.scrollY.toString());
+      }}
       className="block group perspective-1000"
     >
       <div 

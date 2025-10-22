@@ -26,6 +26,30 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
     fetchNews();
+    
+    // Restore scroll position when navigating back
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        // Page was loaded from cache (back button)
+        const savedPosition = sessionStorage.getItem('neuroloom-scroll-position');
+        if (savedPosition) {
+          window.scrollTo(0, parseInt(savedPosition));
+        }
+      }
+    };
+
+    // Save scroll position before leaving
+    const saveScrollPosition = () => {
+      sessionStorage.setItem('neuroloom-scroll-position', window.scrollY.toString());
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+    window.addEventListener('beforeunload', saveScrollPosition);
+
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow);
+      window.removeEventListener('beforeunload', saveScrollPosition);
+    };
   }, []);
 
   useEffect(() => {
