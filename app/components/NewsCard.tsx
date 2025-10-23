@@ -206,7 +206,6 @@ export default function NewsCard({ item }: NewsCardProps) {
         }}>
         
         {/* Radial glow following mouse */}
-                {/* Radial glow following mouse */}
         <div 
           className="absolute w-[400px] h-[400px] pointer-events-none blur-3xl"
           style={{ 
@@ -214,21 +213,9 @@ export default function NewsCard({ item }: NewsCardProps) {
             left: `${mousePosition.x}%`,
             top: `${mousePosition.y}%`,
             transform: 'translate(-50%, -50%)',
-            opacity: isHovering ? 0.6 : 0,
-            transition: 'opacity 0.6s ease'
-          }}
-        />
-
-        {/* Reading Focus Overlay - Darkens other content */}
-        <div 
-          className="absolute -inset-4 pointer-events-none rounded-3xl
-                     transition-all duration-700 ease-out"
-          style={{ 
-            background: isHovering 
-              ? 'transparent' 
-              : 'transparent',
-            backdropFilter: isHovering ? 'brightness(1.15) saturate(1.2)' : 'none',
-            WebkitBackdropFilter: isHovering ? 'brightness(1.15) saturate(1.2)' : 'none'
+            opacity: isHovering ? 1 : 0,
+            transition: 'opacity 0.3s ease-out',
+            willChange: 'left, top, opacity'
           }}
         />
         
@@ -254,21 +241,11 @@ export default function NewsCard({ item }: NewsCardProps) {
                pointerEvents: 'none'
              }}></div>
 
-        {/* Top accent line with shimmer + Reading Progress */}
-        <div className="absolute top-0 left-0 w-full h-1.5 overflow-hidden">
-          {/* Background track */}
-          <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 opacity-30"></div>
-          {/* Animated progress bar */}
-          <div className="absolute inset-0 transform scale-x-0 group-hover:scale-x-100 
-                          transition-transform duration-1000 ease-out origin-left"
-               style={{ background: `linear-gradient(90deg, ${sourceColor.bg}, ${sourceColor.text})` }}>
-            <div className="absolute inset-0 shimmer-effect"></div>
-          </div>
-          {/* Read indicator (full bar if already read) */}
-          {isViewed && (
-            <div className="absolute inset-0 animate-fadeIn"
-                 style={{ background: 'var(--accent-success)' }}></div>
-          )}
+        {/* Top accent line with shimmer */}
+        <div className="absolute top-0 left-0 w-full h-1 transform scale-x-0 group-hover:scale-x-100 
+                        transition-transform duration-1000 ease-out origin-left overflow-hidden"
+             style={{ background: `linear-gradient(90deg, ${sourceColor.bg}, ${sourceColor.text})` }}>
+          <div className="absolute inset-0 shimmer-effect"></div>
         </div>
 
         <div className="relative z-10" style={{ 
@@ -332,45 +309,38 @@ export default function NewsCard({ item }: NewsCardProps) {
             </div>
           </div>
 
-          {/* Enhanced Title with Better Readability */}
-          <h3 className="text-xl font-black mb-5 line-clamp-2 transition-all duration-500 
-                       group-hover:scale-[1.02] leading-[1.4] tracking-tight"
+          <h3 className="text-xl font-black mb-4 line-clamp-2 transition-all duration-500 
+                       group-hover:scale-[1.03] leading-tight"
               style={{ 
                 color: 'var(--text-primary)',
-                textShadow: isHovering ? `0 0 20px ${sourceColor.glow}` : 'none',
-                letterSpacing: '-0.02em'
+                textShadow: `0 0 30px ${sourceColor.glow}`
               }}>
-            <span className="relative inline-block">
-              <span className="relative z-10 transition-colors duration-500"
-                    style={{ 
-                      color: isHovering ? sourceColor.text : 'var(--text-primary)'
-                    }}>
-                {item.title}
-              </span>
-              {/* Highlight underline on hover */}
-              <span className="absolute -bottom-1 left-0 w-0 group-hover:w-full h-0.5 
-                             transition-all duration-700 ease-out"
-                    style={{ backgroundColor: sourceColor.bg }}></span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r 
+                           group-hover:from-[var(--accent-primary)] group-hover:via-[var(--accent-secondary)] 
+                           group-hover:to-[var(--accent-info)] transition-all duration-700"
+                  style={{ 
+                    backgroundImage: 'none',
+                    WebkitTextFillColor: 'var(--text-primary)',
+                    transition: 'all 0.7s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundImage = `linear-gradient(135deg, ${sourceColor.bg}, ${sourceColor.text})`;
+                    (e.currentTarget.style as any).webkitTextFillColor = 'transparent';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundImage = 'none';
+                    (e.currentTarget.style as any).webkitTextFillColor = 'var(--text-primary)';
+                  }}>
+              {item.title}
             </span>
           </h3>
 
-          {/* Enhanced Content Snippet with Better Typography */}
           {item.contentSnippet && (
-            <p className="text-sm mb-6 flex-grow leading-[1.8] 
+            <p className="text-sm line-clamp-3 mb-5 flex-grow leading-relaxed 
                           transition-all duration-500 group-hover:text-opacity-100
-                          relative overflow-hidden"
-               style={{ 
-                 color: 'var(--text-secondary)',
-                 lineHeight: '1.75',
-                 fontSize: '0.9375rem'
-               }}>
-              <span className="relative z-10 block group-hover:translate-x-0.5 transition-transform duration-500">
-                {item.contentSnippet}
-              </span>
-              {/* Subtle reading guide gradient */}
-              <span className="absolute bottom-0 left-0 w-full h-8 pointer-events-none
-                             bg-gradient-to-t from-[var(--bg-primary)] to-transparent
-                             opacity-0 group-hover:opacity-60 transition-opacity duration-500"></span>
+                          group-hover:translate-x-1"
+               style={{ color: 'var(--text-muted)' }}>
+              {item.contentSnippet}
             </p>
           )}
 
