@@ -20,6 +20,9 @@ export default function NewsCard({ item }: NewsCardProps) {
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isViewed, setIsViewed] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
+  const [summary, setSummary] = useState<string>('');
+  const [loadingSummary, setLoadingSummary] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,6 +89,45 @@ export default function NewsCard({ item }: NewsCardProps) {
       localStorage.setItem('neuroloom-viewed-articles', JSON.stringify(viewedArticles));
     }
     setIsViewed(true);
+  };
+
+  // Generate AI summary
+  const handleGenerateSummary = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (summary) {
+      setShowSummary(!showSummary);
+      return;
+    }
+
+    setLoadingSummary(true);
+    setShowSummary(true);
+
+    try {
+      const response = await fetch('/api/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: item.title,
+          description: item.contentSnippet || ''
+        })
+      });
+
+      const data = await response.json();
+      setSummary(data.summary || 'Unable to generate summary');
+    } catch (error) {
+      console.error('Summary error:', error);
+      setSummary('Failed to generate summary. Please try again.');
+    } finally {
+      setLoadingSummary(false);
+    }
+  };
+
+  const handleCopySummary = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(summary);
   };
 
   // Calculate 3D tilt based on mouse position with enhanced sensitivity
@@ -305,30 +347,155 @@ export default function NewsCard({ item }: NewsCardProps) {
             </div>
           )}
 
-          <div className="mt-auto pt-5 flex items-center justify-between 
-                          transition-all duration-500 group-hover:translate-x-2"
+          {/* AI Summary Section */}
+          {showSummary && (
+            <div className="mb-5 relative overflow-hidden rounded-2xl border-2 animate-fadeIn"
+                 style={{ 
+                   borderColor: sourceColor.bg,
+                   background: `linear-gradient(135deg, ${sourceColor.bg}15, ${sourceColor.text}10)`,
+                   boxShadow: `0 0 30px ${sourceColor.glow}, inset 0 0 20px ${sourceColor.glow}`
+                 }}>
+              {/* Top accent bar */}
+              <div className="h-1 w-full"
+                   style={{ 
+                     background: `linear-gradient(90deg, ${sourceColor.bg}, ${sourceColor.text})` 
+                   }}>
+                <div className="shimmer-effect absolute inset-0"></div>
+              </div>
+              
+              <div className="p-5">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="relative">
+                      <svg className="w-5 h-5 animate-pulse" 
+                           style={{ color: sourceColor.text }}
+                           fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                        <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                      </svg>
+                      {loadingSummary && (
+                        <div className="absolute inset-0 rounded-full border-2 border-t-transparent animate-spin"
+                             style={{ borderColor: sourceColor.bg }}></div>
+                      )}
+                    </div>
+                    <span className="text-sm font-black" style={{ color: sourceColor.text }}>
+                      AI Summary
+                    </span>
+                  </div>
+                  
+                  {summary && !loadingSummary && (
+                    <button
+                      onClick={handleCopySummary}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300
+                               hover:scale-110 flex items-center gap-1.5"
+                      style={{ 
+                        backgroundColor: `${sourceColor.bg}30`,
+                        color: sourceColor.text,
+                        border: `2px solid ${sourceColor.bg}`
+                      }}>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      Copy
+                    </button>
+                  )}
+                </div>
+                
+                {/* Summary Content */}
+                {loadingSummary ? (
+                  <div className="space-y-2.5">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} 
+                           className="h-3 rounded-full animate-pulse"
+                           style={{ 
+                             background: `linear-gradient(90deg, ${sourceColor.bg}30, ${sourceColor.text}20)`,
+                             width: `${100 - i * 15}%`
+                           }}></div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm leading-relaxed font-medium"
+                     style={{ color: 'var(--text-primary)' }}>
+                    {summary}
+                  </p>
+                )}
+              </div>
+              
+              {/* Animated particles */}
+              <div className="absolute inset-0 pointer-events-none opacity-30">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i}
+                       className="absolute w-1 h-1 rounded-full animate-float"
+                       style={{
+                         background: sourceColor.bg,
+                         left: `${20 + i * 15}%`,
+                         top: `${30 + i * 10}%`,
+                         animationDelay: `${i * 0.3}s`,
+                         animationDuration: '4s'
+                       }}></div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Action buttons row */}
+          <div className="mt-auto pt-5 flex items-center justify-between gap-3"
                style={{ borderTop: `2px solid var(--border-color)` }}>
-            <span className="text-base font-black flex items-center gap-2 relative"
+            {/* AI Summary Button */}
+            <button
+              onClick={handleGenerateSummary}
+              className="px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2
+                       transition-all duration-300 hover:scale-105 relative overflow-hidden
+                       border-2"
+              style={{ 
+                backgroundColor: summary ? `${sourceColor.bg}20` : 'transparent',
+                color: sourceColor.text,
+                borderColor: sourceColor.bg,
+                boxShadow: summary ? `0 0 20px ${sourceColor.glow}` : 'none'
+              }}>
+              <svg className={`w-4 h-4 ${loadingSummary ? 'animate-spin' : 'animate-pulse'}`} 
+                   fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+              </svg>
+              <span>{summary ? 'Summary' : 'AI Summary'}</span>
+              {summary && (
+                <svg className={`w-3.5 h-3.5 transition-transform duration-300 ${showSummary ? 'rotate-180' : ''}`}
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                </svg>
+              )}
+              <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
+                   style={{ background: `linear-gradient(135deg, ${sourceColor.bg}20, transparent)` }}></div>
+            </button>
+            
+            {/* Read Full Story */}
+            <span className="text-sm font-black flex items-center gap-2 relative
+                           transition-all duration-500 group-hover:translate-x-1"
                   style={{ 
                     color: sourceColor.text,
                     textShadow: `0 0 20px ${sourceColor.glow}`
                   }}>
-              Read Full Story
-              <svg className="w-5 h-5 transition-all duration-500 group-hover:translate-x-2" 
+              Read Full
+              <svg className="w-4 h-4 transition-all duration-500 group-hover:translate-x-2" 
                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} 
                       d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </span>
-            <div className="w-12 h-12 rounded-2xl glass flex items-center justify-center 
-                            transition-all duration-700 group-hover:scale-150 group-hover:rotate-[360deg]
+            
+            {/* Arrow icon */}
+            <div className="w-10 h-10 rounded-xl glass flex items-center justify-center 
+                            transition-all duration-700 group-hover:scale-125 group-hover:rotate-[360deg]
                             group-hover:shadow-2xl relative overflow-hidden"
                  style={{ 
                    borderColor: sourceColor.bg,
                    background: `linear-gradient(135deg, ${sourceColor.bg}30, ${sourceColor.text}30)`,
                    boxShadow: `0 0 30px ${sourceColor.glow}`
                  }}>
-              <svg className="w-6 h-6 transition-all duration-500 relative z-10" 
+              <svg className="w-5 h-5 transition-all duration-500 relative z-10" 
                    style={{ color: sourceColor.text }}
                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} 
