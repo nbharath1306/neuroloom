@@ -124,6 +124,12 @@ export default function NewsCard({ item }: NewsCardProps) {
     }
   };
 
+  const handleCloseSummary = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowSummary(false);
+  };
+
   const handleCopySummary = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -347,9 +353,10 @@ export default function NewsCard({ item }: NewsCardProps) {
             </div>
           )}
 
-          {/* AI Summary Section */}
+          {/* AI Summary Section - REVOLUTION: Easy Close Button */}
           {showSummary && (
             <div className="mb-5 relative overflow-hidden rounded-2xl border-2 animate-fadeIn"
+                 onClick={(e) => e.stopPropagation()}
                  style={{ 
                    borderColor: sourceColor.bg,
                    background: `linear-gradient(135deg, ${sourceColor.bg}15, ${sourceColor.text}10)`,
@@ -364,7 +371,7 @@ export default function NewsCard({ item }: NewsCardProps) {
               </div>
               
               <div className="p-5">
-                {/* Header */}
+                {/* Header with BIG Close Button */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <div className="relative">
@@ -384,23 +391,47 @@ export default function NewsCard({ item }: NewsCardProps) {
                     </span>
                   </div>
                   
-                  {summary && !loadingSummary && (
+                  {/* Action Buttons Group */}
+                  <div className="flex items-center gap-2">
+                    {summary && !loadingSummary && (
+                      <button
+                        onClick={handleCopySummary}
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300
+                                 hover:scale-110 flex items-center gap-1.5"
+                        style={{ 
+                          backgroundColor: `${sourceColor.bg}30`,
+                          color: sourceColor.text,
+                          border: `2px solid ${sourceColor.bg}`
+                        }}>
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        Copy
+                      </button>
+                    )}
+                    
+                    {/* BIG CLOSE BUTTON - Always Visible, Easy to Click */}
                     <button
-                      onClick={handleCopySummary}
-                      className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300
-                               hover:scale-110 flex items-center gap-1.5"
+                      onClick={handleCloseSummary}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center
+                               transition-all duration-300 hover:scale-125 hover:rotate-90
+                               relative overflow-hidden group/close"
                       style={{ 
-                        backgroundColor: `${sourceColor.bg}30`,
-                        color: sourceColor.text,
-                        border: `2px solid ${sourceColor.bg}`
+                        backgroundColor: `${sourceColor.bg}40`,
+                        border: `2px solid ${sourceColor.bg}`,
+                        boxShadow: `0 0 15px ${sourceColor.glow}`
                       }}>
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      <svg className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover/close:scale-110" 
+                           style={{ color: sourceColor.text }}
+                           fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                       </svg>
-                      Copy
+                      {/* Hover glow effect */}
+                      <div className="absolute inset-0 opacity-0 group-hover/close:opacity-100 transition-opacity duration-300"
+                           style={{ background: `radial-gradient(circle, ${sourceColor.glow}, transparent)` }}></div>
                     </button>
-                  )}
+                  </div>
                 </div>
                 
                 {/* Summary Content */}
@@ -437,38 +468,52 @@ export default function NewsCard({ item }: NewsCardProps) {
                        }}></div>
                 ))}
               </div>
+              
+              {/* Click anywhere hint (subtle) */}
+              <div className="absolute bottom-2 right-3 text-xs opacity-40 font-medium pointer-events-none"
+                   style={{ color: sourceColor.text }}>
+                Click ✕ to close
+              </div>
             </div>
           )}
 
           {/* Action buttons row */}
           <div className="mt-auto pt-5 flex items-center justify-between gap-3"
                style={{ borderTop: `2px solid var(--border-color)` }}>
-            {/* AI Summary Button */}
+            {/* AI Summary Button - BIGGER & EASIER TO CLICK */}
             <button
               onClick={handleGenerateSummary}
-              className="px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2
-                       transition-all duration-300 hover:scale-105 relative overflow-hidden
-                       border-2"
+              className="px-5 py-3 rounded-xl font-black text-sm flex items-center gap-2.5
+                       transition-all duration-300 hover:scale-110 relative overflow-hidden
+                       border-2 shadow-lg"
               style={{ 
-                backgroundColor: summary ? `${sourceColor.bg}20` : 'transparent',
+                backgroundColor: summary ? `${sourceColor.bg}30` : `${sourceColor.bg}10`,
                 color: sourceColor.text,
                 borderColor: sourceColor.bg,
-                boxShadow: summary ? `0 0 20px ${sourceColor.glow}` : 'none'
+                boxShadow: summary ? `0 0 25px ${sourceColor.glow}` : `0 0 10px ${sourceColor.glow}`
               }}>
-              <svg className={`w-4 h-4 ${loadingSummary ? 'animate-spin' : 'animate-pulse'}`} 
+              <svg className={`w-5 h-5 ${loadingSummary ? 'animate-spin' : 'animate-pulse'}`} 
                    fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                 <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
               </svg>
-              <span>{summary ? 'Summary' : 'AI Summary'}</span>
-              {summary && (
-                <svg className={`w-3.5 h-3.5 transition-transform duration-300 ${showSummary ? 'rotate-180' : ''}`}
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+              <span className="tracking-wide">
+                {showSummary ? 'Hide Summary' : (summary ? 'Show Summary' : 'AI Summary')}
+              </span>
+              {!showSummary && summary && (
+                <svg className="w-4 h-4 animate-bounce" 
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              )}
+              {showSummary && (
+                <svg className="w-4 h-4" 
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
                 </svg>
               )}
               <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
-                   style={{ background: `linear-gradient(135deg, ${sourceColor.bg}20, transparent)` }}></div>
+                   style={{ background: `linear-gradient(135deg, ${sourceColor.bg}30, transparent)` }}></div>
             </button>
             
             {/* Read Full Story */}
