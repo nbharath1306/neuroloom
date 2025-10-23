@@ -71,19 +71,34 @@ export default function NewsCard({ item }: NewsCardProps) {
   };
 
   const getSourceColor = (source: string) => {
-    const colors: { [key: string]: { bg: string; text: string; glow: string } } = {
-      'TechCrunch': { bg: '#3b82f6', text: '#60a5fa', glow: 'rgba(59, 130, 246, 0.6)' },
-      'AI News': { bg: '#8b5cf6', text: '#a78bfa', glow: 'rgba(139, 92, 246, 0.6)' },
-      'MIT': { bg: '#10b981', text: '#34d399', glow: 'rgba(16, 185, 129, 0.6)' },
-      'Wired AI': { bg: '#f59e0b', text: '#fbbf24', glow: 'rgba(245, 158, 11, 0.6)' },
-      'Economic Times': { bg: '#ef4444', text: '#f87171', glow: 'rgba(239, 68, 68, 0.6)' },
-      'Indian Express': { bg: '#06b6d4', text: '#22d3ee', glow: 'rgba(6, 182, 212, 0.6)' },
-      'Mint': { bg: '#14b8a6', text: '#2dd4bf', glow: 'rgba(20, 184, 166, 0.6)' },
-      'Express Computer': { bg: '#6366f1', text: '#818cf8', glow: 'rgba(99, 102, 241, 0.6)' },
-      'Analytics India': { bg: '#ec4899', text: '#f472b6', glow: 'rgba(236, 72, 153, 0.6)' },
-      'The Verge': { bg: '#8b5cf6', text: '#a78bfa', glow: 'rgba(139, 92, 246, 0.6)' },
-    };
-    return colors[source] || { bg: '#6b7280', text: '#9ca3af', glow: 'rgba(107, 114, 128, 0.6)' };
+    // MASSIVE COLOR PALETTE - Random vibrant colors! 🌈
+    const colorPalette = [
+      { bg: '#3b82f6', text: '#60a5fa', glow: 'rgba(59, 130, 246, 0.6)' },     // Blue
+      { bg: '#8b5cf6', text: '#a78bfa', glow: 'rgba(139, 92, 246, 0.6)' },     // Purple
+      { bg: '#10b981', text: '#34d399', glow: 'rgba(16, 185, 129, 0.6)' },     // Green
+      { bg: '#f59e0b', text: '#fbbf24', glow: 'rgba(245, 158, 11, 0.6)' },     // Orange
+      { bg: '#ef4444', text: '#f87171', glow: 'rgba(239, 68, 68, 0.6)' },      // Red
+      { bg: '#06b6d4', text: '#22d3ee', glow: 'rgba(6, 182, 212, 0.6)' },      // Cyan
+      { bg: '#14b8a6', text: '#2dd4bf', glow: 'rgba(20, 184, 166, 0.6)' },     // Teal
+      { bg: '#6366f1', text: '#818cf8', glow: 'rgba(99, 102, 241, 0.6)' },     // Indigo
+      { bg: '#ec4899', text: '#f472b6', glow: 'rgba(236, 72, 153, 0.6)' },     // Pink
+      { bg: '#f43f5e', text: '#fb7185', glow: 'rgba(244, 63, 94, 0.6)' },      // Rose
+      { bg: '#8b5cf6', text: '#a78bfa', glow: 'rgba(139, 92, 246, 0.6)' },     // Violet
+      { bg: '#d946ef', text: '#e879f9', glow: 'rgba(217, 70, 239, 0.6)' },     // Fuchsia
+      { bg: '#0ea5e9', text: '#38bdf8', glow: 'rgba(14, 165, 233, 0.6)' },     // Sky
+      { bg: '#22c55e', text: '#4ade80', glow: 'rgba(34, 197, 94, 0.6)' },      // Lime
+      { bg: '#eab308', text: '#facc15', glow: 'rgba(234, 179, 8, 0.6)' },      // Yellow
+      { bg: '#f97316', text: '#fb923c', glow: 'rgba(249, 115, 22, 0.6)' },     // Amber
+      { bg: '#84cc16', text: '#a3e635', glow: 'rgba(132, 204, 22, 0.6)' },     // Lime Green
+      { bg: '#06b6d4', text: '#22d3ee', glow: 'rgba(6, 182, 212, 0.6)' },      // Cyan Blue
+      { bg: '#a855f7', text: '#c084fc', glow: 'rgba(168, 85, 247, 0.6)' },     // Deep Purple
+      { bg: '#db2777', text: '#f472b6', glow: 'rgba(219, 39, 119, 0.6)' },     // Hot Pink
+    ];
+    
+    // Generate random but consistent color based on article link (so same article = same color)
+    const hash = item.link.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const colorIndex = hash % colorPalette.length;
+    return colorPalette[colorIndex];
   };
 
   const sourceColor = getSourceColor(item.source);
