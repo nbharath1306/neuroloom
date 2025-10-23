@@ -2,11 +2,20 @@
 
 import { useEffect, useState } from 'react'
 
-type Theme = 'light' | 'dark' | 'system'
+type Theme = 'light' | 'dark' | 'gray' | 'cyberpunk' | 'ocean'
+
+const themes = [
+  { id: 'light' as Theme, name: 'Light', icon: '☀️', color: 'from-yellow-400 to-orange-500' },
+  { id: 'dark' as Theme, name: 'True Black', icon: '🌑', color: 'from-gray-800 to-black' },
+  { id: 'gray' as Theme, name: 'Soft Gray', icon: '🌙', color: 'from-slate-600 to-slate-800' },
+  { id: 'cyberpunk' as Theme, name: 'Cyberpunk', icon: '💜', color: 'from-purple-600 to-indigo-800' },
+  { id: 'ocean' as Theme, name: 'Deep Ocean', icon: '🌊', color: 'from-blue-700 to-blue-900' },
+]
 
 export default function ThemeSwitcher() {
-  const [theme, setTheme] = useState<Theme>('system')
+  const [theme, setTheme] = useState<Theme>('dark')
   const [mounted, setMounted] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -15,24 +24,17 @@ export default function ThemeSwitcher() {
       setTheme(saved)
       applyTheme(saved)
     } else {
-      applyTheme('system')
+      applyTheme('dark')
     }
   }, [])
 
   const applyTheme = (newTheme: Theme) => {
-    // Instant theme application with CSS class
     const root = document.documentElement
+    root.setAttribute('data-theme', newTheme)
     
-    if (newTheme === 'system') {
-      const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      root.setAttribute('data-theme', systemPreference)
-    } else {
-      root.setAttribute('data-theme', newTheme)
-    }
-    
-    // Force immediate style recalculation
+    // Force immediate style recalculation for instant switch
     root.style.transition = 'none'
-    void root.offsetHeight // Trigger reflow
+    void root.offsetHeight
     root.style.transition = ''
   }
 
@@ -40,106 +42,77 @@ export default function ThemeSwitcher() {
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
     applyTheme(newTheme)
+    setShowMenu(false)
   }
 
   if (!mounted) return null
 
+  const currentTheme = themes.find(t => t.id === theme) || themes[1]
+
   return (
     <div className="fixed top-6 right-6 z-50 animate-fadeIn">
-      <div className="glass rounded-xl p-2 flex gap-2 shadow-xl">
-        <button
-          onClick={() => handleThemeChange('light')}
-          className={`p-2.5 rounded-lg transition-all duration-300 relative overflow-hidden group ${
-            theme === 'light'
-              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg scale-110'
-              : 'hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-105'
-          }`}
-          title="Light Theme"
-          aria-label="Switch to light theme"
+      {/* Current Theme Button */}
+      <button
+        onClick={() => setShowMenu(!showMenu)}
+        className="glass rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-xl hover:scale-105 transition-all duration-300"
+      >
+        <span className="text-2xl">{currentTheme.icon}</span>
+        <span className="font-semibold text-sm">{currentTheme.name}</span>
+        <svg
+          className={`w-4 h-4 transition-transform duration-300 ${showMenu ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          {theme === 'light' && (
-            <span className="absolute inset-0 bg-white opacity-30 animate-pulse-slow rounded-lg"></span>
-          )}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className={`w-5 h-5 relative z-10 transition-transform duration-300 ${
-              theme === 'light' ? 'rotate-180' : 'group-hover:rotate-45'
-            }`}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-            />
-          </svg>
-        </button>
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
 
-        <button
-          onClick={() => handleThemeChange('dark')}
-          className={`p-2.5 rounded-lg transition-all duration-300 relative overflow-hidden group ${
-            theme === 'dark'
-              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg scale-110'
-              : 'hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-105'
-          }`}
-          title="Dark Theme"
-          aria-label="Switch to dark theme"
-        >
-          {theme === 'dark' && (
-            <span className="absolute inset-0 bg-white opacity-30 animate-pulse-slow rounded-lg"></span>
-          )}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className={`w-5 h-5 relative z-10 transition-transform duration-300 ${
-              theme === 'dark' ? 'rotate-12' : 'group-hover:-rotate-12'
-            }`}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-            />
-          </svg>
-        </button>
-
-        <button
-          onClick={() => handleThemeChange('system')}
-          className={`p-2.5 rounded-lg transition-all duration-300 relative overflow-hidden group ${
-            theme === 'system'
-              ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg scale-110'
-              : 'hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-105'
-          }`}
-          title="System Theme"
-          aria-label="Use system theme preference"
-        >
-          {theme === 'system' && (
-            <span className="absolute inset-0 bg-white opacity-30 animate-pulse-slow rounded-lg"></span>
-          )}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className={`w-5 h-5 relative z-10 transition-transform duration-300 ${
-              theme === 'system' ? '' : 'group-hover:scale-110'
-            }`}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"
-            />
-          </svg>
-        </button>
-      </div>
+      {/* Theme Menu */}
+      {showMenu && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 z-40"
+            onClick={() => setShowMenu(false)}
+          />
+          
+          {/* Menu */}
+          <div className="absolute top-full right-0 mt-2 w-56 glass-strong rounded-2xl p-2 shadow-2xl animate-scaleUp z-50">
+            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 px-3 py-2 mb-1">
+              Choose Theme
+            </div>
+            {themes.map((themeOption) => (
+              <button
+                key={themeOption.id}
+                onClick={() => handleThemeChange(themeOption.id)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${
+                  theme === themeOption.id
+                    ? `bg-gradient-to-r ${themeOption.color} text-white shadow-lg scale-105`
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700/50'
+                }`}
+              >
+                <span className="text-2xl">{themeOption.icon}</span>
+                <div className="flex-1 text-left">
+                  <div className="font-semibold text-sm">{themeOption.name}</div>
+                </div>
+                {theme === themeOption.id && (
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </button>
+            ))}
+            
+            {/* Preview Info */}
+            <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+              <div className="text-xs text-gray-500 dark:text-gray-400 px-3 py-2 text-center">
+                Theme changes instantly ⚡
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
