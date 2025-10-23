@@ -156,25 +156,6 @@ export default function Home() {
       
       {/* Theme Switcher */}
       <ThemeSwitcher />
-      
-      {/* Floating particles background */}
-      {mounted && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={`particle-${i}`}
-              className="particle"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 30}s`,
-                animationDuration: `${25 + Math.random() * 20}s`,
-                background: `var(--accent-${['primary', 'secondary', 'info'][i % 3]})`,
-              }}
-            />
-          ))}
-        </div>
-      )}
 
       {/* Hero Section */}
       <div className="relative overflow-hidden">
