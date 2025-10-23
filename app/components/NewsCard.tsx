@@ -20,6 +20,7 @@ export default function NewsCard({ item }: NewsCardProps) {
   const [formattedDate, setFormattedDate] = useState<string>('');
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isViewed, setIsViewed] = useState(false);
+  const [isSummarized, setIsSummarized] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [summary, setSummary] = useState<string>('');
   const [loadingSummary, setLoadingSummary] = useState(false);
@@ -42,6 +43,10 @@ export default function NewsCard({ item }: NewsCardProps) {
     // Check if article has been viewed
     const viewedArticles = JSON.parse(localStorage.getItem('neuroloom-viewed-articles') || '[]');
     setIsViewed(viewedArticles.includes(item.link));
+    
+    // Check if article has been summarized
+    const summarizedArticles = JSON.parse(localStorage.getItem('neuroloom-summarized-articles') || '[]');
+    setIsSummarized(summarizedArticles.includes(item.link));
   }, [item.pubDate, item.link]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -116,6 +121,14 @@ export default function NewsCard({ item }: NewsCardProps) {
 
       const data = await response.json();
       setSummary(data.summary || 'Unable to generate summary');
+      
+      // Mark article as summarized
+      const summarizedArticles = JSON.parse(localStorage.getItem('neuroloom-summarized-articles') || '[]');
+      if (!summarizedArticles.includes(item.link)) {
+        summarizedArticles.push(item.link);
+        localStorage.setItem('neuroloom-summarized-articles', JSON.stringify(summarizedArticles));
+      }
+      setIsSummarized(true);
     } catch (error) {
       console.error('Summary error:', error);
       setSummary('Failed to generate summary. Please try again.');
@@ -273,13 +286,21 @@ export default function NewsCard({ item }: NewsCardProps) {
                 </div>
                 <span className="font-semibold">{formattedDate || 'Loading...'}</span>
               </div>
-              {/* Simple "Read" text under time */}
-              {isViewed && (
-                <span className="text-xs font-bold" 
-                      style={{ color: 'var(--accent-success)' }}>
-                  Read ✓
-                </span>
-              )}
+              {/* Status indicators under time */}
+              <div className="flex flex-col gap-0.5">
+                {isViewed && (
+                  <span className="text-xs font-bold" 
+                        style={{ color: 'var(--accent-success)' }}>
+                    Read ✓
+                  </span>
+                )}
+                {isSummarized && (
+                  <span className="text-xs font-bold" 
+                        style={{ color: 'var(--accent-info)' }}>
+                    Summarized ✓
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -516,19 +537,14 @@ export default function NewsCard({ item }: NewsCardProps) {
                    style={{ background: `linear-gradient(135deg, ${sourceColor.bg}30, transparent)` }}></div>
             </button>
             
-            {/* Read Full Story */}
+            {/* Read Full Story - Clean Text Only */}
             <span className="text-sm font-black flex items-center gap-2 relative
                            transition-all duration-500 group-hover:translate-x-1"
                   style={{ 
                     color: sourceColor.text,
                     textShadow: `0 0 20px ${sourceColor.glow}`
                   }}>
-              Read Full
-              <svg className="w-4 h-4 transition-all duration-500 group-hover:translate-x-2" 
-                   fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} 
-                      d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
+              Read Full Story
             </span>
             
             {/* Arrow icon */}
