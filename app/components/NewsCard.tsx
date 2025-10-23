@@ -205,25 +205,6 @@ export default function NewsCard({ item }: NewsCardProps) {
           willChange: 'transform, box-shadow'
         }}>
         
-        {/* Floating particles */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 rounded-full opacity-0 group-hover:opacity-100 
-                         animate-float"
-              style={{
-                background: sourceColor.bg,
-                left: `${(i * 12.5)}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.15}s`,
-                animationDuration: `${3 + Math.random() * 2}s`,
-                boxShadow: `0 0 10px ${sourceColor.glow}`
-              }}
-            />
-          ))}
-        </div>
-        
         {/* Radial glow following mouse */}
         <div 
           className="absolute w-[400px] h-[400px] pointer-events-none blur-3xl"
@@ -497,21 +478,6 @@ export default function NewsCard({ item }: NewsCardProps) {
                     {summary}
                   </p>
                 )}
-              </div>
-              
-              {/* Animated particles */}
-              <div className="absolute inset-0 pointer-events-none opacity-30">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i}
-                       className="absolute w-1 h-1 rounded-full animate-float"
-                       style={{
-                         background: sourceColor.bg,
-                         left: `${20 + i * 15}%`,
-                         top: `${30 + i * 10}%`,
-                         animationDelay: `${i * 0.3}s`,
-                         animationDuration: '4s'
-                       }}></div>
-                ))}
               </div>
               
               {/* Click anywhere hint (subtle) */}
