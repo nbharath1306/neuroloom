@@ -88,11 +88,15 @@ export async function GET() {
               .replace(/&#039;/g, "'")
               .replace(/&apos;/g, "'")
               .replace(/&nbsp;/g, ' ')
-              .replace(/&#8217;/g, "'")
-              .replace(/&#8220;/g, '"')
-              .replace(/&#8221;/g, '"')
-              .replace(/&#8211;/g, '–')
-              .replace(/&#8212;/g, '—')
+              .replace(/&#8216;/g, "'")  // Left single quote
+              .replace(/&#8217;/g, "'")  // Right single quote
+              .replace(/&#8218;/g, "'")  // Single low quote
+              .replace(/&#8220;/g, '"')  // Left double quote
+              .replace(/&#8221;/g, '"')  // Right double quote
+              .replace(/&#8222;/g, '"')  // Double low quote
+              .replace(/&#8211;/g, '–')  // En dash
+              .replace(/&#8212;/g, '—')  // Em dash
+              .replace(/&#8230;/g, '...')  // Ellipsis
               // Remove markdown symbols
               .replace(/#{1,6}\s/g, '')
               .replace(/\*\*/g, '')
