@@ -77,12 +77,38 @@ export async function GET() {
             return String(val);
           };
 
+          // Helper to decode HTML entities and clean text
+          const cleanText = (text: string): string => {
+            return text
+              // Decode common HTML entities
+              .replace(/&amp;/g, '&')
+              .replace(/&lt;/g, '<')
+              .replace(/&gt;/g, '>')
+              .replace(/&quot;/g, '"')
+              .replace(/&#039;/g, "'")
+              .replace(/&apos;/g, "'")
+              .replace(/&nbsp;/g, ' ')
+              .replace(/&#8217;/g, "'")
+              .replace(/&#8220;/g, '"')
+              .replace(/&#8221;/g, '"')
+              .replace(/&#8211;/g, '–')
+              .replace(/&#8212;/g, '—')
+              // Remove markdown symbols
+              .replace(/#{1,6}\s/g, '')
+              .replace(/\*\*/g, '')
+              .replace(/\*/g, '')
+              .replace(/_/g, '')
+              // Remove extra whitespace
+              .replace(/\s+/g, ' ')
+              .trim();
+          };
+
           return {
-            title: safeString(item.title, 'No title'),
+            title: cleanText(safeString(item.title, 'No title')),
             link: safeString(item.link, '#'),
             pubDate: safeString(item.pubDate || item.isoDate, new Date().toISOString()),
             creator: safeString(item.creator, feed.source),
-            contentSnippet: safeString(item.contentSnippet || item.content, '').substring(0, 200),
+            contentSnippet: cleanText(safeString(item.contentSnippet || item.content, '')).substring(0, 200),
             source: feed.source,
             categories: Array.isArray(item.categories) 
               ? item.categories.map((cat: any) => safeString(cat, '')).filter(Boolean)
