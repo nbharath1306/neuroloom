@@ -330,42 +330,22 @@ export default function NewsCard({ item }: NewsCardProps) {
           willChange: 'transform, box-shadow'
         }}>
         
-        {/* REVOLUTIONARY PARTICLE EFFECT - Floating dots */}
+        {/* Clean corner highlights on hover */}
         {isHovering && (
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute w-3 h-3 rounded-full animate-ping" 
-                 style={{ 
-                   backgroundColor: sourceColor.bg,
-                   top: '10%', left: '20%',
-                   animationDuration: '2s',
-                   boxShadow: `0 0 15px ${sourceColor.glow}`
+          <>
+            {/* Top corners */}
+            <div className="absolute top-0 left-0 w-12 h-12 pointer-events-none opacity-60"
+                 style={{
+                   background: `linear-gradient(135deg, ${sourceColor.bg}60, transparent)`,
+                   borderTopLeftRadius: '1.5rem'
                  }}></div>
-            <div className="absolute w-2 h-2 rounded-full animate-ping" 
-                 style={{ 
-                   backgroundColor: sourceColor.bg,
-                   top: '80%', left: '70%',
-                   animationDuration: '3s',
-                   animationDelay: '0.5s',
-                   boxShadow: `0 0 15px ${sourceColor.glow}`
+            <div className="absolute top-0 right-0 w-12 h-12 pointer-events-none opacity-60"
+                 style={{
+                   background: `linear-gradient(225deg, ${sourceColor.bg}60, transparent)`,
+                   borderTopRightRadius: '1.5rem'
                  }}></div>
-            <div className="absolute w-2.5 h-2.5 rounded-full animate-ping" 
-                 style={{ 
-                   backgroundColor: sourceColor.bg,
-                   top: '40%', left: '90%',
-                   animationDuration: '2.5s',
-                   animationDelay: '1s',
-                   boxShadow: `0 0 15px ${sourceColor.glow}`
-                 }}></div>
-          </div>
+          </>
         )}
-        
-        {/* Rainbow animated border gradient */}
-        <div className="absolute -inset-[2px] opacity-0 group-hover:opacity-70 transition-opacity duration-700 pointer-events-none rounded-3xl animate-spin-slow"
-             style={{
-               background: `conic-gradient(from 0deg, ${sourceColor.glow}, transparent, ${sourceColor.bg}, transparent, ${sourceColor.glow})`,
-               filter: 'blur(8px)',
-               zIndex: -1
-             }}></div>
         
         {/* Radial glow following mouse */}
         <div 
