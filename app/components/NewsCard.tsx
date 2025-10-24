@@ -15,7 +15,6 @@ interface NewsCardProps {
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import AudioPlayer from './AudioPlayer';
 
 export default function NewsCard({ item }: NewsCardProps) {
   const [formattedDate, setFormattedDate] = useState<string>('');
@@ -27,6 +26,7 @@ export default function NewsCard({ item }: NewsCardProps) {
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [showAudioPlayer, setShowAudioPlayer] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   useEffect(() => {
     const formatDate = (dateString: string) => {
@@ -203,8 +203,15 @@ export default function NewsCard({ item }: NewsCardProps) {
     e.preventDefault();
     e.stopPropagation();
     
+    // If already playing, stop it
+    if (showAudioPlayer) {
+      window.speechSynthesis.cancel();
+      setShowAudioPlayer(false);
+      return;
+    }
+    
+    // If no summary yet, generate it first
     if (!summary) {
-      // If no summary yet, generate it first
       setLoadingSummary(true);
       setShowSummary(true);
 
@@ -231,7 +238,7 @@ export default function NewsCard({ item }: NewsCardProps) {
         setIsSummarized(true);
         
         // Now play the audio
-        setShowAudioPlayer(true);
+        speakText(generatedSummary);
       } catch (error) {
         console.error('Summary error:', error);
         setSummary('Failed to generate summary. Please try again.');
@@ -240,8 +247,45 @@ export default function NewsCard({ item }: NewsCardProps) {
       }
     } else {
       // Summary already exists, just play it
-      setShowAudioPlayer(true);
+      speakText(summary);
     }
+  };
+
+  const speakText = (text: string) => {
+    if (!text) return;
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    
+    // Try to use a good English voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => 
+      v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Natural'))
+    ) || voices.find(v => v.lang.startsWith('en'));
+    
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+
+    utterance.onstart = () => {
+      setShowAudioPlayer(true);
+    };
+
+    utterance.onend = () => {
+      setShowAudioPlayer(false);
+    };
+
+    utterance.onerror = () => {
+      setShowAudioPlayer(false);
+    };
+
+    utteranceRef.current = utterance;
+    window.speechSynthesis.speak(utterance);
   };
 
   const handleCopySummary = (e: React.MouseEvent) => {
@@ -554,10 +598,46 @@ export default function NewsCard({ item }: NewsCardProps) {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm leading-relaxed font-medium"
-                     style={{ color: 'var(--text-primary)' }}>
-                    {summary}
-                  </p>
+                  <>
+                    <p className="text-sm leading-relaxed font-medium mb-4"
+                       style={{ color: 'var(--text-primary)' }}>
+                      {summary}
+                    </p>
+                    
+                    {/* Audio Player Controls - Integrated */}
+                    {summary && (
+                      <div className="mt-4 pt-4 border-t-2" 
+                           style={{ borderColor: `${sourceColor.bg}30` }}>
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={handleListenToSummary}
+                              className="px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2
+                                       transition-all duration-300 hover:scale-105 border-2"
+                              style={{ 
+                                backgroundColor: showAudioPlayer ? `${sourceColor.bg}40` : `${sourceColor.bg}20`,
+                                color: sourceColor.text,
+                                borderColor: sourceColor.bg,
+                                boxShadow: showAudioPlayer ? `0 0 20px ${sourceColor.glow}` : 'none'
+                              }}>
+                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
+                              </svg>
+                              {showAudioPlayer ? '🎙️ Listening...' : '🎙️ Listen to Summary'}
+                            </button>
+                          </div>
+                          
+                          <div className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                               style={{ 
+                                 backgroundColor: `${sourceColor.bg}20`,
+                                 color: sourceColor.text
+                               }}>
+                            Text-to-Speech
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
               
@@ -608,27 +688,6 @@ export default function NewsCard({ item }: NewsCardProps) {
                 <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
                      style={{ background: `linear-gradient(135deg, ${sourceColor.bg}30, transparent)` }}></div>
               </button>
-
-              {/* Listen to Summary Button - NEW! */}
-              <button
-                onClick={handleListenToSummary}
-                className="px-4 py-3 rounded-xl font-black text-sm flex items-center gap-2
-                         transition-all duration-300 hover:scale-110 relative overflow-hidden
-                         border-2 shadow-lg"
-                style={{ 
-                  backgroundColor: `${sourceColor.bg}10`,
-                  color: sourceColor.text,
-                  borderColor: sourceColor.bg,
-                  boxShadow: `0 0 15px ${sourceColor.glow}`
-                }}
-                title="Listen to AI Summary">
-                <svg className="w-5 h-5 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
-                </svg>
-                <span className="tracking-wide">🎙️</span>
-                <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
-                     style={{ background: `linear-gradient(135deg, ${sourceColor.bg}30, transparent)` }}></div>
-              </button>
             </div>
             
             {/* Read Full Story - Clean Text Only */}
@@ -666,15 +725,6 @@ export default function NewsCard({ item }: NewsCardProps) {
           </div>
         </div>
       </div>
-
-      {/* Audio Player - Appears when user clicks Listen */}
-      {showAudioPlayer && summary && (
-        <AudioPlayer
-          text={summary}
-          title={item.title}
-          onClose={() => setShowAudioPlayer(false)}
-        />
-      )}
     </a>
   );
 }
