@@ -26,6 +26,7 @@ export default function Home() {
   const [newArticlesCount, setNewArticlesCount] = useState(0);
   const [lastFetchTime, setLastFetchTime] = useState<Date | null>(null);
   const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(true);
+  const [timeSinceUpdate, setTimeSinceUpdate] = useState(0);
 
   useEffect(() => {
     setMounted(true);
@@ -60,25 +61,42 @@ export default function Home() {
     filterNews();
   }, [news, selectedSource, searchQuery]);
 
-  // Auto-refresh every 5 minutes
+  // Live timer to show seconds since last update
+  useEffect(() => {
+    if (!lastFetchTime) return;
+
+    const interval = setInterval(() => {
+      setTimeSinceUpdate(Math.floor((Date.now() - lastFetchTime.getTime()) / 1000));
+    }, 1000); // Update every second
+
+    return () => clearInterval(interval);
+  }, [lastFetchTime]);
+
+  // Auto-refresh every 1 minute for real-time updates
   useEffect(() => {
     if (!autoRefreshEnabled) return;
 
     const interval = setInterval(() => {
       checkForNewArticles();
-    }, 5 * 60 * 1000); // 5 minutes
+    }, 1 * 60 * 1000); // 1 minute
 
     return () => clearInterval(interval);
   }, [news, autoRefreshEnabled]);
 
-  const fetchNews = async (silent: boolean = false) => {
+  const fetchNews = async (silent: boolean = false, forceRefresh: boolean = false) => {
     try {
       if (!silent) setLoading(true);
-      const response = await fetch('/api/news');
+      const url = forceRefresh ? '/api/news?refresh=true' : '/api/news';
+      const response = await fetch(url, { cache: 'no-store' });
       const data = await response.json();
       setNews(data.articles || []);
       setFilteredNews(data.articles || []);
       setLastFetchTime(new Date());
+      
+      // Show success feedback
+      if (forceRefresh && !silent) {
+        setNewArticlesCount(0);
+      }
     } catch (error) {
       console.error('Error fetching news:', error);
     } finally {
@@ -88,7 +106,7 @@ export default function Home() {
 
   const checkForNewArticles = async () => {
     try {
-      const response = await fetch('/api/news');
+      const response = await fetch('/api/news?refresh=true', { cache: 'no-store' });
       const data = await response.json();
       const newArticles = data.articles || [];
       
@@ -98,6 +116,11 @@ export default function Home() {
       
       if (freshArticles.length > 0) {
         setNewArticlesCount(freshArticles.length);
+        // Auto-update the news feed with new articles
+        setNews(newArticles);
+        setFilteredNews(newArticles);
+        setLastFetchTime(new Date());
+        
         // Play a subtle notification sound effect (optional)
         if (typeof Audio !== 'undefined') {
           try {
@@ -116,7 +139,7 @@ export default function Home() {
 
   const handleRefresh = () => {
     setNewArticlesCount(0);
-    fetchNews();
+    fetchNews(false, true); // Force refresh bypasses cache
   };
 
   const filterNews = () => {
@@ -837,6 +860,47 @@ export default function Home() {
           setSearchQuery={setSearchQuery}
           onRefresh={handleRefresh}
         />
+
+        {/* Real-time Status Indicator */}
+        {lastFetchTime && (
+          <div className="flex justify-center items-center gap-4 mb-8 mt-6 animate-fadeIn">
+            <div className="glass rounded-full px-6 py-3 flex items-center gap-3 border-2 hover:scale-105 transition-all duration-300"
+                 style={{ borderColor: 'var(--accent-success)' }}>
+              {/* Pulsing live indicator */}
+              <div className="relative flex items-center">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <div className="absolute w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+              </div>
+              
+              <span style={{ color: 'var(--text-primary)' }} className="font-bold text-sm">
+                LIVE
+              </span>
+              
+              <span style={{ color: 'var(--text-muted)' }} className="text-sm">
+                Updated {timeSinceUpdate}s ago
+              </span>
+              
+              {/* Auto-refresh indicator */}
+              {autoRefreshEnabled && (
+                <span className="text-xs px-2 py-1 rounded-full bg-blue-500/20 border border-blue-500/50 font-semibold"
+                      style={{ color: 'var(--accent-info)' }}>
+                  Auto-refresh: 1min
+                </span>
+              )}
+            </div>
+            
+            {/* New articles notification */}
+            {newArticlesCount > 0 && (
+              <div className="glass rounded-full px-4 py-2 flex items-center gap-2 border-2 animate-bounce-slow"
+                   style={{ borderColor: 'var(--accent-warning)' }}>
+                <span className="text-xl">🔥</span>
+                <span style={{ color: 'var(--accent-warning)' }} className="font-bold text-sm">
+                  {newArticlesCount} new articles available!
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
         {loading ? (
           <div className="flex flex-col justify-center items-center h-64">

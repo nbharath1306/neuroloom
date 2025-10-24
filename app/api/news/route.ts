@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 
+// Mark this route as dynamic (no static generation)
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const parser = new Parser({
   customFields: {
     item: [
@@ -10,8 +14,8 @@ const parser = new Parser({
   },
 });
 
-// Cache configuration
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+// Cache configuration - Reduced for more real-time updates
+const CACHE_DURATION = 1 * 60 * 1000; // 1 minute in milliseconds
 let cachedData: any = null;
 let lastFetchTime: number = 0;
 
@@ -38,11 +42,15 @@ interface Article {
   categories: string[];
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Check for force refresh parameter
+    const { searchParams } = new URL(request.url);
+    const forceRefresh = searchParams.get('refresh') === 'true';
+    
     // Check if cache is still valid
     const now = Date.now();
-    if (cachedData && (now - lastFetchTime) < CACHE_DURATION) {
+    if (cachedData && (now - lastFetchTime) < CACHE_DURATION && !forceRefresh) {
       console.log('Returning cached data');
       return NextResponse.json({
         ...cachedData,
@@ -54,8 +62,8 @@ export async function GET() {
     console.log('Fetching fresh data from RSS feeds...');
     const allArticles: Article[] = [];
 
-    // Helper function to add timeout to fetch
-    const fetchWithTimeout = async (feed: { url: string; source: string }, timeout = 10000) => {
+    // Helper function to add timeout to fetch (reduced for faster updates)
+    const fetchWithTimeout = async (feed: { url: string; source: string }, timeout = 5000) => {
       return Promise.race([
         parser.parseURL(feed.url),
         new Promise((_, reject) => 
