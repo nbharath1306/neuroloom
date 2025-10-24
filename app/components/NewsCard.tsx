@@ -330,6 +330,43 @@ export default function NewsCard({ item }: NewsCardProps) {
           willChange: 'transform, box-shadow'
         }}>
         
+        {/* REVOLUTIONARY PARTICLE EFFECT - Floating dots */}
+        {isHovering && (
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute w-3 h-3 rounded-full animate-ping" 
+                 style={{ 
+                   backgroundColor: sourceColor.bg,
+                   top: '10%', left: '20%',
+                   animationDuration: '2s',
+                   boxShadow: `0 0 15px ${sourceColor.glow}`
+                 }}></div>
+            <div className="absolute w-2 h-2 rounded-full animate-ping" 
+                 style={{ 
+                   backgroundColor: sourceColor.bg,
+                   top: '80%', left: '70%',
+                   animationDuration: '3s',
+                   animationDelay: '0.5s',
+                   boxShadow: `0 0 15px ${sourceColor.glow}`
+                 }}></div>
+            <div className="absolute w-2.5 h-2.5 rounded-full animate-ping" 
+                 style={{ 
+                   backgroundColor: sourceColor.bg,
+                   top: '40%', left: '90%',
+                   animationDuration: '2.5s',
+                   animationDelay: '1s',
+                   boxShadow: `0 0 15px ${sourceColor.glow}`
+                 }}></div>
+          </div>
+        )}
+        
+        {/* Rainbow animated border gradient */}
+        <div className="absolute -inset-[2px] opacity-0 group-hover:opacity-70 transition-opacity duration-700 pointer-events-none rounded-3xl animate-spin-slow"
+             style={{
+               background: `conic-gradient(from 0deg, ${sourceColor.glow}, transparent, ${sourceColor.bg}, transparent, ${sourceColor.glow})`,
+               filter: 'blur(8px)',
+               zIndex: -1
+             }}></div>
+        
         {/* Radial glow following mouse */}
         <div 
           className="absolute w-[400px] h-[400px] pointer-events-none blur-3xl"
@@ -653,56 +690,79 @@ export default function NewsCard({ item }: NewsCardProps) {
           <div className="mt-auto pt-5 flex items-center justify-between gap-3"
                style={{ borderTop: `2px solid var(--border-color)` }}>
             <div className="flex items-center gap-2">
-              {/* AI Summary Button - BIGGER & EASIER TO CLICK */}
+              {/* AI Summary Button - REVOLUTIONARY DESIGN */}
               <button
                 onClick={handleGenerateSummary}
-                className="px-5 py-3 rounded-xl font-black text-sm flex items-center gap-2.5
+                className="group/btn px-5 py-3 rounded-xl font-black text-sm flex items-center gap-2.5
                          transition-all duration-300 hover:scale-110 relative overflow-hidden
-                         border-2 shadow-lg"
+                         border-2 shadow-lg hover:shadow-2xl"
                 style={{ 
                   backgroundColor: summary ? `${sourceColor.bg}30` : `${sourceColor.bg}10`,
                   color: sourceColor.text,
                   borderColor: sourceColor.bg,
                   boxShadow: summary ? `0 0 25px ${sourceColor.glow}` : `0 0 10px ${sourceColor.glow}`
                 }}>
-                <svg className={`w-5 h-5 ${loadingSummary ? 'animate-spin' : 'animate-pulse'}`} 
+                
+                {/* Lightning bolt effect on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-200"
+                     style={{ 
+                       background: `linear-gradient(45deg, transparent 30%, ${sourceColor.glow}60 50%, transparent 70%)`,
+                       animation: 'lightning 1.5s infinite'
+                     }}></div>
+                
+                {/* Ripple effect */}
+                <div className="absolute inset-0 scale-0 group-hover/btn:scale-150 opacity-0 group-hover/btn:opacity-30 
+                               transition-all duration-700 rounded-xl"
+                     style={{ backgroundColor: sourceColor.bg }}></div>
+                
+                <svg className={`w-5 h-5 relative z-10 ${loadingSummary ? 'animate-spin' : 'animate-pulse'}`} 
                      fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                   <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                 </svg>
-                <span className="tracking-wide">
+                <span className="tracking-wide relative z-10">
                   {showSummary ? 'Hide Summary' : (summary ? 'Show Summary' : 'AI Summary')}
                 </span>
                 {!showSummary && summary && (
-                  <svg className="w-4 h-4 animate-bounce" 
+                  <svg className="w-4 h-4 animate-bounce relative z-10" 
                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 )}
                 {showSummary && (
-                  <svg className="w-4 h-4" 
+                  <svg className="w-4 h-4 relative z-10" 
                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
                   </svg>
                 )}
-                <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
-                     style={{ background: `linear-gradient(135deg, ${sourceColor.bg}30, transparent)` }}></div>
+                
+                {/* Pulsing glow orbs in corners */}
+                <div className="absolute top-0 left-0 w-2 h-2 rounded-full opacity-0 group-hover/btn:opacity-100 animate-pulse"
+                     style={{ backgroundColor: sourceColor.glow }}></div>
+                <div className="absolute bottom-0 right-0 w-2 h-2 rounded-full opacity-0 group-hover/btn:opacity-100 animate-pulse"
+                     style={{ backgroundColor: sourceColor.glow, animationDelay: '0.3s' }}></div>
               </button>
             </div>
             
-            {/* Read Full Story - Clean Text Only */}
+            {/* Read Full Story - MAGNETIC EFFECT */}
             <span className="text-sm font-black flex items-center gap-2 relative
-                           transition-all duration-500 group-hover:translate-x-1"
+                           transition-all duration-500 group-hover:translate-x-2 group-hover:scale-110"
                   style={{ 
                     color: sourceColor.text,
-                    textShadow: `0 0 20px ${sourceColor.glow}`
+                    textShadow: `0 0 20px ${sourceColor.glow}`,
+                    filter: `drop-shadow(0 0 10px ${sourceColor.glow})`
                   }}>
-              Read Full Story
+              <span className="relative">
+                Read Full Story
+                {/* Underline that grows on hover */}
+                <span className="absolute bottom-0 left-0 w-0 group-hover:w-full h-0.5 transition-all duration-500"
+                      style={{ backgroundColor: sourceColor.bg }}></span>
+              </span>
             </span>
             
-            {/* Arrow icon */}
+            {/* Arrow icon - ULTIMATE ROTATION */}
             <div className="w-10 h-10 rounded-xl glass flex items-center justify-center 
-                            transition-all duration-700 group-hover:scale-125 group-hover:rotate-[360deg]
+                            transition-all duration-700 group-hover:scale-150 group-hover:rotate-[720deg]
                             group-hover:shadow-2xl relative overflow-hidden"
                  style={{ 
                    borderColor: sourceColor.bg,
@@ -715,12 +775,16 @@ export default function NewsCard({ item }: NewsCardProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} 
                       d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
-              {/* Rotating glow */}
+              {/* Rotating rainbow glow */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 
                               transition-opacity duration-500 animate-spin-slow"
                    style={{ 
-                     background: `conic-gradient(from 0deg, transparent, ${sourceColor.glow}, transparent)` 
+                     background: `conic-gradient(from 0deg, ${sourceColor.glow}, ${sourceColor.bg}, ${sourceColor.glow})` 
                    }}></div>
+              {/* Expanding ring on hover */}
+              <div className="absolute inset-0 scale-0 group-hover:scale-[3] opacity-100 group-hover:opacity-0 
+                             transition-all duration-1000 rounded-full border-2"
+                   style={{ borderColor: sourceColor.bg }}></div>
             </div>
           </div>
         </div>

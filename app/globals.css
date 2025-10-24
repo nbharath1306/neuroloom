@@ -1166,6 +1166,36 @@ body::before {
   }
 }
 
+@keyframes lightning {
+  0%, 100% {
+    transform: translateX(-100%) skewX(-20deg);
+  }
+  50% {
+    transform: translateX(200%) skewX(-20deg);
+  }
+}
+
+@keyframes magnetic-pull {
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    transform: translateX(5px) scale(1.05);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--glow-color, rgba(59, 130, 246, 0.5));
+  }
+  50% {
+    box-shadow: 0 0 40px var(--glow-color, rgba(59, 130, 246, 0.8));
+  }
+}
+
 .border-3 {
   border-width: 3px;
 }

@@ -883,42 +883,144 @@ export default function Home() {
           onRefresh={handleRefresh}
         />
 
-        {/* Real-time Status Indicator */}
+        {/* Real-time Status Indicator - REVOLUTIONARY */}
         {lastFetchTime && (
           <div className="flex justify-center items-center gap-4 mb-8 mt-6 animate-fadeIn">
-            <div className="glass rounded-full px-6 py-3 flex items-center gap-3 border-2 hover:scale-105 transition-all duration-300"
+            <div className="glass rounded-full px-6 py-3 flex items-center gap-3 border-2 
+                          hover:scale-110 transition-all duration-500 relative overflow-hidden group"
                  style={{ borderColor: 'var(--accent-success)' }}>
-              {/* Pulsing live indicator */}
+              
+              {/* Animated rainbow glow background */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                   style={{
+                     background: `conic-gradient(from 0deg, 
+                       rgba(16, 185, 129, 0.4), 
+                       rgba(59, 130, 246, 0.4), 
+                       rgba(139, 92, 246, 0.4), 
+                       rgba(16, 185, 129, 0.4))`,
+                     animation: 'spin 3s linear infinite',
+                     filter: 'blur(12px)'
+                   }}></div>
+              
+              {/* Pulsing live indicator - ENHANCED */}
               <div className="relative flex items-center">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <div className="absolute w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+                {/* Main glowing dot */}
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse relative z-10"
+                     style={{ 
+                       boxShadow: '0 0 20px rgba(16, 185, 129, 0.8), 0 0 40px rgba(16, 185, 129, 0.4)',
+                       animation: 'pulse 1s ease-in-out infinite'
+                     }}></div>
+                
+                {/* Multiple expanding rings */}
+                <div className="absolute w-3 h-3 bg-green-500 rounded-full animate-ping"
+                     style={{ animationDuration: '1.5s' }}></div>
+                <div className="absolute w-3 h-3 bg-green-400 rounded-full animate-ping"
+                     style={{ animationDuration: '2s', animationDelay: '0.3s' }}></div>
+                <div className="absolute w-3 h-3 bg-green-300 rounded-full animate-ping"
+                     style={{ animationDuration: '2.5s', animationDelay: '0.6s' }}></div>
               </div>
               
-              <span style={{ color: 'var(--text-primary)' }} className="font-bold text-sm">
-                LIVE
+              <span style={{ color: 'var(--text-primary)' }} 
+                    className="font-black text-sm tracking-wider relative z-10
+                             group-hover:scale-110 transition-transform duration-300">
+                LIVE ⚡
               </span>
               
-              <span style={{ color: 'var(--text-muted)' }} className="text-sm">
+              <span style={{ color: 'var(--text-muted)' }} 
+                    className="text-sm font-bold relative z-10 
+                             group-hover:translate-x-1 transition-transform duration-300">
                 Updated {formatTimeSinceUpdate(timeSinceUpdate)} ago
               </span>
               
-              {/* Auto-refresh countdown indicator */}
+              {/* Auto-refresh countdown indicator - MEGA ENHANCED */}
               {autoRefreshEnabled && (
-                <span className="text-xs px-2 py-1 rounded-full bg-blue-500/20 border border-blue-500/50 font-semibold"
-                      style={{ color: 'var(--accent-info)' }}>
-                  Next refresh in {formatCountdown(timeSinceUpdate)}
+                <span className="text-xs px-3 py-1.5 rounded-full border-2 font-black relative overflow-hidden group/countdown
+                               transition-all duration-300 hover:scale-125"
+                      style={{ 
+                        backgroundColor: timeSinceUpdate >= 50 ? 'rgba(245, 158, 11, 0.3)' : 'rgba(59, 130, 246, 0.2)',
+                        borderColor: timeSinceUpdate >= 50 ? 'var(--accent-warning)' : 'var(--accent-info)',
+                        color: timeSinceUpdate >= 50 ? 'var(--accent-warning)' : 'var(--accent-info)',
+                        boxShadow: timeSinceUpdate >= 50 
+                          ? '0 0 20px rgba(245, 158, 11, 0.5)' 
+                          : '0 0 15px rgba(59, 130, 246, 0.3)'
+                      }}>
+                  
+                  {/* Progress bar background */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-purple-500/30 transition-all duration-1000"
+                       style={{ width: `${((60 - timeSinceUpdate) / 60) * 100}%` }}></div>
+                  
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    {/* Clock that rotates */}
+                    <svg className="w-3.5 h-3.5 transition-transform duration-500 group-hover/countdown:rotate-[360deg]" 
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" 
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Next refresh in {formatCountdown(timeSinceUpdate)}
+                    {timeSinceUpdate >= 50 && <span className="animate-bounce">🔥</span>}
+                  </span>
+                  
+                  {/* Urgency pulse when almost time to refresh */}
+                  {timeSinceUpdate >= 50 && (
+                    <>
+                      <div className="absolute inset-0 border-2 border-yellow-400 rounded-full animate-ping"></div>
+                      <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-yellow-400 rounded-full animate-bounce"></div>
+                    </>
+                  )}
                 </span>
               )}
+              
+              {/* Floating sparkles on hover */}
+              <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <span className="text-lg animate-bounce">✨</span>
+              </div>
+              <div className="absolute -bottom-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                <span className="text-sm animate-pulse" style={{ animationDelay: '0.3s' }}>⭐</span>
+              </div>
             </div>
             
-            {/* New articles notification */}
+            {/* New articles notification - EXPLOSIVE DESIGN */}
             {newArticlesCount > 0 && (
-              <div className="glass rounded-full px-4 py-2 flex items-center gap-2 border-2 animate-bounce-slow"
-                   style={{ borderColor: 'var(--accent-warning)' }}>
-                <span className="text-xl">🔥</span>
-                <span style={{ color: 'var(--accent-warning)' }} className="font-bold text-sm">
-                  {newArticlesCount} new articles available!
+              <div className="glass rounded-full px-5 py-2.5 flex items-center gap-3 border-2 
+                            animate-bounce-slow relative overflow-hidden group hover:scale-125
+                            transition-all duration-500"
+                   style={{ 
+                     borderColor: 'var(--accent-warning)',
+                     boxShadow: '0 0 30px rgba(245, 158, 11, 0.5), 0 0 60px rgba(245, 158, 11, 0.2)'
+                   }}>
+                
+                {/* Pulsing background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 via-orange-500/20 to-red-500/20"
+                     style={{ 
+                       animation: 'pulse 2s ease-in-out infinite'
+                     }}></div>
+                
+                {/* Lightning effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                     style={{ 
+                       background: 'linear-gradient(45deg, transparent 30%, rgba(245, 158, 11, 0.5) 50%, transparent 70%)',
+                       animation: 'lightning 1.5s infinite'
+                     }}></div>
+                
+                {/* Fire emoji with extra animation */}
+                <span className="text-2xl relative z-10 animate-bounce">🔥</span>
+                
+                <span style={{ color: 'var(--accent-warning)' }} 
+                      className="font-black text-sm relative z-10 tracking-wide">
+                  {newArticlesCount} new article{newArticlesCount > 1 ? 's' : ''} available!
                 </span>
+                
+                {/* Explosion particles */}
+                {[...Array(4)].map((_, i) => (
+                  <div key={i}
+                       className="absolute w-1.5 h-1.5 rounded-full bg-yellow-400 opacity-0 group-hover:opacity-100 animate-ping"
+                       style={{
+                         top: `${20 + i * 20}%`,
+                         right: `${10 + i * 15}%`,
+                         animationDelay: `${i * 0.2}s`,
+                         boxShadow: '0 0 10px rgba(245, 158, 11, 0.8)'
+                       }}></div>
+                ))}
               </div>
             )}
           </div>
