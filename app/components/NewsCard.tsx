@@ -854,7 +854,7 @@ export default function NewsCard({ item }: NewsCardProps) {
                                  backgroundColor: `${sourceColor.bg}20`,
                                  color: sourceColor.text
                                }}>
-                            <span>🤗 HuggingFace</span>
+                            <span>🎤 Voice: {selectedVoice === 'female' ? 'Female' : 'Male'} (Browser TTS)</span>
                           </div>
                         </div>
                       </div>
