@@ -25,8 +25,11 @@ export default function NewsCard({ item }: NewsCardProps) {
   const [summary, setSummary] = useState<string>('');
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [showAudioPlayer, setShowAudioPlayer] = useState(false);
+  const [selectedVoice, setSelectedVoice] = useState<'male' | 'female'>('female');
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const formatDate = (dateString: string) => {
@@ -202,60 +205,93 @@ export default function NewsCard({ item }: NewsCardProps) {
   const handleListenToSummary = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    // If already playing, stop it
-    if (showAudioPlayer) {
-      window.speechSynthesis.cancel();
-      setShowAudioPlayer(false);
+
+    if (!summary) {
+      // Generate summary first, then play audio
+      await handleGenerateSummary(e);
       return;
     }
-    
-    // If no summary yet, generate it first
-    if (!summary) {
-      setLoadingSummary(true);
-      setShowSummary(true);
 
-      try {
-        const response = await fetch('/api/summarize', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            title: item.title,
-            description: item.contentSnippet || ''
-          })
-        });
+    // If already playing, stop it
+    if (isPlayingAudio) {
+      stopAudio();
+      return;
+    }
 
-        const data = await response.json();
-        const generatedSummary = data.summary || 'Unable to generate summary';
-        setSummary(generatedSummary);
+    // Try HuggingFace TTS first, fallback to browser
+    try {
+      setIsPlayingAudio(true);
+      setShowAudioPlayer(true);
+
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          text: summary,
+          voice: selectedVoice 
+        }),
+      });
+
+      if (response.ok) {
+        const contentType = response.headers.get('Content-Type');
         
-        // Mark article as summarized
-        const summarizedArticles = JSON.parse(localStorage.getItem('neuroloom-summarized-articles') || '[]');
-        if (!summarizedArticles.includes(item.link)) {
-          summarizedArticles.push(item.link);
-          localStorage.setItem('neuroloom-summarized-articles', JSON.stringify(summarizedArticles));
+        // Check if it's audio or JSON (fallback message)
+        if (contentType?.includes('audio')) {
+          // Got audio from HuggingFace!
+          const audioBlob = await response.blob();
+          const audioUrl = URL.createObjectURL(audioBlob);
+          
+          const audio = new Audio(audioUrl);
+          audioRef.current = audio;
+          
+          audio.onended = () => {
+            setIsPlayingAudio(false);
+            setShowAudioPlayer(false);
+            URL.revokeObjectURL(audioUrl);
+          };
+          
+          audio.onerror = () => {
+            console.log('Audio playback error, using browser TTS');
+            speakText(summary);
+          };
+          
+          await audio.play();
+          return;
         }
-        setIsSummarized(true);
-        
-        // Now play the audio
-        speakText(generatedSummary);
-      } catch (error) {
-        console.error('Summary error:', error);
-        setSummary('Failed to generate summary. Please try again.');
-      } finally {
-        setLoadingSummary(false);
       }
-    } else {
-      // Summary already exists, just play it
+      
+      // Fallback to browser TTS
+      console.log('Using browser TTS fallback');
+      speakText(summary);
+      
+    } catch (error) {
+      console.error('TTS error:', error);
+      // Fallback to browser TTS
       speakText(summary);
     }
   };
 
-  const speakText = (text: string) => {
+  const stopAudio = () => {
+    // Stop HuggingFace audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+    
+    // Stop browser TTS
+    window.speechSynthesis.cancel();
+    
+    setIsPlayingAudio(false);
+    setShowAudioPlayer(false);
+  };  const speakText = (text: string) => {
     if (!text) return;
 
     // Cancel any ongoing speech
     window.speechSynthesis.cancel();
+    
+    setIsPlayingAudio(true);
+    setShowAudioPlayer(true);
 
     const utterance = new SpeechSynthesisUtterance(text);
     
@@ -337,14 +373,17 @@ export default function NewsCard({ item }: NewsCardProps) {
 
     utterance.onstart = () => {
       setShowAudioPlayer(true);
+      setIsPlayingAudio(true);
     };
 
     utterance.onend = () => {
       setShowAudioPlayer(false);
+      setIsPlayingAudio(false);
     };
 
     utterance.onerror = () => {
       setShowAudioPlayer(false);
+      setIsPlayingAudio(false);
     };
 
     utteranceRef.current = utterance;
@@ -684,35 +723,95 @@ export default function NewsCard({ item }: NewsCardProps) {
                       {summary}
                     </p>
                     
-                    {/* Audio Player Controls - Integrated */}
+                    {/* Audio Player Controls - WITH VOICE SELECTION */}
                     {summary && (
                       <div className="mt-4 pt-4 border-t-2" 
                            style={{ borderColor: `${sourceColor.bg}30` }}>
+                        
+                        {/* Voice Selection */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-xs font-bold" style={{ color: 'var(--text-muted)' }}>
+                            Voice:
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setSelectedVoice('female');
+                            }}
+                            className={`px-3 py-1 rounded-lg text-xs font-bold transition-all duration-300
+                                     border-2 ${selectedVoice === 'female' ? 'scale-110' : 'opacity-60'}`}
+                            style={{
+                              backgroundColor: selectedVoice === 'female' ? `${sourceColor.bg}40` : `${sourceColor.bg}20`,
+                              color: sourceColor.text,
+                              borderColor: selectedVoice === 'female' ? sourceColor.bg : 'transparent',
+                              boxShadow: selectedVoice === 'female' ? `0 0 15px ${sourceColor.glow}` : 'none'
+                            }}>
+                            👩 Female
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setSelectedVoice('male');
+                            }}
+                            className={`px-3 py-1 rounded-lg text-xs font-bold transition-all duration-300
+                                     border-2 ${selectedVoice === 'male' ? 'scale-110' : 'opacity-60'}`}
+                            style={{
+                              backgroundColor: selectedVoice === 'male' ? `${sourceColor.bg}40` : `${sourceColor.bg}20`,
+                              color: sourceColor.text,
+                              borderColor: selectedVoice === 'male' ? sourceColor.bg : 'transparent',
+                              boxShadow: selectedVoice === 'male' ? `0 0 15px ${sourceColor.glow}` : 'none'
+                            }}>
+                            👨 Male
+                          </button>
+                        </div>
+                        
                         <div className="flex items-center justify-between gap-3">
                           <div className="flex items-center gap-2">
                             <button
                               onClick={handleListenToSummary}
                               className="px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2
-                                       transition-all duration-300 hover:scale-105 border-2"
+                                       transition-all duration-300 hover:scale-105 border-2 relative overflow-hidden"
                               style={{ 
-                                backgroundColor: showAudioPlayer ? `${sourceColor.bg}40` : `${sourceColor.bg}20`,
+                                backgroundColor: isPlayingAudio ? `${sourceColor.bg}40` : `${sourceColor.bg}20`,
                                 color: sourceColor.text,
                                 borderColor: sourceColor.bg,
-                                boxShadow: showAudioPlayer ? `0 0 20px ${sourceColor.glow}` : 'none'
+                                boxShadow: isPlayingAudio ? `0 0 20px ${sourceColor.glow}` : 'none'
                               }}>
-                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
-                              </svg>
-                              {showAudioPlayer ? '🎙️ Listening...' : '🎙️ Listen to Summary'}
+                              {isPlayingAudio ? (
+                                <>
+                                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                  </svg>
+                                  Stop
+                                </>
+                              ) : (
+                                <>
+                                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
+                                  </svg>
+                                  🎙️ Listen to Summary
+                                </>
+                              )}
+                              
+                              {/* Sound waves animation when playing */}
+                              {isPlayingAudio && (
+                                <div className="flex items-center gap-0.5">
+                                  <div className="w-0.5 h-2 bg-current rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                                  <div className="w-0.5 h-3 bg-current rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                                  <div className="w-0.5 h-2 bg-current rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                                </div>
+                              )}
                             </button>
                           </div>
                           
-                          <div className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                          <div className="text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5"
                                style={{ 
                                  backgroundColor: `${sourceColor.bg}20`,
                                  color: sourceColor.text
                                }}>
-                            Text-to-Speech
+                            <span>🤗 HuggingFace</span>
                           </div>
                         </div>
                       </div>
