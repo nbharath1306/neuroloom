@@ -31,22 +31,22 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Voice selection for Suno Bark
-    const voiceMap: { [key: string]: string } = {
-      'female': 'v2/en_speaker_6',  // Clear female voice
-      'male': 'v2/en_speaker_9',     // Clear male voice
-      'female2': 'v2/en_speaker_3',  // Alternative female
-      'male2': 'v2/en_speaker_5',    // Alternative male
+    // Use different models for male/female voices
+    const modelMap: { [key: string]: string } = {
+      'female': 'facebook/mms-tts-eng',        // Meta's model - clear female
+      'male': 'microsoft/speecht5_tts',        // Microsoft - good male
+      'female2': 'facebook/mms-tts-eng',  
+      'male2': 'microsoft/speecht5_tts',    
     };
 
-    const selectedVoice = voiceMap[voice] || voiceMap['female'];
+    const selectedModel = modelMap[voice] || modelMap['female'];
 
-    // Try Suno Bark first (best quality)
+    // Try selected TTS model
     try {
-      console.log('🎙️ Generating speech with Suno Bark...');
+      console.log(`🎙️ Generating ${voice} speech with ${selectedModel}...`);
       
       const response = await fetch(
-        'https://api-inference.huggingface.co/models/suno/bark',
+        `https://api-inference.huggingface.co/models/${selectedModel}`,
         {
           method: 'POST',
           headers: {
@@ -55,9 +55,6 @@ export async function POST(req: NextRequest) {
           },
           body: JSON.stringify({
             inputs: text,
-            parameters: {
-              speaker: selectedVoice,
-            }
           }),
         }
       );
@@ -68,25 +65,26 @@ export async function POST(req: NextRequest) {
         return new NextResponse(audioBuffer, {
           headers: {
             'Content-Type': 'audio/flac',
-            'Cache-Control': 'public, max-age=86400', // Cache for 24 hours
+            'Cache-Control': 'public, max-age=86400',
+            'X-Voice-Model': selectedModel, // Debug header
           },
         });
       }
 
-      // If model is loading, wait and retry
-      const errorData = await response.json();
+      // If model is loading, try fallback
+      const errorData = await response.json().catch(() => ({}));
       if (errorData.error?.includes('loading')) {
-        console.log('⏳ Model loading, trying fallback...');
-        throw new Error('Model loading');
+        console.log('⏳ Model loading, trying Bark fallback...');
       }
     } catch (error) {
-      console.log('Bark failed, trying Microsoft SpeechT5...');
+      console.log('Primary model failed, trying Bark...');
     }
 
-    // Fallback to Microsoft SpeechT5 (faster, still good quality)
+    // Fallback to Suno Bark (works but single voice)
     try {
+      console.log('🎙️ Fallback: Using Suno Bark...');
       const response = await fetch(
-        'https://api-inference.huggingface.co/models/microsoft/speecht5_tts',
+        'https://api-inference.huggingface.co/models/suno/bark',
         {
           method: 'POST',
           headers: {
@@ -104,11 +102,12 @@ export async function POST(req: NextRequest) {
           headers: {
             'Content-Type': 'audio/flac',
             'Cache-Control': 'public, max-age=86400',
+            'X-Voice-Model': 'suno/bark',
           },
         });
       }
     } catch (error) {
-      console.log('SpeechT5 failed, using browser TTS');
+      console.log('Bark failed too');
     }
 
     // Final fallback: browser TTS

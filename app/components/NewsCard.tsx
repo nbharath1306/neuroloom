@@ -236,16 +236,19 @@ export default function NewsCard({ item }: NewsCardProps) {
 
       console.log('📡 TTS Response:', { 
         status: response.status, 
-        contentType: response.headers.get('Content-Type') 
+        contentType: response.headers.get('Content-Type'),
+        voiceModel: response.headers.get('X-Voice-Model')
       });
 
       if (response.ok) {
         const contentType = response.headers.get('Content-Type');
+        const voiceModel = response.headers.get('X-Voice-Model');
         
         // Check if it's audio or JSON (fallback message)
         if (contentType?.includes('audio')) {
           // Got audio from HuggingFace!
-          console.log('✅ SUCCESS: Playing HuggingFace Suno Bark audio!');
+          console.log('✅ SUCCESS: Playing HuggingFace audio!');
+          console.log('🎙️ Voice Model:', voiceModel || 'unknown');
           const audioBlob = await response.blob();
           console.log('🎵 Audio blob size:', audioBlob.size, 'bytes');
           const audioUrl = URL.createObjectURL(audioBlob);
