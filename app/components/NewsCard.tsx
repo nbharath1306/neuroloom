@@ -15,6 +15,7 @@ interface NewsCardProps {
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import AudioPlayer from './AudioPlayer';
 
 export default function NewsCard({ item }: NewsCardProps) {
   const [formattedDate, setFormattedDate] = useState<string>('');
@@ -24,6 +25,7 @@ export default function NewsCard({ item }: NewsCardProps) {
   const [showSummary, setShowSummary] = useState(false);
   const [summary, setSummary] = useState<string>('');
   const [loadingSummary, setLoadingSummary] = useState(false);
+  const [showAudioPlayer, setShowAudioPlayer] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -195,6 +197,20 @@ export default function NewsCard({ item }: NewsCardProps) {
     e.preventDefault();
     e.stopPropagation();
     setShowSummary(false);
+  };
+
+  const handleListenToSummary = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!summary) {
+      // If no summary yet, generate it first then play
+      handleGenerateSummary(e).then(() => {
+        setShowAudioPlayer(true);
+      });
+    } else {
+      setShowAudioPlayer(true);
+    }
   };
 
   const handleCopySummary = (e: React.MouseEvent) => {
@@ -525,41 +541,64 @@ export default function NewsCard({ item }: NewsCardProps) {
           {/* Action buttons row */}
           <div className="mt-auto pt-5 flex items-center justify-between gap-3"
                style={{ borderTop: `2px solid var(--border-color)` }}>
-            {/* AI Summary Button - BIGGER & EASIER TO CLICK */}
-            <button
-              onClick={handleGenerateSummary}
-              className="px-5 py-3 rounded-xl font-black text-sm flex items-center gap-2.5
-                       transition-all duration-300 hover:scale-110 relative overflow-hidden
-                       border-2 shadow-lg"
-              style={{ 
-                backgroundColor: summary ? `${sourceColor.bg}30` : `${sourceColor.bg}10`,
-                color: sourceColor.text,
-                borderColor: sourceColor.bg,
-                boxShadow: summary ? `0 0 25px ${sourceColor.glow}` : `0 0 10px ${sourceColor.glow}`
-              }}>
-              <svg className={`w-5 h-5 ${loadingSummary ? 'animate-spin' : 'animate-pulse'}`} 
-                   fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-              </svg>
-              <span className="tracking-wide">
-                {showSummary ? 'Hide Summary' : (summary ? 'Show Summary' : 'AI Summary')}
-              </span>
-              {!showSummary && summary && (
-                <svg className="w-4 h-4 animate-bounce" 
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <div className="flex items-center gap-2">
+              {/* AI Summary Button - BIGGER & EASIER TO CLICK */}
+              <button
+                onClick={handleGenerateSummary}
+                className="px-5 py-3 rounded-xl font-black text-sm flex items-center gap-2.5
+                         transition-all duration-300 hover:scale-110 relative overflow-hidden
+                         border-2 shadow-lg"
+                style={{ 
+                  backgroundColor: summary ? `${sourceColor.bg}30` : `${sourceColor.bg}10`,
+                  color: sourceColor.text,
+                  borderColor: sourceColor.bg,
+                  boxShadow: summary ? `0 0 25px ${sourceColor.glow}` : `0 0 10px ${sourceColor.glow}`
+                }}>
+                <svg className={`w-5 h-5 ${loadingSummary ? 'animate-spin' : 'animate-pulse'}`} 
+                     fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.001a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                 </svg>
-              )}
-              {showSummary && (
-                <svg className="w-4 h-4" 
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                <span className="tracking-wide">
+                  {showSummary ? 'Hide Summary' : (summary ? 'Show Summary' : 'AI Summary')}
+                </span>
+                {!showSummary && summary && (
+                  <svg className="w-4 h-4 animate-bounce" 
+                       fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+                {showSummary && (
+                  <svg className="w-4 h-4" 
+                       fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                  </svg>
+                )}
+                <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
+                     style={{ background: `linear-gradient(135deg, ${sourceColor.bg}30, transparent)` }}></div>
+              </button>
+
+              {/* Listen to Summary Button - NEW! */}
+              <button
+                onClick={handleListenToSummary}
+                className="px-4 py-3 rounded-xl font-black text-sm flex items-center gap-2
+                         transition-all duration-300 hover:scale-110 relative overflow-hidden
+                         border-2 shadow-lg"
+                style={{ 
+                  backgroundColor: `${sourceColor.bg}10`,
+                  color: sourceColor.text,
+                  borderColor: sourceColor.bg,
+                  boxShadow: `0 0 15px ${sourceColor.glow}`
+                }}
+                title="Listen to AI Summary">
+                <svg className="w-5 h-5 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
                 </svg>
-              )}
-              <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
-                   style={{ background: `linear-gradient(135deg, ${sourceColor.bg}30, transparent)` }}></div>
-            </button>
+                <span className="tracking-wide">🎙️</span>
+                <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
+                     style={{ background: `linear-gradient(135deg, ${sourceColor.bg}30, transparent)` }}></div>
+              </button>
+            </div>
             
             {/* Read Full Story - Clean Text Only */}
             <span className="text-sm font-black flex items-center gap-2 relative
@@ -596,6 +635,15 @@ export default function NewsCard({ item }: NewsCardProps) {
           </div>
         </div>
       </div>
+
+      {/* Audio Player - Appears when user clicks Listen */}
+      {showAudioPlayer && summary && (
+        <AudioPlayer
+          text={summary}
+          title={item.title}
+          onClose={() => setShowAudioPlayer(false)}
+        />
+      )}
     </a>
   );
 }
