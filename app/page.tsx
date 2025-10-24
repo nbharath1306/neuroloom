@@ -28,6 +28,28 @@ export default function Home() {
   const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(true);
   const [timeSinceUpdate, setTimeSinceUpdate] = useState(0);
 
+  // Helper function to format time duration
+  const formatTimeSinceUpdate = (seconds: number): string => {
+    if (seconds < 60) {
+      return `${seconds}s`;
+    } else if (seconds < 3600) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return `${minutes}m ${remainingSeconds}s`;
+    } else {
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      return `${hours}h ${minutes}m`;
+    }
+  };
+
+  // Helper function to format countdown (time remaining until next refresh)
+  const formatCountdown = (seconds: number): string => {
+    const timeUntilRefresh = 60 - (seconds % 60);
+    if (timeUntilRefresh === 60) return '1m';
+    return timeUntilRefresh < 60 ? `${timeUntilRefresh}s` : '1m';
+  };
+
   useEffect(() => {
     setMounted(true);
     fetchNews();
@@ -877,14 +899,14 @@ export default function Home() {
               </span>
               
               <span style={{ color: 'var(--text-muted)' }} className="text-sm">
-                Updated {timeSinceUpdate}s ago
+                Updated {formatTimeSinceUpdate(timeSinceUpdate)} ago
               </span>
               
-              {/* Auto-refresh indicator */}
+              {/* Auto-refresh countdown indicator */}
               {autoRefreshEnabled && (
                 <span className="text-xs px-2 py-1 rounded-full bg-blue-500/20 border border-blue-500/50 font-semibold"
                       style={{ color: 'var(--accent-info)' }}>
-                  Auto-refresh: 1min
+                  Next refresh in {formatCountdown(timeSinceUpdate)}
                 </span>
               )}
             </div>
