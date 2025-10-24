@@ -223,6 +223,8 @@ export default function NewsCard({ item }: NewsCardProps) {
       setIsPlayingAudio(true);
       setShowAudioPlayer(true);
 
+      console.log('🎙️ Requesting TTS from HuggingFace API...', { voice: selectedVoice });
+
       const response = await fetch('/api/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -232,13 +234,20 @@ export default function NewsCard({ item }: NewsCardProps) {
         }),
       });
 
+      console.log('📡 TTS Response:', { 
+        status: response.status, 
+        contentType: response.headers.get('Content-Type') 
+      });
+
       if (response.ok) {
         const contentType = response.headers.get('Content-Type');
         
         // Check if it's audio or JSON (fallback message)
         if (contentType?.includes('audio')) {
           // Got audio from HuggingFace!
+          console.log('✅ SUCCESS: Playing HuggingFace Suno Bark audio!');
           const audioBlob = await response.blob();
+          console.log('🎵 Audio blob size:', audioBlob.size, 'bytes');
           const audioUrl = URL.createObjectURL(audioBlob);
           
           const audio = new Audio(audioUrl);
@@ -251,17 +260,22 @@ export default function NewsCard({ item }: NewsCardProps) {
           };
           
           audio.onerror = () => {
-            console.log('Audio playback error, using browser TTS');
+            console.log('❌ Audio playback error, using browser TTS');
             speakText(summary);
           };
           
           await audio.play();
+          console.log('🔊 Audio playing...');
           return;
+        } else {
+          // Got JSON response - using browser fallback
+          const data = await response.json();
+          console.log('⚠️ Fallback to browser TTS:', data.message);
         }
       }
       
       // Fallback to browser TTS
-      console.log('Using browser TTS fallback');
+      console.log('🌐 Using browser TTS fallback');
       speakText(summary);
       
     } catch (error) {
