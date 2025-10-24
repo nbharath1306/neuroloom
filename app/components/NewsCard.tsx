@@ -30,15 +30,47 @@ export default function NewsCard({ item }: NewsCardProps) {
     const formatDate = (dateString: string) => {
       const date = new Date(dateString);
       const now = new Date();
-      const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+      const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
       
-      if (diffInHours < 1) return 'Just now';
-      if (diffInHours < 24) return `${diffInHours}h ago`;
-      if (diffInHours < 48) return 'Yesterday';
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      // Show exact date and time for better transparency
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      
+      const isToday = date.toDateString() === today.toDateString();
+      const isYesterday = date.toDateString() === yesterday.toDateString();
+      
+      const timeStr = date.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+      
+      if (isToday) {
+        // For today: show "Today at 3:45 PM" or "X minutes ago" if very recent
+        if (diffInMinutes < 5) {
+          return `${diffInMinutes} min ago (${timeStr})`;
+        }
+        return `Today at ${timeStr}`;
+      } else if (isYesterday) {
+        return `Yesterday at ${timeStr}`;
+      } else {
+        // For older dates: show full date with time
+        const dateStr = date.toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric',
+          year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined
+        });
+        return `${dateStr} at ${timeStr}`;
+      }
     };
     
     setFormattedDate(formatDate(item.pubDate));
+    
+    // Update timestamp every minute to keep "X min ago" accurate
+    const interval = setInterval(() => {
+      setFormattedDate(formatDate(item.pubDate));
+    }, 60000); // Update every 60 seconds
     
     // Check if article has been viewed
     const viewedArticles = JSON.parse(localStorage.getItem('neuroloom-viewed-articles') || '[]');
@@ -47,6 +79,8 @@ export default function NewsCard({ item }: NewsCardProps) {
     // Check if article has been summarized
     const summarizedArticles = JSON.parse(localStorage.getItem('neuroloom-summarized-articles') || '[]');
     setIsSummarized(summarizedArticles.includes(item.link));
+    
+    return () => clearInterval(interval);
   }, [item.pubDate, item.link]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
