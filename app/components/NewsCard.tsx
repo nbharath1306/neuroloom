@@ -258,18 +258,81 @@ export default function NewsCard({ item }: NewsCardProps) {
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
-    utterance.pitch = 1;
+    
+    // ENHANCED VOICE SETTINGS for more natural speech
+    utterance.rate = 0.95;  // Slightly slower for better clarity
+    utterance.pitch = 1.05; // Slightly higher for more energy
     utterance.volume = 1;
     
-    // Try to use a good English voice
-    const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(v => 
-      v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Natural'))
-    ) || voices.find(v => v.lang.startsWith('en'));
+    // Load voices (needed for some browsers)
+    let voices = window.speechSynthesis.getVoices();
     
-    if (preferredVoice) {
-      utterance.voice = preferredVoice;
+    // If voices not loaded yet, wait for them
+    if (voices.length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        voices = window.speechSynthesis.getVoices();
+        selectBestVoice();
+      };
+    } else {
+      selectBestVoice();
+    }
+
+    function selectBestVoice() {
+      // Priority list of high-quality voices (best to worst)
+      const voicePriority = [
+        // Google voices (best quality, cloud-based)
+        'Google US English',
+        'Google UK English Female',
+        'Google UK English Male',
+        
+        // Microsoft natural voices
+        'Microsoft Aria Online (Natural) - English (United States)',
+        'Microsoft Guy Online (Natural) - English (United States)',
+        'Microsoft Jenny Online - English (United States)',
+        
+        // Apple voices (Mac/iOS - very good quality)
+        'Samantha',
+        'Alex',
+        'Ava',
+        'Zoe (Premium)',
+        'Karen',
+        
+        // Edge voices (Windows)
+        'Microsoft Zira Desktop - English (United States)',
+        
+        // Fallback to any quality English voice
+        'English United States',
+        'en-US'
+      ];
+
+      let selectedVoice = null;
+
+      // Try to find voices in priority order
+      for (const voiceName of voicePriority) {
+        selectedVoice = voices.find(v => v.name.includes(voiceName));
+        if (selectedVoice) break;
+      }
+
+      // If no priority voice found, try any high-quality voice
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => 
+          v.lang.startsWith('en') && 
+          (v.name.toLowerCase().includes('premium') || 
+           v.name.toLowerCase().includes('natural') ||
+           v.name.toLowerCase().includes('neural') ||
+           v.name.toLowerCase().includes('enhanced'))
+        );
+      }
+
+      // Final fallback: any English voice
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.lang.startsWith('en'));
+      }
+
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+        console.log('🎙️ Using voice:', selectedVoice.name);
+      }
     }
 
     utterance.onstart = () => {
