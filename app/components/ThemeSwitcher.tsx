@@ -2,14 +2,25 @@
 
 import { useEffect, useState } from 'react'
 
-type Theme = 'light' | 'dark' | 'gray' | 'cyberpunk' | 'ocean'
+type Theme = 'light' | 'dark' | 'gray' | 'cyberpunk' | 'ocean' | 'sunset' | 'forest' | 'rose' | 'midnight' | 'arctic' | 'matrix' | 'amber' | 'crimson' | 'mint' | 'lavender' | 'mocha'
 
 const themes = [
-  { id: 'light' as Theme, name: 'Light', icon: '☀️', color: 'from-yellow-400 to-orange-500' },
-  { id: 'dark' as Theme, name: 'True Black', icon: '🌑', color: 'from-gray-800 to-black' },
-  { id: 'gray' as Theme, name: 'Soft Gray', icon: '🌙', color: 'from-slate-600 to-slate-800' },
-  { id: 'cyberpunk' as Theme, name: 'Cyberpunk', icon: '💜', color: 'from-purple-600 to-indigo-800' },
-  { id: 'ocean' as Theme, name: 'Deep Ocean', icon: '🌊', color: 'from-blue-700 to-blue-900' },
+  { id: 'light' as Theme, name: 'Light', icon: '☀️', color: 'from-yellow-400 to-orange-500', desc: 'Clean & Bright' },
+  { id: 'dark' as Theme, name: 'True Black', icon: '🌑', color: 'from-gray-800 to-black', desc: 'OLED Perfect' },
+  { id: 'gray' as Theme, name: 'Soft Gray', icon: '🌙', color: 'from-slate-600 to-slate-800', desc: 'GitHub Style' },
+  { id: 'cyberpunk' as Theme, name: 'Cyberpunk', icon: '💜', color: 'from-purple-600 to-indigo-800', desc: 'Futuristic' },
+  { id: 'ocean' as Theme, name: 'Deep Ocean', icon: '🌊', color: 'from-blue-700 to-blue-900', desc: 'Calm Waters' },
+  { id: 'sunset' as Theme, name: 'Sunset', icon: '🌅', color: 'from-orange-600 to-red-700', desc: 'Warm Glow' },
+  { id: 'forest' as Theme, name: 'Forest', icon: '🌲', color: 'from-green-600 to-green-800', desc: 'Nature Fresh' },
+  { id: 'rose' as Theme, name: 'Rose', icon: '🌹', color: 'from-pink-600 to-rose-800', desc: 'Elegant Pink' },
+  { id: 'midnight' as Theme, name: 'Midnight', icon: '✨', color: 'from-purple-700 to-indigo-900', desc: 'Deep Purple' },
+  { id: 'arctic' as Theme, name: 'Arctic', icon: '❄️', color: 'from-cyan-600 to-blue-800', desc: 'Ice Cool' },
+  { id: 'matrix' as Theme, name: 'Matrix', icon: '💚', color: 'from-green-500 to-green-900', desc: 'Hacker Mode' },
+  { id: 'amber' as Theme, name: 'Amber', icon: '🟡', color: 'from-amber-500 to-orange-700', desc: 'Golden Hour' },
+  { id: 'crimson' as Theme, name: 'Crimson', icon: '❤️', color: 'from-red-600 to-red-900', desc: 'Bold Red' },
+  { id: 'mint' as Theme, name: 'Mint', icon: '🍃', color: 'from-teal-500 to-teal-800', desc: 'Fresh Teal' },
+  { id: 'lavender' as Theme, name: 'Lavender', icon: '💠', color: 'from-purple-400 to-purple-700', desc: 'Soft Purple' },
+  { id: 'mocha' as Theme, name: 'Mocha', icon: '☕', color: 'from-amber-700 to-brown-900', desc: 'Cozy Brown' },
 ]
 
 export default function ThemeSwitcher() {
@@ -78,34 +89,45 @@ export default function ThemeSwitcher() {
           />
           
           {/* Menu */}
-          <div className="absolute top-full right-0 mt-2 w-56 glass-strong rounded-2xl p-2 shadow-2xl animate-scaleUp z-50">
-            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 px-3 py-2 mb-1">
-              Choose Theme
+          <div className="absolute top-full right-0 mt-2 w-72 glass-strong rounded-2xl p-3 shadow-2xl animate-scaleUp z-50 max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 px-3 py-2 mb-2 flex items-center justify-between">
+              <span>Choose Your Vibe ✨</span>
+              <span className="text-[10px] opacity-70">{themes.length} themes</span>
             </div>
-            {themes.map((themeOption) => (
-              <button
-                key={themeOption.id}
-                onClick={() => handleThemeChange(themeOption.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${
-                  theme === themeOption.id
-                    ? `bg-gradient-to-r ${themeOption.color} text-white shadow-lg scale-105`
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-700/50'
-                }`}
-              >
-                <span className="text-2xl">{themeOption.icon}</span>
-                <div className="flex-1 text-left">
-                  <div className="font-semibold text-sm">{themeOption.name}</div>
-                </div>
-                {theme === themeOption.id && (
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                )}
-              </button>
-            ))}
+            
+            <div className="space-y-1">
+              {themes.map((themeOption) => (
+                <button
+                  key={themeOption.id}
+                  onClick={() => handleThemeChange(themeOption.id)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group ${
+                    theme === themeOption.id
+                      ? `bg-gradient-to-r ${themeOption.color} text-white shadow-lg scale-[1.02]`
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:scale-[1.02]'
+                  }`}
+                >
+                  <span className="text-2xl group-hover:scale-110 transition-transform">{themeOption.icon}</span>
+                  <div className="flex-1 text-left">
+                    <div className="font-semibold text-sm">{themeOption.name}</div>
+                    <div className={`text-xs mt-0.5 ${
+                      theme === themeOption.id 
+                        ? 'text-white/80' 
+                        : 'text-gray-500 dark:text-gray-400'
+                    }`}>
+                      {themeOption.desc}
+                    </div>
+                  </div>
+                  {theme === themeOption.id && (
+                    <svg className="w-5 h-5 animate-bounce" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                </button>
+              ))}
+            </div>
             
             {/* Preview Info */}
-            <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
               <div className="text-xs text-gray-500 dark:text-gray-400 px-3 py-2 text-center">
                 Theme changes instantly ⚡
               </div>
