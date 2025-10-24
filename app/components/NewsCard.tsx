@@ -301,7 +301,9 @@ export default function NewsCard({ item }: NewsCardProps) {
     
     setIsPlayingAudio(false);
     setShowAudioPlayer(false);
-  };  const speakText = (text: string) => {
+  };
+
+  const speakText = (text: string) => {
     if (!text) return;
 
     // Cancel any ongoing speech
@@ -311,11 +313,6 @@ export default function NewsCard({ item }: NewsCardProps) {
     setShowAudioPlayer(true);
 
     const utterance = new SpeechSynthesisUtterance(text);
-    
-    // ENHANCED VOICE SETTINGS for more natural speech
-    utterance.rate = 0.95;  // Slightly slower for better clarity
-    utterance.pitch = 1.05; // Slightly higher for more energy
-    utterance.volume = 1;
     
     // Load voices (needed for some browsers)
     let voices = window.speechSynthesis.getVoices();
@@ -331,60 +328,89 @@ export default function NewsCard({ item }: NewsCardProps) {
     }
 
     function selectBestVoice() {
-      // Priority list of high-quality voices (best to worst)
-      const voicePriority = [
-        // Google voices (best quality, cloud-based)
-        'Google US English',
-        'Google UK English Female',
-        'Google UK English Male',
-        
-        // Microsoft natural voices
-        'Microsoft Aria Online (Natural) - English (United States)',
-        'Microsoft Guy Online (Natural) - English (United States)',
-        'Microsoft Jenny Online - English (United States)',
-        
-        // Apple voices (Mac/iOS - very good quality)
-        'Samantha',
-        'Alex',
-        'Ava',
-        'Zoe (Premium)',
-        'Karen',
-        
-        // Edge voices (Windows)
-        'Microsoft Zira Desktop - English (United States)',
-        
-        // Fallback to any quality English voice
-        'English United States',
-        'en-US'
-      ];
+      console.log(`🎙️ Looking for ${selectedVoice} voice...`);
+      console.log(`📋 Available voices: ${voices.length}`);
+      
+      let selectedVoiceObj = null;
 
-      let selectedVoice = null;
+      if (selectedVoice === 'female') {
+        // FEMALE voice priority (high-pitched, clear, feminine)
+        const femalePriority = [
+          'Samantha',           // Mac - excellent female voice
+          'Victoria',           // Mac
+          'Karen',              // Mac
+          'Moira',              // Mac - Irish
+          'Fiona',              // Mac - Scottish
+          'Zira',               // Windows - clear female
+          'Google UK English Female',
+          'Microsoft Aria',
+          'Microsoft Jenny',
+          'Ava',
+        ];
 
-      // Try to find voices in priority order
-      for (const voiceName of voicePriority) {
-        selectedVoice = voices.find(v => v.name.includes(voiceName));
-        if (selectedVoice) break;
+        for (const voiceName of femalePriority) {
+          selectedVoiceObj = voices.find(v => v.name.includes(voiceName));
+          if (selectedVoiceObj) {
+            console.log(`✅ Found female voice: ${selectedVoiceObj.name}`);
+            break;
+          }
+        }
+
+        // Fallback: any voice with "female" in name
+        if (!selectedVoiceObj) {
+          selectedVoiceObj = voices.find(v => 
+            v.name.toLowerCase().includes('female') ||
+            v.name.toLowerCase().includes('woman')
+          );
+        }
+
+        // Voice parameters for more feminine sound
+        utterance.rate = 1.0;    // Normal speed
+        utterance.pitch = 1.3;   // Higher pitch = more feminine
+        utterance.volume = 1.0;
+
+      } else {
+        // MALE voice priority (low-pitched, deep, masculine)
+        const malePriority = [
+          'Alex',               // Mac - excellent male voice
+          'Daniel',             // Mac
+          'Fred',               // Mac
+          'Thomas',             // Mac - French accent
+          'Gordon',             // Mac - Scottish
+          'David',              // Windows - clear male
+          'George',             // Windows
+          'Google UK English Male',
+          'Google US English Male',
+          'Microsoft Guy',
+        ];
+
+        for (const voiceName of malePriority) {
+          selectedVoiceObj = voices.find(v => v.name.includes(voiceName));
+          if (selectedVoiceObj) {
+            console.log(`✅ Found male voice: ${selectedVoiceObj.name}`);
+            break;
+          }
+        }
+
+        // Fallback: any voice with "male" in name
+        if (!selectedVoiceObj) {
+          selectedVoiceObj = voices.find(v => 
+            v.name.toLowerCase().includes('male') ||
+            v.name.toLowerCase().includes('man')
+          );
+        }
+
+        // Voice parameters for more masculine sound
+        utterance.rate = 0.92;   // Slightly slower = more authoritative
+        utterance.pitch = 0.75;  // Lower pitch = more masculine
+        utterance.volume = 1.0;
       }
 
-      // If no priority voice found, try any high-quality voice
-      if (!selectedVoice) {
-        selectedVoice = voices.find(v => 
-          v.lang.startsWith('en') && 
-          (v.name.toLowerCase().includes('premium') || 
-           v.name.toLowerCase().includes('natural') ||
-           v.name.toLowerCase().includes('neural') ||
-           v.name.toLowerCase().includes('enhanced'))
-        );
-      }
-
-      // Final fallback: any English voice
-      if (!selectedVoice) {
-        selectedVoice = voices.find(v => v.lang.startsWith('en'));
-      }
-
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-        console.log('🎙️ Using voice:', selectedVoice.name);
+      if (selectedVoiceObj) {
+        utterance.voice = selectedVoiceObj;
+        console.log(`🎙️ Using voice: ${selectedVoiceObj.name} (${selectedVoice})`);
+      } else {
+        console.log(`⚠️ No specific ${selectedVoice} voice found, using default with pitch adjustment`);
       }
     }
 
