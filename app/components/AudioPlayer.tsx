@@ -18,7 +18,7 @@ export default function AudioPlayer({ text, title, onClose }: AudioPlayerProps) 
   const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
   
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     // Load available voices

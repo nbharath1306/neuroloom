@@ -199,16 +199,47 @@ export default function NewsCard({ item }: NewsCardProps) {
     setShowSummary(false);
   };
 
-  const handleListenToSummary = (e: React.MouseEvent) => {
+  const handleListenToSummary = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
     if (!summary) {
-      // If no summary yet, generate it first then play
-      handleGenerateSummary(e).then(() => {
+      // If no summary yet, generate it first
+      setLoadingSummary(true);
+      setShowSummary(true);
+
+      try {
+        const response = await fetch('/api/summarize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: item.title,
+            description: item.contentSnippet || ''
+          })
+        });
+
+        const data = await response.json();
+        const generatedSummary = data.summary || 'Unable to generate summary';
+        setSummary(generatedSummary);
+        
+        // Mark article as summarized
+        const summarizedArticles = JSON.parse(localStorage.getItem('neuroloom-summarized-articles') || '[]');
+        if (!summarizedArticles.includes(item.link)) {
+          summarizedArticles.push(item.link);
+          localStorage.setItem('neuroloom-summarized-articles', JSON.stringify(summarizedArticles));
+        }
+        setIsSummarized(true);
+        
+        // Now play the audio
         setShowAudioPlayer(true);
-      });
+      } catch (error) {
+        console.error('Summary error:', error);
+        setSummary('Failed to generate summary. Please try again.');
+      } finally {
+        setLoadingSummary(false);
+      }
     } else {
+      // Summary already exists, just play it
       setShowAudioPlayer(true);
     }
   };
